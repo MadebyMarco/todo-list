@@ -21,16 +21,9 @@ const addItemToProject = (item, project) => {
 const defaultProject = project("default");
 const projects = [defaultProject];
 
-const todoItem = (title, description, dueDate, priority, notes, checklist) => {
-    const newChecklist = [];
-    checklist.forEach(item => {
-        const tempContainer = {checklistItem: `${item}`, checked: false}
-        newChecklist.push(tempContainer);
-    });
-    
-    
-// by making items on my check list objects with two keys, name & checked, I can store store and render the info easily.
-// I need to make every input into checklist an object. I can forEach over and set name to whatever is in checklist, then return and push object into checklist, or map it.
+const todoItem = (title, description, dueDate, priority, notes, ...checklist) => {
+
+
     return  {
         title,
         description,
@@ -38,12 +31,27 @@ const todoItem = (title, description, dueDate, priority, notes, checklist) => {
         priority,
         notes,
         checklist,
-        newChecklist
     }
 }
 
-const testItem = todoItem("cleaning","bathrooms", "today", "low", "make sure to get the white wood thing", ["oo figure out how to make checklist, maybe array", "does it work", "but now how do i know someone has checked off a todolist item"]);
+// Making the checklist conversion into a separate function instead of a todoItem property/interal job
+// by making items on my check list objects with two keys, name & checked, I can store store and render the info easily.
+// I need to make every input into checklist an object. I can forEach over and set name to whatever is in checklist.
+function convertChecklistToObjects(todoItem) {
+    const objectChecklist = [];
+    todoItem.checklist.forEach(item => {
+        const itemObject = {checklistItemName: `${item}`, checked: false};
+        objectChecklist.push(itemObject);
+    });
+
+    todoItem.checklist = objectChecklist;
+}
+
+
+const testItem = todoItem("cleaning","bathrooms", "today", "low", "make sure to get the white wood thing", "oo figure out how to make checklist, maybe array", "does it work", "but now how do i know someone has checked off a todolist item");
 console.log(testItem);
 
 addItemToProject(testItem, defaultProject);
+console.log(defaultProject);
+convertChecklistToObjects(testItem);
 console.log(defaultProject);

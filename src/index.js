@@ -8,19 +8,18 @@
 //todo list logic will be kept in one module while todo list DOM manipulation will be in another module
 // todoItem for logic, todoItemDOM for dom manipulation 
 
-const projects = [defaultProject];
 
-const project = (title) => {
-    const items = [];
+const project = (title, items = []) => {
+    return {title, items}
+}
+// separated adding items to project to follow single responsibility principle
+const addItemToProject = (item, project) => {
+    project.items.push(item);
 
-    const addItem = (item) => {
-        items.push(item);
-    }
-
-    return {title, addItem}
 }
 
-const defaultProject = new project("default");
+const defaultProject = project("default");
+const projects = [defaultProject];
 
 const todoItem = (title, description, dueDate, priority, notes, checklist) => {
     return  {
@@ -32,3 +31,9 @@ const todoItem = (title, description, dueDate, priority, notes, checklist) => {
         checklist
     }
 }
+
+const testItem = todoItem("cleaning","bathrooms", "today", "low", "make sure to get the white wood thing", ["oo figure out how to make checklist, maybe array", "does it work"]);
+console.log(testItem);
+
+addItemToProject(testItem, defaultProject);
+console.log(defaultProject);

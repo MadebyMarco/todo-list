@@ -9,20 +9,46 @@
 // todoItem for logic, todoItemDOM for dom manipulation 
 import { formatDistance, formatDistanceToNow, subDays } from "date-fns";
 
-const project = (title, items = []) => {
-    return {title, items}
-}
-// separated adding items to project to follow single responsibility principle
-const addItemToProject = (item, project) => {
-    project.items.push(item);
-    
-}
-function addProjectToProjectsContainer(project) {
-    projectsContainer.push(project);
-}
+// const project = (title, items = []) => {
+//     return {title, items}
+// }
 
-const defaultProject = project("default");
+const project = (() => {
+
+    const create = (title, items = []) => {
+        return {title, items}
+    }
+
+    const addToProjectsContainer = (project) => {
+        projectsContainer.push(project)
+    }
+    
+    const removeFromProjectsContainer = (projectForRemoval) => {
+        const index = projectsContainer.findIndex(project => project.title == projectForRemoval.title);
+        projectsContainer.splice(index, 1);
+    }
+
+    const addItem = (item, project) => {
+        project.items.push(item);
+    }
+
+    return {
+        create,
+        addToProjectsContainer,
+        removeFromProjectsContainer,
+        addItem,
+    }
+})();
+
+const moduletest = project.create("moduleTester");
+
+// separated adding items to project to follow single responsibility principle
+
+
+const defaultProject = project.create("default");
 const projectsContainer = [];
+
+project.addToProjectsContainer(moduletest);
 
 const todoItem = (title, description, dueDate, priority, notes, ...checklist) => {
 
@@ -53,24 +79,21 @@ function convertChecklistToObjects(todoItem) {
 
 const testItem = todoItem("cleaning","bathrooms", "today", "low", "make sure to get the white wood thing", "oo figure out how to make checklist, maybe array", "does it work", "but now how do i know someone has checked off a todolist item");
 
-addItemToProject(testItem, defaultProject);
+project.addItem(testItem, defaultProject);
 convertChecklistToObjects(testItem);
-addProjectToProjectsContainer(defaultProject);
+project.addToProjectsContainer(defaultProject);
 
 console.log(projectsContainer[0]);
 
-function removeProjectFromProjectsContainer(projectForRemoval) {
-   const index = projectsContainer.findIndex(project => project.title == projectForRemoval.title);
-   projectsContainer.splice(index, 1);
-}
 
 function removeTodoItemFromProject(itemForRemoval, project) {
     const index = project.items.findIndex(item => item.title == itemForRemoval.title);
     project.items.splice(index, 1);
 }
+project.removeFromProjectsContainer(moduletest)
 
-removeProjectFromProjectsContainer(defaultProject);
 console.log(projectsContainer);
 
-removeTodoItemFromProject(testItem, defaultProject);
 console.log(defaultProject)
+
+console.log(moduletest);

@@ -7,7 +7,7 @@
 
 //todo list logic will be kept in one module while todo list DOM manipulation will be in another module
 // todoItem for logic, todoItemDOM for dom manipulation 
-
+import { formatDistance, subDays } from "date-fns";
 
 const project = (title, items = []) => {
     return {title, items}
@@ -49,9 +49,7 @@ function convertChecklistToObjects(todoItem) {
 
 
 const testItem = todoItem("cleaning","bathrooms", "today", "low", "make sure to get the white wood thing", "oo figure out how to make checklist, maybe array", "does it work", "but now how do i know someone has checked off a todolist item");
-console.log(testItem);
 
 addItemToProject(testItem, defaultProject);
-console.log(defaultProject);
 convertChecklistToObjects(testItem);
-console.log(defaultProject);
+console.log(projects);

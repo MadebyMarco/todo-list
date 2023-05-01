@@ -7,7 +7,7 @@
 
 //todo list logic will be kept in one module while todo list DOM manipulation will be in another module
 // todoItem for logic, todoItemDOM for dom manipulation 
-import { formatDistance, subDays } from "date-fns";
+import { formatDistance, formatDistanceToNow, subDays } from "date-fns";
 
 const project = (title, items = []) => {
     return {title, items}
@@ -15,11 +15,14 @@ const project = (title, items = []) => {
 // separated adding items to project to follow single responsibility principle
 const addItemToProject = (item, project) => {
     project.items.push(item);
-
+    
+}
+function addProjectToProjectsContainer(project) {
+    projectsContainer.push(project);
 }
 
 const defaultProject = project("default");
-const projects = [defaultProject];
+const projectsContainer = [];
 
 const todoItem = (title, description, dueDate, priority, notes, ...checklist) => {
 
@@ -52,4 +55,6 @@ const testItem = todoItem("cleaning","bathrooms", "today", "low", "make sure to 
 
 addItemToProject(testItem, defaultProject);
 convertChecklistToObjects(testItem);
-console.log(projects);
+addProjectToProjectsContainer(defaultProject);
+
+console.log(projectsContainer);

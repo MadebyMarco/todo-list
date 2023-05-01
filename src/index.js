@@ -74,9 +74,22 @@ const todoItem = (() => {
     
         todoItem.checklist = objectChecklist;
     }
+    //need to find a way to check a list item
+    //First I will search through a todoItem's checklist using the listItems index
+    //
+    const checkACheckListItem = (listItemIndex, todoItem) => {
+        todoItem.checklist[listItemIndex].checked = true;
+    }
+
+    const markCompleted = (todoItem) => {
+        todoItem.completed = true;
+    }
+
     return {
         create,
-        convertChecklistToObjects
+        convertChecklistToObjects,
+        checkACheckListItem,
+        markCompleted
     }
 
 })();
@@ -86,16 +99,26 @@ const todoItem = (() => {
 const defaultProject = project.create("default");
 const projectsContainer = [];
 
-const testItem = todoItem.create("cleaning","bathrooms", "today", "low", "make sure to get the white wood thing", false, "oo figure out how to make checklist, maybe array", "does it work", "but now how do i know someone has checked off a todolist item");
+const testItem = todoItem.create(
+    "cleaning",
+    "bathrooms",
+    "today",
+    "low",
+    "make sure to get the white wood thing",
+    false,
+    "oo figure out how to make checklist, maybe array", "does it work", "but now how do i know someone has checked off a todolist item"
+    );
 
 project.addItem(testItem, defaultProject);
 todoItem.convertChecklistToObjects(testItem);
 project.addToProjectsContainer(defaultProject);
-
 console.log(projectsContainer[0]);
-
-
-
 console.log(projectsContainer);
+console.log(defaultProject);
 
-console.log(defaultProject)
+const todoItemDOM = (() => {
+
+})();
+
+todoItem.checkACheckListItem(0, testItem);
+todoItem.markCompleted(testItem);

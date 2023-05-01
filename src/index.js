@@ -65,6 +65,18 @@ const todoItem = (() => {
 // Making the checklist conversion into a separate function instead of a todoItem property/interal job
 // by making items on my check list objects with two keys, name & checked, I can store store and render the info easily.
 // I need to make every input into checklist an object. I can forEach over and set name to whatever is in checklist.
+
+    const checklist = (() => {
+
+    //need to find a way to check a list item
+    //First I will search through a todoItem's checklist using the listItems index
+        const checkItem = (listItemIndex, todoItem) => {
+            todoItem.checklist[listItemIndex].checked = true;
+        }
+
+        return {checkItem}
+    })();
+
     const convertChecklistToObjects = (todoItem) => {
         const objectChecklist = [];
         todoItem.checklist.forEach(item => {
@@ -74,12 +86,6 @@ const todoItem = (() => {
     
         todoItem.checklist = objectChecklist;
     }
-    //need to find a way to check a list item
-    //First I will search through a todoItem's checklist using the listItems index
-    //
-    const checkACheckListItem = (listItemIndex, todoItem) => {
-        todoItem.checklist[listItemIndex].checked = true;
-    }
 
     const markCompleted = (todoItem) => {
         todoItem.completed = true;
@@ -88,8 +94,8 @@ const todoItem = (() => {
     return {
         create,
         convertChecklistToObjects,
-        checkACheckListItem,
-        markCompleted
+        markCompleted,
+        checklist
     }
 
 })();
@@ -120,5 +126,5 @@ const todoItemDOM = (() => {
 
 })();
 
-todoItem.checkACheckListItem(0, testItem);
+todoItem.checklist.checkItem(0, testItem);
 todoItem.markCompleted(testItem);

@@ -64,11 +64,13 @@ function removeProjectFromProjectsContainer(projectForRemoval) {
    projectsContainer.splice(index, 1);
 }
 
-function removetodoItemFromProject(itemForRemoval, project) {
-    const index = project.findIndex(item => item.title == itemForRemoval.title);
-    project.splice(index, 1);
+function removeTodoItemFromProject(itemForRemoval, project) {
+    const index = project.items.findIndex(item => item.title == itemForRemoval.title);
+    project.items.splice(index, 1);
 }
 
-removeProjectfromProjectsContainer(defaultProject);
+removeProjectFromProjectsContainer(defaultProject);
 console.log(projectsContainer);
 
+removeTodoItemFromProject(testItem, defaultProject);
+console.log(defaultProject)

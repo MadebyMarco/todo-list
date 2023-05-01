@@ -27,9 +27,14 @@ const project = (() => {
         const index = projectsContainer.findIndex(project => project.title == projectForRemoval.title);
         projectsContainer.splice(index, 1);
     }
-
+    
     const addItem = (item, project) => {
         project.items.push(item);
+    }
+
+    const removeItem = (itemForRemoval, project) => {
+        const index = project.items.findIndex(item => item.title == itemForRemoval.title);
+        project.items.splice(index, 1);
     }
 
     return {
@@ -37,6 +42,7 @@ const project = (() => {
         addToProjectsContainer,
         removeFromProjectsContainer,
         addItem,
+        removeItem
     }
 })();
 
@@ -50,18 +56,25 @@ const projectsContainer = [];
 
 project.addToProjectsContainer(moduletest);
 
-const todoItem = (title, description, dueDate, priority, notes, ...checklist) => {
-
-
-    return  {
-        title,
-        description,
-        dueDate,
-        priority,
-        notes,
-        checklist,
+const todoItem = (() => {
+    const create = (title, description, dueDate = new Date(), priority, notes, ...checklist) => {
+    
+    
+        return  {
+            title,
+            description,
+            dueDate,
+            priority,
+            notes,
+            checklist,
+        }
     }
-}
+
+    return {
+        create
+    }
+})();
+
 
 // Making the checklist conversion into a separate function instead of a todoItem property/interal job
 // by making items on my check list objects with two keys, name & checked, I can store store and render the info easily.
@@ -77,7 +90,7 @@ function convertChecklistToObjects(todoItem) {
 }
 
 
-const testItem = todoItem("cleaning","bathrooms", "today", "low", "make sure to get the white wood thing", "oo figure out how to make checklist, maybe array", "does it work", "but now how do i know someone has checked off a todolist item");
+const testItem = todoItem.create("cleaning","bathrooms", "today", "low", "make sure to get the white wood thing", "oo figure out how to make checklist, maybe array", "does it work", "but now how do i know someone has checked off a todolist item");
 
 project.addItem(testItem, defaultProject);
 convertChecklistToObjects(testItem);
@@ -86,11 +99,7 @@ project.addToProjectsContainer(defaultProject);
 console.log(projectsContainer[0]);
 
 
-function removeTodoItemFromProject(itemForRemoval, project) {
-    const index = project.items.findIndex(item => item.title == itemForRemoval.title);
-    project.items.splice(index, 1);
-}
-project.removeFromProjectsContainer(moduletest)
+project.removeFromProjectsContainer(moduletest);
 
 console.log(projectsContainer);
 

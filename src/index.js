@@ -58,3 +58,15 @@ convertChecklistToObjects(testItem);
 addProjectToProjectsContainer(defaultProject);
 
 console.log(projectsContainer);
+
+function removeProjectfromProjectsContainer(projectForRemoval) {
+   const index = projectsContainer.findIndex(project => project.title = projectForRemoval.title);
+   projectsContainer.splice(index, 1);
+}
+
+function removetodoItemFromProject(item) {
+
+}
+
+removeProjectfromProjectsContainer("defaultProject");
+console.log(projectsContainer);

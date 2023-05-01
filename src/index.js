@@ -18,7 +18,7 @@ const project = (() => {
     const create = (title, items = []) => {
         return {title, items}
     }
-
+    
     const addToProjectsContainer = (project) => {
         projectsContainer.push(project)
     }
@@ -28,6 +28,7 @@ const project = (() => {
         projectsContainer.splice(index, 1);
     }
     
+    // separated adding items to project to follow single responsibility principle
     const addItem = (item, project) => {
         project.items.push(item);
     }
@@ -46,18 +47,8 @@ const project = (() => {
     }
 })();
 
-const moduletest = project.create("moduleTester");
-
-// separated adding items to project to follow single responsibility principle
-
-
-const defaultProject = project.create("default");
-const projectsContainer = [];
-
-project.addToProjectsContainer(moduletest);
-
 const todoItem = (() => {
-    const create = (title, description, dueDate = new Date(), priority, notes, ...checklist) => {
+    const create = (title, description, dueDate, priority, notes, completed, ...checklist) => {
     
     
         return  {
@@ -66,43 +57,45 @@ const todoItem = (() => {
             dueDate,
             priority,
             notes,
+            completed,
             checklist,
         }
     }
 
-    return {
-        create
-    }
-})();
-
-
 // Making the checklist conversion into a separate function instead of a todoItem property/interal job
 // by making items on my check list objects with two keys, name & checked, I can store store and render the info easily.
 // I need to make every input into checklist an object. I can forEach over and set name to whatever is in checklist.
-function convertChecklistToObjects(todoItem) {
-    const objectChecklist = [];
-    todoItem.checklist.forEach(item => {
-        const itemObject = {checklistItemName: `${item}`, checked: false};
-        objectChecklist.push(itemObject);
-    });
+    const convertChecklistToObjects = (todoItem) => {
+        const objectChecklist = [];
+        todoItem.checklist.forEach(item => {
+            const itemObject = {checklistItemName: `${item}`, checked: false};
+            objectChecklist.push(itemObject);
+        });
+    
+        todoItem.checklist = objectChecklist;
+    }
+    return {
+        create,
+        convertChecklistToObjects
+    }
 
-    todoItem.checklist = objectChecklist;
-}
+})();
 
 
-const testItem = todoItem.create("cleaning","bathrooms", "today", "low", "make sure to get the white wood thing", "oo figure out how to make checklist, maybe array", "does it work", "but now how do i know someone has checked off a todolist item");
+
+const defaultProject = project.create("default");
+const projectsContainer = [];
+
+const testItem = todoItem.create("cleaning","bathrooms", "today", "low", "make sure to get the white wood thing", false, "oo figure out how to make checklist, maybe array", "does it work", "but now how do i know someone has checked off a todolist item");
 
 project.addItem(testItem, defaultProject);
-convertChecklistToObjects(testItem);
+todoItem.convertChecklistToObjects(testItem);
 project.addToProjectsContainer(defaultProject);
 
 console.log(projectsContainer[0]);
 
 
-project.removeFromProjectsContainer(moduletest);
 
 console.log(projectsContainer);
 
 console.log(defaultProject)
-
-console.log(moduletest);

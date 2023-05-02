@@ -94,9 +94,14 @@ const todoItem = (() => {
         todoItem.completed = true;
     }
 
+    const markNotCompleted = (todoItem) => {
+        todoItem.completed = false;
+    }
+
     return {
         create,
         markCompleted,
+        markNotCompleted,
         checklist
     }
 

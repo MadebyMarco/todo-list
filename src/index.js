@@ -89,7 +89,8 @@ const todoItem = (() => {
         }
 
         const removeItem = (checkListItem, todoItem) => {
-            const index = todoItem.checklist.findIndex(item => item.title == checkListItem.title);
+            const index = todoItem.checklist.findIndex(item => item.checklistItemName == checkListItem);
+            console.log(index);
             todoItem.checklist.splice(index, 1);
         }
 
@@ -139,6 +140,7 @@ project.addToProjectsContainer(defaultProject);
 todoItem.checklist.addItem("test", testItem);
 todoItem.checklist.convertToObjects(testItem);
 todoItem.checklist.checkItem(0, testItem);
+todoItem.checklist.removeItem("test", testItem);
 console.log(projectsContainer[0]);
 console.log(projectsContainer);
 console.log(defaultProject);

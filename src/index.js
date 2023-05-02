@@ -74,18 +74,21 @@ const todoItem = (() => {
             todoItem.checklist[listItemIndex].checked = true;
         }
 
-        return {checkItem}
+        const convertToObjects = (todoItem) => {
+            const objectChecklist = [];
+            todoItem.checklist.forEach(item => {
+                const itemObject = {checklistItemName: `${item}`, checked: false};
+                objectChecklist.push(itemObject);
+            });
+        
+            todoItem.checklist = objectChecklist;
+        }
+        return {
+            checkItem,
+            convertToObjects
+        }
     })();
 
-    const convertChecklistToObjects = (todoItem) => {
-        const objectChecklist = [];
-        todoItem.checklist.forEach(item => {
-            const itemObject = {checklistItemName: `${item}`, checked: false};
-            objectChecklist.push(itemObject);
-        });
-    
-        todoItem.checklist = objectChecklist;
-    }
 
     const markCompleted = (todoItem) => {
         todoItem.completed = true;
@@ -93,7 +96,6 @@ const todoItem = (() => {
 
     return {
         create,
-        convertChecklistToObjects,
         markCompleted,
         checklist
     }
@@ -116,7 +118,7 @@ const testItem = todoItem.create(
     );
 
 project.addItem(testItem, defaultProject);
-todoItem.convertChecklistToObjects(testItem);
+todoItem.checklist.convertToObjects(testItem);
 project.addToProjectsContainer(defaultProject);
 console.log(projectsContainer[0]);
 console.log(projectsContainer);

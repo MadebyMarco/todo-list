@@ -84,13 +84,20 @@ const todoItem = (() => {
             todoItem.checklist = objectChecklist;
         }
 
-        const addItem = (checkListItem, todoItem) => {
-            todoItem.checklist.push(checkListItem);
+        const addItem = (checklistItem, todoItem) => {
+            todoItem.checklist.push(checklistItem);
+        }
+
+        const removeItem = (checkListItem, todoItem) => {
+            const index = todoItem.checklist.findIndex(item => item.title == checkListItem.title);
+            todoItem.checklist.splice(index, 1);
         }
 
         return {
             checkItem,
-            convertToObjects
+            convertToObjects,
+            addItem,
+            removeItem
         }
     })();
 
@@ -128,15 +135,16 @@ const testItem = todoItem.create(
     );
 
 project.addItem(testItem, defaultProject);
-todoItem.checklist.convertToObjects(testItem);
 project.addToProjectsContainer(defaultProject);
+todoItem.checklist.addItem("test", testItem);
+todoItem.checklist.convertToObjects(testItem);
+todoItem.checklist.checkItem(0, testItem);
 console.log(projectsContainer[0]);
 console.log(projectsContainer);
 console.log(defaultProject);
 
 const todoItemDOM = (() => {
-
+    
 })();
 
-todoItem.checklist.checkItem(0, testItem);
 todoItem.markCompleted(testItem);

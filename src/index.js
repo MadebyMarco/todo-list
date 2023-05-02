@@ -83,6 +83,11 @@ const todoItem = (() => {
         
             todoItem.checklist = objectChecklist;
         }
+
+        const addItem = (checkListItem, todoItem) => {
+            todoItem.checklist.push(checkListItem);
+        }
+
         return {
             checkItem,
             convertToObjects

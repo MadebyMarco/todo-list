@@ -77,12 +77,20 @@ const todoItem = (() => {
         const convertToObjects = (todoItem) => {
             const objectChecklist = [];
             todoItem.checklist.forEach(item => {
-                const itemObject = {checklistItemName: `${item}`, checked: false};
-                objectChecklist.push(itemObject);
+
+                if (!item.isObject) { //wont convert object
+                    const itemObject = {checklistItemName: `${item}`, checked: false};
+                    objectChecklist.push(itemObject);
+                }
+
             });
         
             todoItem.checklist = objectChecklist;
         }
+
+        // const convertToObject = (item, todoItem) => {
+        //     item = {checklistItemName: `${item}`, checked: false};
+        // }
 
         const addItem = (checklistItem, todoItem) => {
             todoItem.checklist.push(checklistItem);
@@ -90,7 +98,6 @@ const todoItem = (() => {
 
         const removeItem = (checkListItem, todoItem) => {
             const index = todoItem.checklist.findIndex(item => item.checklistItemName == checkListItem);
-            console.log(index);
             todoItem.checklist.splice(index, 1);
         }
 
@@ -137,14 +144,13 @@ const testItem = todoItem.create(
 
 project.addItem(testItem, defaultProject);
 project.addToProjectsContainer(defaultProject);
-todoItem.checklist.addItem("test", testItem);
 todoItem.checklist.convertToObjects(testItem);
+todoItem.checklist.addItem("test", testItem);
 todoItem.checklist.checkItem(0, testItem);
-todoItem.checklist.removeItem("test", testItem);
+// todoItem.checklist.removeItem("test", testItem);
 console.log(projectsContainer[0]);
 console.log(projectsContainer);
 console.log(defaultProject);
-
 const todoItemDOM = (() => {
     
 })();

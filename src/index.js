@@ -200,8 +200,8 @@ const DOM = (() => {
         contentDiv.append(
             createTodoItemButton(),
             createProjectsDiv(),
-            displayProjects()
         );
+        displayProjects();
     }
 
     return {

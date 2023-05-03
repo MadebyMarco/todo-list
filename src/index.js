@@ -144,15 +144,70 @@ const testItem = todoItem.create(
 
 project.addItem(testItem, defaultProject);
 project.addToProjectsContainer(defaultProject);
-todoItem.checklist.convertToObjects(testItem);
 todoItem.checklist.addItem("test", testItem);
+todoItem.checklist.convertToObjects(testItem);
 todoItem.checklist.checkItem(0, testItem);
 // todoItem.checklist.removeItem("test", testItem);
 console.log(projectsContainer[0]);
 console.log(projectsContainer);
-console.log(defaultProject);
-const todoItemDOM = (() => {
-    
+console.log({defaultProject, projectsContainer});
+todoItem.markCompleted(testItem);
+
+const DOM = (() => {
+    const contentDiv = document.querySelector("#content");
+
+    const createTodoItemButton = () => {
+        const button = document.createElement("button");
+        button.textContent = "+";
+        button.classList.add("createTodoItem");
+
+        button.addEventListener("click", () => {
+            const tempProject = project.create(prompt("title"))
+            projectsContainer.push(tempProject);
+            console.log({projectsContainer});
+            displayProjects();
+        });
+
+
+
+        return button;
+    }
+
+    const createProjectsDiv = () => {
+        const div = document.createElement("div");
+        div.classList.add("projectsContainer");
+        return div;
+    }
+    const projects = () => document.querySelectorAll(".projectsContainer > *");
+
+    const clearProjectsDiv = () => {
+        projects().forEach(project => project.remove());
+    }
+
+    const displayProjects = () => {
+        const container = document.querySelector(".projectsContainer");
+         clearProjectsDiv();
+        projectsContainer.forEach((project) => {
+            const div = document.createElement("div");
+            div.classList.add("project");
+            div.textContent = `${project.title}`;
+            container.appendChild(div);
+            
+        });
+    }
+
+    const load = () => {
+        contentDiv.append(
+            createTodoItemButton(),
+            createProjectsDiv(),
+            displayProjects()
+        );
+    }
+
+    return {
+        load
+    }
+
 })();
 
-todoItem.markCompleted(testItem);
+DOM.load();

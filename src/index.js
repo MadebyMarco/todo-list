@@ -277,7 +277,6 @@ const DOM = (() => {
             h2.textContent = `${project.title}`;
             div.classList.add("project");
             div.appendChild(h2);
-            div.appendChild(createTodoItemButton());
             container.appendChild(div);
         });
     }

@@ -237,6 +237,11 @@ const DOM = (() => {
         });
         todoContainer.appendChild(ul);
     }
+    const todoItems = () => document.querySelectorAll(".todoItems");
+
+    const removeTodoItems = () => {
+        todoItems().forEach(item => item.remove());
+    }
 
     const displayChecklistItems = () =>{
             item.checklist.forEach(checklistItem => {
@@ -281,7 +286,7 @@ const DOM = (() => {
         projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (e) => {
                 if(areTodoItemsDisplayed() == false || areTodoItemsTheSame(e) == false) {
-                    areTodoItemsTheSame(e);
+                    removeTodoItems();
                     displayTodoItems(e);
                     console.log(e);
                 }

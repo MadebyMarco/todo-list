@@ -217,12 +217,11 @@ const DOM = (() => {
     const areTodoItemsTheSame = (e) => {
         const currentTodoList = document.querySelector(".todoItems");
         const index = +e.target.parentNode.dataset.index;
-        console.log({currentTodoList, index});
-        if(currentTodoList == null) {
-        return console.log(false);
-        } else if(currentTodoList.dataset.index == index) {
-            return console.log(true);
-        } else console.log(false);
+        if(currentTodoList == null) { // no todo list == todo items are not the same
+        return false;
+        } else if(currentTodoList.dataset.index == index) { // same index, todo list are the same
+            return true;
+        } else return false; // different index, therefore not the same
     }
 
     const displayTodoItems = (e) => {
@@ -281,11 +280,11 @@ const DOM = (() => {
     const addEventListenersToProjects = () => {
         projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (e) => {
-                // if(areTodoItemsDisplayed() == false) {
+                if(areTodoItemsDisplayed() == false || areTodoItemsTheSame(e) == false) {
                     areTodoItemsTheSame(e);
                     displayTodoItems(e);
                     console.log(e);
-                // }
+                }
             })
         })
     }

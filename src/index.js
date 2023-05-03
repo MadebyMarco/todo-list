@@ -208,7 +208,7 @@ const DOM = (() => {
     }
 
     const displayTodoItems = (e) => {
-        const index = +e.target.nextElementSibling.dataset.index;
+        const index = +e.target.parentNode.dataset.index;
         const todoContainer = document.querySelector(".todoItemsContainer");
         const ul = document.createElement("ul");
         ul.classList.add("todoItems");

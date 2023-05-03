@@ -207,6 +207,13 @@ const DOM = (() => {
         return div;
     }
 
+    const areTodoItemsDisplayed = () => {
+        const items = document.querySelector(".todoItems");
+        if(items == undefined) {
+            return false
+        } else true;
+    }
+
     const displayTodoItems = (e) => {
         const index = +e.target.parentNode.dataset.index;
         const todoContainer = document.querySelector(".todoItemsContainer");
@@ -262,8 +269,10 @@ const DOM = (() => {
     const addEventListenersToProjects = () => {
         projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (e) => {
-                displayTodoItems(e);
-                console.log(e);
+                if(areTodoItemsDisplayed() == false) {
+                    displayTodoItems(e);
+                    console.log(e);
+                }
             })
         })
     }

@@ -155,6 +155,7 @@ todoItem.markCompleted(testItem);
 
 const DOM = (() => {
     const contentDiv = document.querySelector("#content");
+    let currentlySelectedProject = defaultProject; 
 
     const createProjectButton = () => {
         const button = document.createElement("button");
@@ -163,11 +164,12 @@ const DOM = (() => {
 
         button.addEventListener("click", () => {
             const tempProject = project.create(prompt("title"))
-            projectsContainer.push(tempProject);
+            project.addToProjectsContainer(tempProject);
             console.log({projectsContainer});
             clearProjectsOnDisplay();
             displayProjects();
-            indexTodoItemButtons();
+            addEventListenersToProjects();
+            setProjectIndexes();
         });
 
 
@@ -179,13 +181,56 @@ const DOM = (() => {
         const button = document.createElement("button");
         button.textContent = "Add todo item+";
         button.classList.add("createTodoItem");
+
+        button.addEventListener("click", (e) => {
+            const index = e.target.dataset.index;
+            const thisProject = projectsContainer[index];
+            const newItem = todoItem.create(prompt("title"));
+
+            project.addItem(newItem, thisProject);
+            
+            console.log(thisProject);
+
+
+        })
+
+
         return button
     }
 
-    const indexTodoItemButtons = () => {
-        const buttons = document.querySelectorAll(".createTodoItem");
-        for(let i = 0; i < buttons.length; i++) {
-            buttons[i].dataset.index = `${i}`;
+    const createTodoItemsDiv = () => {
+        const div = document.createElement("div");
+        const h2 = document.createElement("h2");
+        h2.textContent = "Todo Items";
+        div.appendChild(h2);
+        div.classList.add("todoItemsContainer");
+        return div;
+    }
+
+    const displayTodoItems = (e) => {
+        const index = +e.target.nextElementSibling.dataset.index;
+        const todoContainer = document.querySelector(".todoItemsContainer");
+        const ul = document.createElement("ul");
+        ul.classList.add("todoItems");
+        projectsContainer[index].items.forEach(item => {
+                const li = document.createElement("li");
+                li.textContent = `${item.title}`;
+                ul.appendChild(li); 
+        });
+        todoContainer.appendChild(ul);
+    }
+
+    const displayChecklistItems = () =>{
+            item.checklist.forEach(checklistItem => {
+                const li = document.createElement("li");
+                li.textContent = `${checklistItem.checklistItemName}`;
+                ul.appendChild(li); 
+            });
+    }
+
+    const setProjectIndexes = () => {
+        for(let i = 0; i < projectsOnDisplay().length; i++) {
+            projectsOnDisplay()[i].dataset.index = `${i}`;
         }
     }
 
@@ -194,6 +239,7 @@ const DOM = (() => {
         div.classList.add("projectsContainer");
         return div;
     }
+
     const projectsOnDisplay = () => document.querySelectorAll(".projectsContainer > *");
 
     const clearProjectsOnDisplay = () => {
@@ -204,22 +250,36 @@ const DOM = (() => {
         const container = document.querySelector(".projectsContainer");
         projectsContainer.forEach((project) => {
             const div = document.createElement("div");
+            const h2 = document.createElement("h2");
+            h2.textContent = `${project.title}`;
             div.classList.add("project");
-            div.textContent = `${project.title}`;
+            div.appendChild(h2);
             div.appendChild(createTodoItemButton());
             container.appendChild(div);
         });
     }
 
+    const addEventListenersToProjects = () => {
+        projectsOnDisplay().forEach(project => {
+            project.addEventListener("click", (e) => {
+                displayTodoItems(e);
+                console.log(e);
+            })
+        })
+    }
+
+    
     
 
     const load = () => {
         contentDiv.append(
             createProjectButton(),
             createProjectsDiv(),
+            createTodoItemsDiv(),
         );
         displayProjects();
-        indexTodoItemButtons();
+        addEventListenersToProjects();
+        setProjectIndexes();
     }
 
     return {

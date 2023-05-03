@@ -299,6 +299,7 @@ const DOM = (() => {
     const load = () => {
         contentDiv.append(
             createProjectButton(),
+            createTodoItemButton(),
             createProjectsDiv(),
             createTodoItemsDiv(),
         );

@@ -213,12 +213,24 @@ const DOM = (() => {
             return false
         } else true;
     }
+    
+    const areTodoItemsTheSame = (e) => {
+        const currentTodoList = document.querySelector(".todoItems");
+        const index = +e.target.parentNode.dataset.index;
+        console.log({currentTodoList, index});
+        if(currentTodoList == null) {
+            return false;
+        } else if(currentTodoList.dataset.index == index) {
+            return console.log(true);
+        }
+    }
 
     const displayTodoItems = (e) => {
         const index = +e.target.parentNode.dataset.index;
         const todoContainer = document.querySelector(".todoItemsContainer");
         const ul = document.createElement("ul");
         ul.classList.add("todoItems");
+        ul.dataset.index = index;
         projectsContainer[index].items.forEach(item => {
                 const li = document.createElement("li");
                 li.textContent = `${item.title}`;
@@ -269,7 +281,7 @@ const DOM = (() => {
     const addEventListenersToProjects = () => {
         projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (e) => {
-                if(areTodoItemsDisplayed() == false) {
+                if(areTodoItemsDisplayed() == false && areTodoItemsTheSame(e) == false) {
                     displayTodoItems(e);
                     console.log(e);
                 }

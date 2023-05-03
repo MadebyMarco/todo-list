@@ -78,7 +78,7 @@ const todoItem = (() => {
             const objectChecklist = [];
             todoItem.checklist.forEach(item => {
 
-                if (!item.isObject) { //wont convert object
+                if (!item.isObject) { //wont nest objects
                     const itemObject = {checklistItemName: `${item}`, checked: false};
                     objectChecklist.push(itemObject);
                 }
@@ -156,16 +156,18 @@ todoItem.markCompleted(testItem);
 const DOM = (() => {
     const contentDiv = document.querySelector("#content");
 
-    const createTodoItemButton = () => {
+    const createProjectButton = () => {
         const button = document.createElement("button");
-        button.textContent = "+";
-        button.classList.add("createTodoItem");
+        button.textContent = "Create New Project +";
+        button.classList.add("createProject");
 
         button.addEventListener("click", () => {
             const tempProject = project.create(prompt("title"))
             projectsContainer.push(tempProject);
             console.log({projectsContainer});
+            clearProjectsOnDisplay();
             displayProjects();
+            indexTodoItemButtons();
         });
 
 
@@ -173,35 +175,51 @@ const DOM = (() => {
         return button;
     }
 
+    const createTodoItemButton = () => {
+        const button = document.createElement("button");
+        button.textContent = "Add todo item+";
+        button.classList.add("createTodoItem");
+        return button
+    }
+
+    const indexTodoItemButtons = () => {
+        const buttons = document.querySelectorAll(".createTodoItem");
+        for(let i = 0; i < buttons.length; i++) {
+            buttons[i].dataset.index = `${i}`;
+        }
+    }
+
     const createProjectsDiv = () => {
         const div = document.createElement("div");
         div.classList.add("projectsContainer");
         return div;
     }
-    const projects = () => document.querySelectorAll(".projectsContainer > *");
+    const projectsOnDisplay = () => document.querySelectorAll(".projectsContainer > *");
 
-    const clearProjectsDiv = () => {
-        projects().forEach(project => project.remove());
+    const clearProjectsOnDisplay = () => {
+        projectsOnDisplay().forEach(project => project.remove());
     }
 
     const displayProjects = () => {
         const container = document.querySelector(".projectsContainer");
-         clearProjectsDiv();
         projectsContainer.forEach((project) => {
             const div = document.createElement("div");
             div.classList.add("project");
             div.textContent = `${project.title}`;
+            div.appendChild(createTodoItemButton());
             container.appendChild(div);
-            
         });
     }
 
+    
+
     const load = () => {
         contentDiv.append(
-            createTodoItemButton(),
+            createProjectButton(),
             createProjectsDiv(),
         );
         displayProjects();
+        indexTodoItemButtons();
     }
 
     return {

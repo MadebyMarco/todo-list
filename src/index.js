@@ -219,10 +219,10 @@ const DOM = (() => {
         const index = +e.target.parentNode.dataset.index;
         console.log({currentTodoList, index});
         if(currentTodoList == null) {
-            return false;
+        return console.log(false);
         } else if(currentTodoList.dataset.index == index) {
             return console.log(true);
-        }
+        } else console.log(false);
     }
 
     const displayTodoItems = (e) => {
@@ -281,10 +281,11 @@ const DOM = (() => {
     const addEventListenersToProjects = () => {
         projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (e) => {
-                if(areTodoItemsDisplayed() == false && areTodoItemsTheSame(e) == false) {
+                // if(areTodoItemsDisplayed() == false) {
+                    areTodoItemsTheSame(e);
                     displayTodoItems(e);
                     console.log(e);
-                }
+                // }
             })
         })
     }

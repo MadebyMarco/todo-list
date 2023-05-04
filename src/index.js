@@ -130,6 +130,9 @@ const todoItem = (() => {
 
 
 const defaultProject = project.create("default");
+const test1 = project.create("test1", [todoItem.create("showering")]);
+const test2 = project.create("test2", [todoItem.create("gaming")]);
+console.log({test1, test2})
 const projectsContainer = [];
 
 const testItem = todoItem.create(
@@ -144,6 +147,8 @@ const testItem = todoItem.create(
 
 project.addItem(testItem, defaultProject);
 project.addToProjectsContainer(defaultProject);
+project.addToProjectsContainer(test1);
+project.addToProjectsContainer(test2);
 todoItem.checklist.addItem("test", testItem);
 todoItem.checklist.convertToObjects(testItem);
 todoItem.checklist.checkItem(0, testItem);
@@ -153,9 +158,11 @@ console.log(projectsContainer);
 console.log({defaultProject, projectsContainer});
 todoItem.markCompleted(testItem);
 
+
+let currentlySelectedProject = defaultProject; 
+
 const DOM = (() => {
     const contentDiv = document.querySelector("#content");
-    let currentlySelectedProject = defaultProject; 
 
     const createProjectButton = () => {
         const button = document.createElement("button");
@@ -177,22 +184,23 @@ const DOM = (() => {
         return button;
     }
 
+    const addItemToSelectedProject = () => {
+            // const index = +e.target.parentNode.dataset.index;
+            // const thisProject = projectsContainer[index];
+            const newItem = todoItem.create(prompt("title"));
+            project.addItem(newItem, currentlySelectedProject);
+    }
+
     const createTodoItemButton = () => {
         const button = document.createElement("button");
         button.textContent = "Add todo item+";
         button.classList.add("createTodoItem");
 
         button.addEventListener("click", (e) => {
-            const index = e.target.dataset.index;
-            const thisProject = projectsContainer[index];
-            const newItem = todoItem.create(prompt("title"));
-
-            project.addItem(newItem, thisProject);
-            
-            console.log(thisProject);
-
-
-        })
+            addItemToSelectedProject();
+            removeTodoItems()
+            displayTodoItems(e);
+        });
 
 
         return button
@@ -281,13 +289,21 @@ const DOM = (() => {
         });
     }
 
+    const setSelectedProject = (e) => {
+        const index = +e.target.parentNode.dataset.index;
+        const thisProject =  projectsContainer[index];
+        currentlySelectedProject = thisProject; 
+        console.log({currentlySelectedProject});
+    }
+
     const addEventListenersToProjects = () => {
         projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (e) => {
                 if(areTodoItemsDisplayed() == false || areTodoItemsTheSame(e) == false) {
                     removeTodoItems();
                     displayTodoItems(e);
-                    console.log(e);
+                    setSelectedProject(e);
+                    
                 }
             })
         })

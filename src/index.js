@@ -238,7 +238,7 @@ const DOM = (() => {
         const ul = document.createElement("ul");
         ul.classList.add("todoItems");
         ul.dataset.index = index;
-        projectsContainer[index].items.forEach(item => {
+        currentlySelectedProject.items.forEach(item => {
                 const li = document.createElement("li");
                 li.textContent = `${item.title}`;
                 ul.appendChild(li); 
@@ -300,9 +300,9 @@ const DOM = (() => {
         projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (e) => {
                 if(areTodoItemsDisplayed() == false || areTodoItemsTheSame(e) == false) {
+                    setSelectedProject(e);
                     removeTodoItems();
                     displayTodoItems(e);
-                    setSelectedProject(e);
                     
                 }
             })

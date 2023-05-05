@@ -271,7 +271,7 @@ const DOM = (() => {
         return div;
     }
 
-    const projectsOnDisplay = () => document.querySelectorAll(".projectsContainer > *");
+    const projectsOnDisplay = () => document.querySelectorAll(".projectsContainer > .project");
 
     const clearProjectsOnDisplay = () => {
         projectsOnDisplay().forEach(project => project.remove());

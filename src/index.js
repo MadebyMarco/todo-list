@@ -209,9 +209,9 @@ const DOM = (() => {
 
     const createTodoItemsDiv = () => {
         const div = document.createElement("div");
-        const h2 = document.createElement("h2");
-        h2.textContent = "Todo Items";
-        div.appendChild(h2);
+        const h1 = document.createElement("h1");
+        h1.textContent = "Todo Items";
+        div.appendChild(h1);
         div.classList.add("todoItemsContainer");
         return div;
     }
@@ -265,6 +265,9 @@ const DOM = (() => {
     const createProjectsDiv = () => {
         const div = document.createElement("div");
         div.classList.add("projectsContainer");
+        const h1 = document.createElement("h1");
+        h1.textContent = "Your Projects";
+        div.appendChild(h1);
         return div;
     }
 

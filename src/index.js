@@ -247,7 +247,7 @@ const DOM = (() => {
         todoContainer.appendChild(ul);
     }
 
-    const setTodoItemsIndex = () => {
+    const setTodoItemsUlIndex = () => {
         UlElements = document.querySelectorAll(".todoItemsContainer > ul");
         for(let i = 0; i < UlElements.length; i++ ) {
             UlElements[i].dataset.index = `${i}`; //used in areTodoItemsTheSame
@@ -321,11 +321,9 @@ const DOM = (() => {
     const addEventListenersToProjects = () => {
         projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (e) => {
-                if(areTodoItemsDisplayed() == false || areTodoItemsTheSame(e) == false) {
                     setSelectedProject(e);
                     removeTodoItems();
                     displayTodoItems(e);
-                }
             })
         })
     }

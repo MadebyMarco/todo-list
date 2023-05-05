@@ -195,9 +195,6 @@ const DOM = (() => {
         const button = document.createElement("button");
         button.textContent = "Add todo item+";
         button.classList.add("createTodoItem");
-
-
-
         return button
     }
 
@@ -230,25 +227,34 @@ const DOM = (() => {
         const currentTodoList = document.querySelector(".todoItems");
         const index = +e.target.parentNode.dataset.index;
         if(currentTodoList == null) { // no todo list, todo items are not the same
-        return false;
+            return false;
         } else if(currentTodoList.dataset.index == index) { // same index, todo list are the same
             return true;
         } else return false; // different index, therefore not the same
     }
 
     const displayTodoItems = (e) => {
-        const index = +e.target.parentNode.dataset.index;
         const todoContainer = document.querySelector(".todoItemsContainer");
         const ul = document.createElement("ul");
         ul.classList.add("todoItems");
-        ul.dataset.index = index; //used in areTodoItemsTheSame
+        
         currentlySelectedProject.items.forEach(item => {
-                const li = document.createElement("li");
-                li.textContent = `${item.title}`;
-                ul.appendChild(li); 
+            const li = document.createElement("li");
+            li.classList.add("todoItemListItem");
+            li.textContent = `Title: ${item.title} Due: ${item.dueDate}`;
+            ul.appendChild(li); 
         });
         todoContainer.appendChild(ul);
     }
+
+    const setTodoItemsIndex = () => {
+        UlElements = document.querySelectorAll(".todoItemsContainer > ul");
+        for(let i = 0; i < UlElements.length; i++ ) {
+            UlElements[i].dataset.index = `${i}`; //used in areTodoItemsTheSame
+        }
+        console.log(UlElements);
+    }
+    
     const todoItems = () => document.querySelectorAll(".todoItems");
 
     const removeTodoItems = () => {
@@ -256,11 +262,21 @@ const DOM = (() => {
     }
 
     const displayChecklistItems = () =>{
-            item.checklist.forEach(checklistItem => {
+        const container = document.createElement("div");
+        const h3 = document.createElement("h3");
+        h3.textContent = "Checklist";
+        container.appendChild(h3);
+        
+        for(let i = 0; i < currentlySelectedProject.items.length; i++) {
+        
+            currentlySelectedProject.items[i].checklist.forEach(checklistItem => {
                 const li = document.createElement("li");
                 li.textContent = `${checklistItem.checklistItemName}`;
-                ul.appendChild(li); 
+                container.appendChild(li); 
             });
+        }
+
+        parent.appendChild(container);
     }
 
     const setProjectIndexes = () => {
@@ -286,8 +302,10 @@ const DOM = (() => {
         projectsContainer.forEach((project) => {
             const div = document.createElement("div");
             const h2 = document.createElement("h2");
+
             h2.textContent = `${project.title}`;
             div.classList.add("project");
+
             div.appendChild(h2);
             container.appendChild(div);
         });
@@ -307,7 +325,6 @@ const DOM = (() => {
                     setSelectedProject(e);
                     removeTodoItems();
                     displayTodoItems(e);
-                    
                 }
             })
         })

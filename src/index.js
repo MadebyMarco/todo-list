@@ -196,14 +196,18 @@ const DOM = (() => {
         button.textContent = "Add todo item+";
         button.classList.add("createTodoItem");
 
+
+
+        return button
+    }
+
+    const addEventListenerToTodoItemButton = (e) => {
+        const button = document.querySelector(".createTodoItem");
         button.addEventListener("click", (e) => {
             addItemToSelectedProject();
             removeTodoItems()
             displayTodoItems(e);
         });
-
-
-        return button
     }
 
     const createTodoItemsDiv = () => {
@@ -225,7 +229,7 @@ const DOM = (() => {
     const areTodoItemsTheSame = (e) => {
         const currentTodoList = document.querySelector(".todoItems");
         const index = +e.target.parentNode.dataset.index;
-        if(currentTodoList == null) { // no todo list == todo items are not the same
+        if(currentTodoList == null) { // no todo list, todo items are not the same
         return false;
         } else if(currentTodoList.dataset.index == index) { // same index, todo list are the same
             return true;
@@ -237,7 +241,7 @@ const DOM = (() => {
         const todoContainer = document.querySelector(".todoItemsContainer");
         const ul = document.createElement("ul");
         ul.classList.add("todoItems");
-        ul.dataset.index = index;
+        ul.dataset.index = index; //used in areTodoItemsTheSame
         currentlySelectedProject.items.forEach(item => {
                 const li = document.createElement("li");
                 li.textContent = `${item.title}`;
@@ -321,6 +325,7 @@ const DOM = (() => {
         );
         displayProjects();
         addEventListenersToProjects();
+        addEventListenerToTodoItemButton();
         setProjectIndexes();
     }
 

@@ -168,7 +168,10 @@ const DOM = (() => {
         const button = document.createElement("button");
         button.textContent = "Create New Project +";
         button.classList.add("createProject");
+        return button;
+    }
 
+    const addEventListenerToProjectButton = () => {
         button.addEventListener("click", () => {
             const tempProject = project.create(prompt("title"))
             project.addToProjectsContainer(tempProject);
@@ -178,10 +181,6 @@ const DOM = (() => {
             addEventListenersToProjects();
             setProjectIndexes();
         });
-
-
-
-        return button;
     }
 
     const addItemToSelectedProject = () => {
@@ -321,6 +320,7 @@ const DOM = (() => {
         displayProjects();
         addEventListenersToProjects();
         addEventListenerToTodoItemButton();
+        addEventListenerToProjectButton();
         setProjectIndexes();
     }
 

@@ -216,22 +216,6 @@ const DOM = (() => {
         return div;
     }
 
-    const areTodoItemsDisplayed = () => {
-        const items = document.querySelector(".todoItems");
-        if(items == undefined) {
-            return false
-        } else true;
-    }
-    
-    const areTodoItemsTheSame = (e) => {
-        const currentTodoList = document.querySelector(".todoItems");
-        const index = +e.target.parentNode.dataset.index;
-        if(currentTodoList == null) { // no todo list, todo items are not the same
-            return false;
-        } else if(currentTodoList.dataset.index == index) { // same index, todo list are the same
-            return true;
-        } else return false; // different index, therefore not the same
-    }
 
     const displayTodoItems = (e) => {
         const todoContainer = document.querySelector(".todoItemsContainer");
@@ -247,13 +231,6 @@ const DOM = (() => {
         todoContainer.appendChild(ul);
     }
 
-    const setTodoItemsUlIndex = () => {
-        UlElements = document.querySelectorAll(".todoItemsContainer > ul");
-        for(let i = 0; i < UlElements.length; i++ ) {
-            UlElements[i].dataset.index = `${i}`; //used in areTodoItemsTheSame
-        }
-        console.log(UlElements);
-    }
     
     const todoItems = () => document.querySelectorAll(".todoItems");
 

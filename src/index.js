@@ -312,6 +312,9 @@ const DOM = (() => {
         const form = document.createElement("form");
             form.classList.add("createTodoItemForm")
 
+        const h1 = document.createElement("h1");
+            h1.textContent = "Create your item";
+
         const inputTitle = document.createElement("input");
             inputTitle.classList.add("title");
         
@@ -343,6 +346,7 @@ const DOM = (() => {
             inputCreateButton.classList.add("create");
 
         form.append(
+                h1,
                 inputTitle,
                 inputDescription,
                 inputDate,

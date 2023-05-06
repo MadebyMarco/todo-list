@@ -357,7 +357,23 @@ const DOM = (() => {
             return form;
     }
     
-    
+    const createProjectForm = () => {
+        const form = document.createElement("form");
+            form.classList.add("createProjectForm");
+        
+        const h1 = document.createElement("h1");
+            h1.textContent = "Create your project";
+
+        const inputTitle = document.createElement("input");
+            inputTitle.classList.add("title");
+        
+        form.append(
+            h1,
+            inputTitle
+        );
+
+        return form;
+    } 
 
     const load = () => {
         contentDiv.append(
@@ -365,7 +381,8 @@ const DOM = (() => {
             createTodoItemButton(),
             createProjectsDiv(),
             createTodoItemsDiv(),
-           createTodoItemForm()
+            createTodoItemForm(),
+            createProjectForm(),
         );
         displayProjects();
         addEventListenersToProjects();

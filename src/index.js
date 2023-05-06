@@ -52,13 +52,13 @@ const todoItem = (() => {
     
     
         return  {
-            title,
-            description,
-            dueDate,
-            priority,
-            notes,
-            completed,
-            checklist,
+            title, //input text
+            description, //input text
+            dueDate, //date
+            priority, //radio buttons
+            notes, //input field or text 
+            completed, // radio button
+            checklist, //tbd
         }
     }
 
@@ -172,6 +172,7 @@ const DOM = (() => {
     }
 
     const addEventListenerToProjectButton = () => {
+        const button = document.querySelector(".createProject")
         button.addEventListener("click", () => {
             const tempProject = project.create(prompt("title"))
             project.addToProjectsContainer(tempProject);
@@ -307,6 +308,54 @@ const DOM = (() => {
         })
     }
 
+    const createTodoItemForm = () => {
+        const form = document.createElement("form");
+            form.classList.add("createTodoItemForm")
+
+        const inputTitle = document.createElement("input");
+            inputTitle.classList.add("title");
+        
+        const inputDescription = document.createElement("input");
+            inputDescription.classList.add("description");
+
+        const inputDate = document.createElement("input");
+            inputDate.classList.add("date");
+
+        const inputProrityHigh = document.createElement("input");
+            inputProrityHigh.type = "checkbox";
+            inputProrityHigh.classList.add("priority");
+        const inputProrityMedium = document.createElement("input");
+            inputProrityMedium.type = "checkbox";
+            inputProrityMedium.classList.add("priority");
+        const inputProrityLow = document.createElement("input");
+            inputProrityLow.type = "checkbox";
+            inputProrityLow.classList.add("priority");
+
+        const inputCompleteStatus = document.createElement("input");
+            inputCompleteStatus.classList.add("completeStatus");
+
+        const inputChecklist = document.createElement("input");
+            inputChecklist.classList.add("checklist");
+
+        const inputCreateButton = document.createElement("input")
+            inputCreateButton.type = "button";
+            inputCreateButton.value = "Create Item +"
+            inputCreateButton.classList.add("create");
+
+        form.append(
+                inputTitle,
+                inputDescription,
+                inputDate,
+                inputProrityLow,
+                inputProrityMedium,
+                inputProrityHigh,
+                inputCompleteStatus,
+                inputChecklist,
+                inputCreateButton,
+        );
+
+            return form;
+    }
     
     
 
@@ -316,6 +365,7 @@ const DOM = (() => {
             createTodoItemButton(),
             createProjectsDiv(),
             createTodoItemsDiv(),
+           createTodoItemForm()
         );
         displayProjects();
         addEventListenersToProjects();

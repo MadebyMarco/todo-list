@@ -231,6 +231,14 @@ const DOM = (() => {
         todoContainer.appendChild(ul);
     }
 
+    const addEventListenersToTodoItems = () => {
+        const todoItems = document.querySelectorAll(".todoItemListItem");
+        for(let i = 0; i < todoItems.length; i++) {
+            todoItems[i].addEventListener("click", () => {
+                console.log("works");
+            });
+        }
+    }
     
     const todoItems = () => document.querySelectorAll(".todoItems");
 
@@ -304,6 +312,7 @@ const DOM = (() => {
                     setSelectedProject(e);
                     removeTodoItems();
                     displayTodoItems(e);
+                    addEventListenersToTodoItems();
             })
         })
     }
@@ -385,8 +394,8 @@ const DOM = (() => {
             createTodoItemButton(),
             createProjectsDiv(),
             createTodoItemsDiv(),
-            createTodoItemForm(),
-            createProjectForm(),
+            // createTodoItemForm(),
+            // createProjectForm(),
         );
         displayProjects();
         addEventListenersToProjects();

@@ -160,6 +160,7 @@ todoItem.markCompleted(testItem);
 
 
 let currentlySelectedProject = defaultProject; 
+let currentlySelectedTodoItem;
 
 const DOM = (() => {
     const contentDiv = document.querySelector("#content");
@@ -231,6 +232,7 @@ const DOM = (() => {
         todoContainer.appendChild(ul);
     }
 
+    
     const addEventListenersToTodoItems = () => {
         const todoItems = document.querySelectorAll(".todoItemListItem");
         for(let i = 0; i < todoItems.length; i++) {

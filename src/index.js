@@ -205,6 +205,7 @@ const DOM = (() => {
             addItemToSelectedProject();
             removeTodoItems()
             displayTodoItems(e);
+            addEventListenersToTodoItems(e);
         });
     }
 
@@ -225,19 +226,57 @@ const DOM = (() => {
         
         currentlySelectedProject.items.forEach(item => {
             const li = document.createElement("li");
+            const h3 = document.createElement("h3");
+
             li.classList.add("todoItemListItem");
-            li.textContent = `Title: ${item.title} Due: ${item.dueDate}`;
+            h3.textContent = `Title: ${item.title} Due: ${item.dueDate}`;
+
+            li.append(h3);
             ul.appendChild(li); 
         });
         todoContainer.appendChild(ul);
     }
 
+    const displayTodoItemContents = (event) => {
+        const index = getIndexOfElementFromEvent(event);
+        const currentItem = currentlySelectedProject.items[index];
+        const container = document.createElement("div");
+        const itemTitle = document.createElement("textarea");
+        const itemDescription = document.createElement("textarea");
+        const itemDueDate = document.createElement("textarea");
+        const itemPriority = document.createElement("input");
+        const itemNotes = document.createElement("textarea");
+        const itemChecklist = document.createElement("textarea");
+
+        itemTitle.textContent = `${currentItem.title}`;
+        itemDescription.textContent = `${currentItem.description}`; 
+        itemDueDate.textContent = `${currentItem.dueDate}`; 
+        itemPriority.value = `${currentItem.priority}`;
+        itemPriority.type = "range";
+        itemNotes.textContent = `${currentItem.notes}`;
+        itemChecklist.textContent = `${currentItem.checklist[index].checklistItemName}`;  
+
+        container.classList.add("displayed");
+        container.append(
+            itemTitle,
+            itemDescription,
+            itemDueDate,
+            itemPriority,
+            itemNotes,
+            itemChecklist
+        );
+            event.target.append(container);
+    }
     
+    const getIndexOfElementFromEvent = (event) => {
+        return [...event.target.parentNode.children].indexOf(event.target);
+    }
+
     const addEventListenersToTodoItems = () => {
         const todoItems = document.querySelectorAll(".todoItemListItem");
         for(let i = 0; i < todoItems.length; i++) {
-            todoItems[i].addEventListener("click", () => {
-                console.log("works");
+            todoItems[i].addEventListener("click", (e) => {
+                displayTodoItemContents(e);
             });
         }
     }

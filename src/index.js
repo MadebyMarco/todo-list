@@ -256,7 +256,7 @@ const DOM = (() => {
         itemNotes.textContent = `${currentItem.notes}`;
         itemChecklist.textContent = `${currentItem.checklist[index].checklistItemName}`;  
 
-        container.classList.add("displayed");
+        container.classList.add("ItemContentDisplay");
         container.append(
             itemTitle,
             itemDescription,
@@ -270,6 +270,13 @@ const DOM = (() => {
     
     const getIndexOfElementFromEvent = (event) => {
         return [...event.target.parentNode.children].indexOf(event.target);
+    }
+
+    const areAnItemsContentsBeingDisplayed = () => {
+        const itemContents = () => document.querySelector("div.ItemContentDisplay");
+        if(itemContents() != undefined) {
+            return true;
+        } else false;
     }
 
     const addEventListenersToTodoItems = () => {

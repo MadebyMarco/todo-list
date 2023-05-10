@@ -269,7 +269,9 @@ const DOM = (() => {
     }
     
     const getIndexOfElementFromEvent = (event) => {
-        return [...event.target.parentNode.children].indexOf(event.target);
+        const siblings = [...event.target.parentNode.children]; 
+        const targetChild = event.target;
+        return siblings.indexOf(targetChild);
     }
 
     const areAnItemsContentsBeingDisplayed = () => {

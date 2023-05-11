@@ -339,23 +339,6 @@ const DOM = (() => {
         todoItems().forEach(item => item.remove());
     }
 
-    const displayChecklistItems = () =>{
-        const container = document.createElement("div");
-        const h3 = document.createElement("h3");
-        h3.textContent = "Checklist";
-        container.appendChild(h3);
-        
-        for(let i = 0; i < currentlySelectedProject.items.length; i++) {
-        
-            currentlySelectedProject.items[i].checklist.forEach(checklistItem => {
-                const li = document.createElement("li");
-                li.textContent = `${checklistItem.checklistItemName}`;
-                container.appendChild(li); 
-            });
-        }
-
-        parent.appendChild(container);
-    }
 
     const setProjectIndexes = () => {
         for(let i = 0; i < projectsOnDisplay().length; i++) {
@@ -403,12 +386,20 @@ const DOM = (() => {
         projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (e) => {
                     setSelectedProject(e);
+                    removeItemContentsfromDisplay();
+                    displayFirstItemContent(currentlySelectedProject);
                     removeTodoItems();
                     displayTodoItems(e);
                     addEventListenersToTodoItems();
             })
         })
     }
+
+    const displayFirstItemContent = (project) => {
+        const firstItem = project.items[0];
+        displayTodoItemContents(firstItem);
+    }
+
 
     const createTodoItemForm = () => {
         const form = document.createElement("form");
@@ -496,6 +487,7 @@ const DOM = (() => {
         addEventListenerToTodoItemButton();
         addEventListenerToProjectButton();
         setProjectIndexes();
+        displayFirstItemContent(currentlySelectedProject);
     }
 
     return {

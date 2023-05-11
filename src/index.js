@@ -247,6 +247,32 @@ const DOM = (() => {
         todoContainer.appendChild(ul);
     }
 
+    const createChecklist = (item) => { 
+        const ul = document.createElement("ul");
+        for(let i = 0; i < item.checklist.length; i++) {
+            const li = document.createElement("li");
+            const container = document.createElement("div");
+            const textarea = document.createElement("textarea");
+            const input = document.createElement("input");
+            const currentChecklistItem = item.checklist[i];
+
+            input.type = "checkbox";
+            textarea.textContent = `${currentChecklistItem.checklistItemName}`;
+            
+            if(currentChecklistItem.checked == true) {
+                input.checked = true;
+            } else input.checked = false;
+            
+            container.append(
+                input,
+                textarea,
+                    );
+            li.append(container);
+            ul.append(li);
+        }
+        return ul;
+    }
+    
     const displayTodoItemContents = (event) => {
         const index = getIndexOfElementFromEvent(event);
         const currentItem = currentlySelectedProject.items[index];
@@ -256,16 +282,15 @@ const DOM = (() => {
         const itemDueDate = document.createElement("textarea");
         const itemPriority = document.createElement("input");
         const itemNotes = document.createElement("textarea");
-        const itemChecklist = document.createElement("textarea");
-
+        console.log(currentItem.checklist)
+        
         itemTitle.textContent = `${currentItem.title}`;
         itemDescription.textContent = `${currentItem.description}`; 
         itemDueDate.textContent = `${currentItem.dueDate}`; 
         itemPriority.value = `${currentItem.priority}`;
         itemPriority.type = "range";
         itemNotes.textContent = `${currentItem.notes}`;
-        // itemChecklist.textContent = `${currentItem.checklist[index].checklistItemName}`;  
-
+        
         // container.classList.add("ItemContentDisplay");
         container.append(
             itemTitle,
@@ -273,7 +298,7 @@ const DOM = (() => {
             itemDueDate,
             itemPriority,
             itemNotes,
-            itemChecklist
+            createChecklist(currentItem),
         );
         // const todoItems = () => document.querySelectorAll(".todoItemListItem");
 

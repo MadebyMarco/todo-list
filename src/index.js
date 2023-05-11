@@ -230,7 +230,7 @@ const DOM = (() => {
     }
 
 
-    const displayTodoItems = (e) => {
+    const displayTodoItems = () => {
         const todoContainer = document.querySelector(".todoItemsContainer");
         const ul = document.createElement("ul");
         ul.classList.add("todoItems");
@@ -487,6 +487,7 @@ const DOM = (() => {
         addEventListenerToTodoItemButton();
         addEventListenerToProjectButton();
         setProjectIndexes();
+        displayTodoItems();
         displayFirstItemContent(currentlySelectedProject);
     }
 

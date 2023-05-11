@@ -272,24 +272,26 @@ const DOM = (() => {
         }
         return ul;
     }
-    
-    const displayTodoItemContents = (event) => {
+    const getCurrentItemFromEvent = (event) => {
         const index = getIndexOfElementFromEvent(event);
         const currentItem = currentlySelectedProject.items[index];
+        return currentItem;
+    } 
+    const displayTodoItemContents = (item) => {
         const container = document.createElement("div");
         const itemTitle = document.createElement("textarea");
         const itemDescription = document.createElement("textarea");
         const itemDueDate = document.createElement("textarea");
         const itemPriority = document.createElement("input");
         const itemNotes = document.createElement("textarea");
-        console.log(currentItem.checklist)
+        console.log(item.checklist)
         
-        itemTitle.textContent = `${currentItem.title}`;
-        itemDescription.textContent = `${currentItem.description}`; 
-        itemDueDate.textContent = `${currentItem.dueDate}`; 
-        itemPriority.value = `${currentItem.priority}`;
+        itemTitle.textContent = `${item.title}`;
+        itemDescription.textContent = `${item.description}`; 
+        itemDueDate.textContent = `${item.dueDate}`; 
+        itemPriority.value = `${item.priority}`;
         itemPriority.type = "range";
-        itemNotes.textContent = `${currentItem.notes}`;
+        itemNotes.textContent = `${item.notes}`;
         
         // container.classList.add("ItemContentDisplay");
         container.append(
@@ -298,11 +300,10 @@ const DOM = (() => {
             itemDueDate,
             itemPriority,
             itemNotes,
-            createChecklist(currentItem),
+            createChecklist(item),
         );
         // const todoItems = () => document.querySelectorAll(".todoItemListItem");
 
-        console.log(index);
         // todoItems()[index].append(container);
         const display = document.querySelector(".ItemContentDisplay");
         display.append(container);
@@ -327,7 +328,7 @@ const DOM = (() => {
         for(let i = 0; i < todoItems.length; i++) {
             todoItems[i].addEventListener("click", (e) => {
                     removeItemContentsfromDisplay();
-                    displayTodoItemContents(e);
+                    displayTodoItemContents(getCurrentItemFromEvent(e));
             });
         }
     }

@@ -48,7 +48,7 @@ const project = (() => {
 })();
 
 const todoItem = (() => {
-    const create = (title, description, dueDate, priority, notes, completed, ...checklist) => {
+    const create = (title, description = "description", dueDate = "due date", priority = "priority", notes = "notes", completed, ...checklist) => {
     
     
         return  {

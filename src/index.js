@@ -230,9 +230,8 @@ const DOM = (() => {
 
             li.classList.add("todoItemListItem");
             h3.textContent = `Title: ${item.title} Due: ${item.dueDate}`;
-
-            li.append(h3);
-            ul.appendChild(li); 
+            li.append(h3)
+            ul.append(li); 
         });
         todoContainer.appendChild(ul);
     }
@@ -254,7 +253,7 @@ const DOM = (() => {
         itemPriority.value = `${currentItem.priority}`;
         itemPriority.type = "range";
         itemNotes.textContent = `${currentItem.notes}`;
-        itemChecklist.textContent = `${currentItem.checklist[index].checklistItemName}`;  
+        // itemChecklist.textContent = `${currentItem.checklist[index].checklistItemName}`;  
 
         container.classList.add("ItemContentDisplay");
         container.append(
@@ -265,27 +264,32 @@ const DOM = (() => {
             itemNotes,
             itemChecklist
         );
-            event.target.append(container);
+        const todoItems = () => document.querySelectorAll(".todoItemListItem");
+
+        console.log(index);
+        todoItems()[index].append(container);
     }
     
     const getIndexOfElementFromEvent = (event) => {
-        const siblings = [...event.target.parentNode.children]; 
-        const targetChild = event.target;
+        const siblings = [...event.target.parentNode.parentNode.children]; 
+        const targetChild = event.target.parentNode;
+        console.log(targetChild)
         return siblings.indexOf(targetChild);
     }
 
-    const areAnItemsContentsBeingDisplayed = () => {
-        const itemContents = () => document.querySelector("div.ItemContentDisplay");
-        if(itemContents() != undefined) {
-            return true;
-        } else false;
+    const removeItemContentDisplay = () => {
+        const itemContents = () => document.querySelector(".ItemContentDisplay");
+        if(itemContents() == null) {
+        } else itemContents().remove();
     }
+
 
     const addEventListenersToTodoItems = () => {
         const todoItems = document.querySelectorAll(".todoItemListItem");
         for(let i = 0; i < todoItems.length; i++) {
             todoItems[i].addEventListener("click", (e) => {
-                displayTodoItemContents(e);
+                    removeItemContentDisplay();
+                    displayTodoItemContents(e);
             });
         }
     }

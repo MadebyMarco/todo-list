@@ -73,6 +73,10 @@ const todoItem = (() => {
         const checkItem = (listItemIndex, todoItem) => {
             todoItem.checklist[listItemIndex].checked = true;
         }
+        
+        const uncheckItem = (listItemIndex, todoItem) => {
+            todoItem.checklist[listItemIndex].checked = false;
+        }
 
         const convertToObjects = (todoItem) => {
             const objectChecklist = [];
@@ -103,6 +107,7 @@ const todoItem = (() => {
 
         return {
             checkItem,
+            uncheckItem,
             convertToObjects,
             addItem,
             removeItem

@@ -218,6 +218,12 @@ const DOM = (() => {
         return div;
     }
 
+    const createTodoItemContentDiv = () => {
+        const div = document.createElement("div");
+        div.classList.add("ItemContentDisplay");
+        return div;
+    }
+
 
     const displayTodoItems = (e) => {
         const todoContainer = document.querySelector(".todoItemsContainer");
@@ -255,7 +261,7 @@ const DOM = (() => {
         itemNotes.textContent = `${currentItem.notes}`;
         // itemChecklist.textContent = `${currentItem.checklist[index].checklistItemName}`;  
 
-        container.classList.add("ItemContentDisplay");
+        // container.classList.add("ItemContentDisplay");
         container.append(
             itemTitle,
             itemDescription,
@@ -264,10 +270,12 @@ const DOM = (() => {
             itemNotes,
             itemChecklist
         );
-        const todoItems = () => document.querySelectorAll(".todoItemListItem");
+        // const todoItems = () => document.querySelectorAll(".todoItemListItem");
 
         console.log(index);
-        todoItems()[index].append(container);
+        // todoItems()[index].append(container);
+        const display = document.querySelector(".ItemContentDisplay");
+        display.append(container);
     }
     
     const getIndexOfElementFromEvent = (event) => {
@@ -277,8 +285,8 @@ const DOM = (() => {
         return siblings.indexOf(targetChild);
     }
 
-    const removeItemContentDisplay = () => {
-        const itemContents = () => document.querySelector(".ItemContentDisplay");
+    const removeItemContentsfromDisplay = () => {
+        const itemContents = () => document.querySelector(".ItemContentDisplay > *");
         if(itemContents() == null) {
         } else itemContents().remove();
     }
@@ -288,7 +296,7 @@ const DOM = (() => {
         const todoItems = document.querySelectorAll(".todoItemListItem");
         for(let i = 0; i < todoItems.length; i++) {
             todoItems[i].addEventListener("click", (e) => {
-                    removeItemContentDisplay();
+                    removeItemContentsfromDisplay();
                     displayTodoItemContents(e);
             });
         }
@@ -448,6 +456,7 @@ const DOM = (() => {
             createTodoItemButton(),
             createProjectsDiv(),
             createTodoItemsDiv(),
+            createTodoItemContentDiv(),
             // createTodoItemForm(),
             // createProjectForm(),
         );

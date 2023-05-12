@@ -246,28 +246,34 @@ const DOM = (() => {
         });
         todoContainer.appendChild(ul);
     }
-
+    //add a way to create new checklist items, remove them too
     const createChecklist = (item) => { 
         const ul = document.createElement("ul");
         for(let i = 0; i < item.checklist.length; i++) {
             const li = document.createElement("li");
-            const container = document.createElement("div");
             const textarea = document.createElement("textarea");
             const input = document.createElement("input");
+            const addChecklistItemButtom = document.createElement("button");
+            const removeChecklistItemButton = document.createElement("button");
             const currentChecklistItem = item.checklist[i];
 
+            addChecklistItemButtom.textContent = "+";
+            removeChecklistItemButton.textContent = "-";
             input.type = "checkbox";
             textarea.textContent = `${currentChecklistItem.checklistItemName}`;
-            
+            li.classList.add("checklistItem");
+            ul.classList.add("checklist");
+
             if(currentChecklistItem.checked == true) {
                 input.checked = true;
             } else input.checked = false;
             
-            container.append(
+            li.append(
                 input,
                 textarea,
-                    );
-            li.append(container);
+                addChecklistItemButtom,
+                removeChecklistItemButton
+            );
             ul.append(li);
         }
         return ul;

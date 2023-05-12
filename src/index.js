@@ -272,28 +272,52 @@ const DOM = (() => {
         }
         return ul;
     }
+
     const getCurrentItemFromEvent = (event) => {
         const index = getIndexOfElementFromEvent(event);
         const currentItem = currentlySelectedProject.items[index];
         return currentItem;
     } 
+
     const displayTodoItemContents = (item) => {
         const container = document.createElement("div");
         const itemTitle = document.createElement("textarea");
         const itemDescription = document.createElement("textarea");
         const itemDueDate = document.createElement("textarea");
-        const itemPriority = document.createElement("input");
+        const itemPriority = document.createElement("select");
+            const choosePriority = document.createElement("option");
+            const itemPriorityLow = document.createElement("option");
+            const itemPriorityMedium = document.createElement("option");
+            const itemPriorityHigh = document.createElement("option");
         const itemNotes = document.createElement("textarea");
         console.log(item.checklist)
         
         itemTitle.textContent = `${item.title}`;
         itemDescription.textContent = `${item.description}`; 
         itemDueDate.textContent = `${item.dueDate}`; 
-        itemPriority.value = `${item.priority}`;
-        itemPriority.type = "range";
         itemNotes.textContent = `${item.notes}`;
+        choosePriority.textContent = "Level of importance"
+        itemPriorityLow.textContent = "Low";
+        itemPriorityMedium.textContent = "Medium";
+        itemPriorityHigh.textContent = "High";
+
+        switch(item.priority) {
+            case "low":
+                itemPriorityLow.selected = true;
+                break;
+            case "medium":
+                itemPriorityMedium.selected = true;
+                break;
+            case "high":
+                itemPriorityHigh.selected = true;
+                break;
+            default:
+                choosePriority.selected = true;
+        }
         
-        // container.classList.add("ItemContentDisplay");
+        itemPriority.append(choosePriority,itemPriorityLow, itemPriorityMedium, itemPriorityHigh);
+        
+        
         container.append(
             itemTitle,
             itemDescription,
@@ -384,12 +408,12 @@ const DOM = (() => {
 
     const addEventListenersToProjects = () => {
         projectsOnDisplay().forEach(project => {
-            project.addEventListener("click", (e) => {
-                    setSelectedProject(e);
+            project.addEventListener("click", (event) => {
+                    setSelectedProject(event);
                     removeItemContentsfromDisplay();
                     displayFirstItemContent(currentlySelectedProject);
                     removeTodoItems();
-                    displayTodoItems(e);
+                    displayTodoItems(event);
                     addEventListenersToTodoItems();
             })
         })

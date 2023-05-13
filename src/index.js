@@ -54,11 +54,11 @@ const todoItem = (() => {
         return  {
             title, //input text
             description, //input text
-            dueDate, //date
-            priority, //radio buttons
+            dueDate, //input
+            priority, //select
             notes, //input field or text 
             completed, // radio button
-            checklist, //tbd
+            checklist, //textarea, checkbox, buttons
         }
     }
 
@@ -67,7 +67,12 @@ const todoItem = (() => {
 // I need to make every input into checklist an object. I can forEach over and set name to whatever is in checklist.
 
     const checklist = (() => {
-
+        createItem = (checklistItemName, checked = false) => {
+            return {
+                checklistItemName,
+                checked
+            }
+        }
         
     //need to find a way to check a list item
     //First I will search through a todoItem's checklist using the listItems index
@@ -82,8 +87,7 @@ const todoItem = (() => {
         const convertToObjects = (todoItem) => {
             const objectChecklist = [];
             todoItem.checklist.forEach(item => {
-
-                if (!item.isObject) { //wont nest objects
+                if (!(typeof item == "object" && item !==null)) { //wont nest objects
                     const itemObject = {checklistItemName: `${item}`, checked: false};
                     objectChecklist.push(itemObject);
                 }
@@ -298,7 +302,11 @@ const DOM = (() => {
             addButtons[i].addEventListener("click", (event) => {
                 const index = getIndexOfElementFromEvent(event);
                 console.log(index);
-                // todoItem.checklist.addItem()
+                todoItem.checklist.addItem("test2",currentlySelectedTodoItem);
+                todoItem.checklist.convertToObjects(currentlySelectedTodoItem);
+                removeItemContentsfromDisplay();
+                displayTodoItemContents(currentlySelectedTodoItem);
+                addEventListenersToChecklistButtons();
             });
         }
     }

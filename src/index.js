@@ -68,6 +68,7 @@ const todoItem = (() => {
 
     const checklist = (() => {
 
+        
     //need to find a way to check a list item
     //First I will search through a todoItem's checklist using the listItems index
         const checkItem = (listItemIndex, todoItem) => {
@@ -285,9 +286,11 @@ const DOM = (() => {
 
         for(let i = 0; i < removeButtons.length; i++) {
         removeButtons[i].addEventListener("click", (event) => {
-            const index = getIndexOfElementFromEvent(event);
-            console.log(index);
-            todoItem.checklist.removeItem()
+            const itemForRemovalIndex = getIndexOfElementFromEvent(event);
+            todoItem.checklist.removeItem(itemForRemovalIndex, currentlySelectedTodoItem);
+            removeItemContentsfromDisplay();
+            displayTodoItemContents(currentlySelectedTodoItem);
+            addEventListenersToChecklistButtons();
         });
         }
         const addButtons = document.querySelectorAll(".checklistItem .add");
@@ -439,10 +442,10 @@ const DOM = (() => {
                     removeItemContentsfromDisplay();
                     displayFirstItemContent(currentlySelectedProject);
                     setCurrentTodoItemToFirstItemOfCurrentProject();
-                    console.log(currentlySelectedTodoItem)
                     removeTodoItems();
                     displayTodoItems(event);
                     addEventListenersToTodoItems();
+                    addEventListenersToChecklistButtons();
             })
         })
     }

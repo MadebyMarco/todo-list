@@ -100,9 +100,8 @@ const todoItem = (() => {
             todoItem.checklist.push(checklistItem);
         }
 
-        const removeItem = (checkListItem, todoItem) => {
-            const index = todoItem.checklist.findIndex(item => item.checklistItemName == checkListItem);
-            todoItem.checklist.splice(index, 1);
+        const removeItem = (checklistItemIndex, todoItem) => {
+            todoItem.checklist.splice(checklistItemIndex, 1);
         }
 
         return {
@@ -288,13 +287,13 @@ const DOM = (() => {
         removeButtons[i].addEventListener("click", (event) => {
             const index = getIndexOfElementFromEvent(event);
             console.log(index);
-            // todoItem.checklist.removeItem()
+            todoItem.checklist.removeItem()
         });
         }
         const addButtons = document.querySelectorAll(".checklistItem .add");
         for(let i = 0; i < addButtons.length; i++) {
             addButtons[i].addEventListener("click", (event) => {
-                const index = getCurrentItemFromEvent(event);
+                const index = getIndexOfElementFromEvent(event);
                 console.log(index);
                 // todoItem.checklist.addItem()
             });

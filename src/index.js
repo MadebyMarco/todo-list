@@ -261,6 +261,8 @@ const DOM = (() => {
             removeChecklistItemButton.textContent = "-";
             input.type = "checkbox";
             textarea.textContent = `${currentChecklistItem.checklistItemName}`;
+            addChecklistItemButtom.classList.add("add");
+            removeChecklistItemButton.classList.add("remove");
             li.classList.add("checklistItem");
             ul.classList.add("checklist");
 
@@ -277,6 +279,26 @@ const DOM = (() => {
             ul.append(li);
         }
         return ul;
+    }
+
+    const addEventListenersToChecklistButtons = () => {
+        const removeButtons = document.querySelectorAll(".checklistItem .remove");
+
+        for(let i = 0; i < removeButtons.length; i++) {
+        removeButtons[i].addEventListener("click", (event) => {
+            const index = getIndexOfElementFromEvent(event);
+            console.log(index);
+            // todoItem.checklist.removeItem()
+        });
+        }
+        const addButtons = document.querySelectorAll(".checklistItem .add");
+        for(let i = 0; i < addButtons.length; i++) {
+            addButtons[i].addEventListener("click", (event) => {
+                const index = getCurrentItemFromEvent(event);
+                console.log(index);
+                // todoItem.checklist.addItem()
+            });
+        }
     }
 
     const getCurrentItemFromEvent = (event) => {
@@ -296,7 +318,6 @@ const DOM = (() => {
             const itemPriorityMedium = document.createElement("option");
             const itemPriorityHigh = document.createElement("option");
         const itemNotes = document.createElement("textarea");
-        console.log(item.checklist)
         
         itemTitle.textContent = `${item.title}`;
         itemDescription.textContent = `${item.description}`; 
@@ -332,9 +353,7 @@ const DOM = (() => {
             itemNotes,
             createChecklist(item),
         );
-        // const todoItems = () => document.querySelectorAll(".todoItemListItem");
 
-        // todoItems()[index].append(container);
         const display = document.querySelector(".ItemContentDisplay");
         display.append(container);
     }
@@ -342,7 +361,6 @@ const DOM = (() => {
     const getIndexOfElementFromEvent = (event) => {
         const siblings = [...event.target.parentNode.parentNode.children]; 
         const targetChild = event.target.parentNode;
-        console.log(targetChild)
         return siblings.indexOf(targetChild);
     }
 
@@ -352,12 +370,15 @@ const DOM = (() => {
         } else itemContents().remove();
     }
 
+    let currentlySelectedTodoItem = currentlySelectedProject.items[0];
 
     const addEventListenersToTodoItems = () => {
         const todoItems = document.querySelectorAll(".todoItemListItem");
         for(let i = 0; i < todoItems.length; i++) {
             todoItems[i].addEventListener("click", (e) => {
                     removeItemContentsfromDisplay();
+                    currentlySelectedTodoItem = getCurrentItemFromEvent(e);
+                    console.log(currentlySelectedTodoItem);
                     displayTodoItemContents(getCurrentItemFromEvent(e));
             });
         }
@@ -418,6 +439,8 @@ const DOM = (() => {
                     setSelectedProject(event);
                     removeItemContentsfromDisplay();
                     displayFirstItemContent(currentlySelectedProject);
+                    setCurrentTodoItemToFirstItemOfCurrentProject();
+                    console.log(currentlySelectedTodoItem)
                     removeTodoItems();
                     displayTodoItems(event);
                     addEventListenersToTodoItems();
@@ -430,6 +453,9 @@ const DOM = (() => {
         displayTodoItemContents(firstItem);
     }
 
+    const setCurrentTodoItemToFirstItemOfCurrentProject = () => {
+        currentlySelectedTodoItem = currentlySelectedProject.items[0];
+    }
 
     const createTodoItemForm = () => {
         const form = document.createElement("form");
@@ -513,12 +539,13 @@ const DOM = (() => {
             // createProjectForm(),
         );
         displayProjects();
-        addEventListenersToProjects();
-        addEventListenerToTodoItemButton();
-        addEventListenerToProjectButton();
         setProjectIndexes();
         displayTodoItems();
         displayFirstItemContent(currentlySelectedProject);
+        addEventListenersToProjects();
+        addEventListenerToTodoItemButton();
+        addEventListenerToProjectButton();
+        addEventListenersToChecklistButtons();
     }
 
     return {

@@ -501,76 +501,6 @@ const DOM = (() => {
         currentlySelectedTodoItem = currentlySelectedProject.items[0];
     }
 
-    const createTodoItemForm = () => {
-        const form = document.createElement("form");
-            form.classList.add("createTodoItemForm")
-
-        const h1 = document.createElement("h1");
-            h1.textContent = "Create your item";
-
-        const inputTitle = document.createElement("input");
-            inputTitle.classList.add("title");
-        
-        const inputDescription = document.createElement("input");
-            inputDescription.classList.add("description");
-
-        const inputDate = document.createElement("input");
-            inputDate.classList.add("date");
-
-        const inputProrityHigh = document.createElement("input");
-            inputProrityHigh.type = "checkbox";
-            inputProrityHigh.classList.add("priority");
-        const inputProrityMedium = document.createElement("input");
-            inputProrityMedium.type = "checkbox";
-            inputProrityMedium.classList.add("priority");
-        const inputProrityLow = document.createElement("input");
-            inputProrityLow.type = "checkbox";
-            inputProrityLow.classList.add("priority");
-
-        const inputCompleteStatus = document.createElement("input");
-            inputCompleteStatus.classList.add("completeStatus");
-
-        const inputChecklist = document.createElement("input");
-            inputChecklist.classList.add("checklist");
-
-        const inputCreateButton = document.createElement("input")
-            inputCreateButton.type = "button";
-            inputCreateButton.value = "Create Item +"
-            inputCreateButton.classList.add("create");
-
-        form.append(
-                h1,
-                inputTitle,
-                inputDescription,
-                inputDate,
-                inputProrityLow,
-                inputProrityMedium,
-                inputProrityHigh,
-                inputCompleteStatus,
-                inputChecklist,
-                inputCreateButton,
-        );
-
-            return form;
-    }
-    
-    const createProjectForm = () => {
-        const form = document.createElement("form");
-            form.classList.add("createProjectForm");
-        
-        const h1 = document.createElement("h1");
-            h1.textContent = "Create your project";
-
-        const inputTitle = document.createElement("input");
-            inputTitle.classList.add("title");
-        
-        form.append(
-            h1,
-            inputTitle
-        );
-
-        return form;
-    } 
 
     const load = () => {
         contentDiv.append(
@@ -579,8 +509,6 @@ const DOM = (() => {
             createProjectsDiv(),
             createTodoItemsDiv(),
             createTodoItemContentDiv(),
-            // createTodoItemForm(),
-            // createProjectForm(),
         );
         displayProjects();
         setProjectIndexes();

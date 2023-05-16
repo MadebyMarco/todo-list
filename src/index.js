@@ -81,7 +81,7 @@ const todoItem = (() => {
     //need to find a way to check a list item
     //First I will search through a todoItem's checklist using the listItems index
         const checkItem = (listItemIndex, todoItem) => {
-            // todoItem.checklist[listItemIndex].checked = true;
+            todoItem.checklist[listItemIndex].checked = true;
             //remember to uncheck
         }
         
@@ -96,7 +96,7 @@ const todoItem = (() => {
             //         const itemObject = {checklistItemName: `${item}`, checked: false};
             //         objectChecklist.push(itemObject);
             //     }
-
+    
             // });
         
             // todoItem.checklist = objectChecklist;
@@ -295,30 +295,53 @@ const DOM = (() => {
         return ul;
     }
 
+
     const addEventListenersToChecklistButtons = () => {
         const removeButtons = document.querySelectorAll(".checklistItem .remove");
 
         for(let i = 0; i < removeButtons.length; i++) {
-        removeButtons[i].addEventListener("click", (event) => {
-            const itemForRemovalIndex = getIndexOfElementFromEvent(event);
-            todoItem.checklist.removeItem(itemForRemovalIndex, currentlySelectedTodoItem);
-            removeItemContentsfromDisplay();
-            displayTodoItemContents(currentlySelectedTodoItem);
-            addEventListenersToChecklistButtons();
-        });
-        }
-        const addButtons = document.querySelectorAll(".checklistItem .add");
-        for(let i = 0; i < addButtons.length; i++) {
-            addButtons[i].addEventListener("click", (event) => {
-                const index = getIndexOfElementFromEvent(event);
-                console.log(index);
-                todoItem.checklist.addItem("test2",currentlySelectedTodoItem);
-                todoItem.checklist.convertToObjects(currentlySelectedTodoItem);
+            removeButtons[i].addEventListener("click", (event) => {
+                const itemForRemovalIndex = getIndexOfElementFromEvent(event);
+                todoItem.checklist.removeItem(itemForRemovalIndex, currentlySelectedTodoItem);
                 removeItemContentsfromDisplay();
                 displayTodoItemContents(currentlySelectedTodoItem);
                 addEventListenersToChecklistButtons();
             });
         }
+
+        const addButtons = document.querySelectorAll(".checklistItem .add");
+
+        for(let i = 0; i < addButtons.length; i++) {
+            addButtons[i].addEventListener("click", (event) => {
+                const index = getIndexOfElementFromEvent(event);
+                console.log(index);
+                const newChecklistItem = todoItem.checklist.createItem("");
+                todoItem.checklist.addItem(newChecklistItem, currentlySelectedTodoItem);
+                console.log(currentlySelectedTodoItem);
+                removeItemContentsfromDisplay();
+                displayTodoItemContents(currentlySelectedTodoItem);
+                addEventListenersToChecklistButtons();
+            });
+        }
+    }
+
+    const addEventListenersToCheckboxes = () => {
+        const checkboxes = document.querySelectorAll(".checklistItem > [type=checkbox]");
+
+        for(let i = 0; i < checkboxes.length; i++) {
+            const currentCheckbox = checkboxes[i]; 
+            currentCheckbox.addEventListener("click", (event) => {
+            const index = getIndexOfElementFromEvent(event);
+            
+            if(currentCheckbox.checked == true) {
+                todoItem.checklist.checkItem(index,currentlySelectedTodoItem);
+                console.log(currentlySelectedTodoItem)
+            } else if (currentCheckbox.checked == false) {
+                todoItem.checklist.uncheckItem(index,currentlySelectedTodoItem);
+            } else console.log("could not find checkbox");
+            });
+        }
+        console.log(checkboxes);
     }
 
     const getCurrentItemFromEvent = (event) => {
@@ -464,6 +487,7 @@ const DOM = (() => {
                     displayTodoItems(event);
                     addEventListenersToTodoItems();
                     addEventListenersToChecklistButtons();
+                    addEventListenersToCheckboxes();
             })
         })
     }
@@ -566,6 +590,7 @@ const DOM = (() => {
         addEventListenerToTodoItemButton();
         addEventListenerToProjectButton();
         addEventListenersToChecklistButtons();
+        addEventListenersToCheckboxes();
     }
 
     return {

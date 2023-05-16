@@ -295,6 +295,33 @@ const DOM = (() => {
         return ul;
     }
 
+    const displayChecklistItemLi = (checklistItem) => {
+            const li = document.createElement("li");
+            const textarea = document.createElement("textarea");
+            const input = document.createElement("input");
+            const addChecklistItemButtom = document.createElement("button");
+            const removeChecklistItemButton = document.createElement("button");
+
+            addChecklistItemButtom.textContent = "+";
+            removeChecklistItemButton.textContent = "-";
+            input.type = "checkbox";
+            textarea.textContent = `${checklistItem.checklistItemName}`;
+            addChecklistItemButtom.classList.add("add");
+            removeChecklistItemButton.classList.add("remove");
+            li.classList.add("checklistItem");
+
+            
+            li.append(
+                input,
+                textarea,
+                addChecklistItemButtom,
+                removeChecklistItemButton
+            );
+            
+            const container = document.querySelector("ul.checklist");
+            container.append(li);
+    }
+
 
     const addEventListenersToChecklistButtons = () => {
         const removeButtons = document.querySelectorAll(".checklistItem .remove");
@@ -317,9 +344,10 @@ const DOM = (() => {
                 console.log(index);
                 const newChecklistItem = todoItem.checklist.createItem("");
                 todoItem.checklist.addItem(newChecklistItem, currentlySelectedTodoItem);
+                displayChecklistItemLi(newChecklistItem);
                 console.log(currentlySelectedTodoItem);
-                removeItemContentsfromDisplay();
-                displayTodoItemContents(currentlySelectedTodoItem);
+                // removeItemContentsfromDisplay(); //
+                // displayTodoItemContents(currentlySelectedTodoItem);
                 addEventListenersToChecklistButtons();
             });
         }

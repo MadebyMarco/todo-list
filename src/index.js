@@ -349,23 +349,6 @@ const DOM = (() => {
         }
     }
 
-    const addEventListenersToCheckboxes = () => {
-        const checkboxes = document.querySelectorAll(".checklistItem > [type=checkbox]");
-
-        for(let i = 0; i < checkboxes.length; i++) {
-            const currentCheckbox = checkboxes[i]; 
-            currentCheckbox.addEventListener("click", (event) => {
-                const index = getIndexOfElementFromEvent(event);
-                
-                if(currentCheckbox.checked == true) {
-                    todoItem.checklist.checkItem(index,currentlySelectedTodoItem);
-                    console.log(currentlySelectedTodoItem)
-                } else if (currentCheckbox.checked == false) {
-                    todoItem.checklist.uncheckItem(index,currentlySelectedTodoItem);
-                } else console.log("could not find checkbox");
-            });
-        }
-    }
 
     const getCurrentItemFromEvent = (event) => {
         const index = getIndexOfElementFromEvent(event);
@@ -552,7 +535,6 @@ const DOM = (() => {
                     displayTodoItems(event);
                     addEventListenersToTodoItems();
                     addEventListenersToChecklistButtons();
-                    // addEventListenersToCheckboxes();
             })
         })
     }
@@ -584,7 +566,6 @@ const DOM = (() => {
         addEventListenerToTodoItemButton();
         addEventListenerToProjectButton();
         addEventListenersToChecklistButtons();
-        // addEventListenersToCheckboxes();
     }
 
     return {

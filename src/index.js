@@ -346,8 +346,6 @@ const DOM = (() => {
                 todoItem.checklist.addItem(newChecklistItem, currentlySelectedTodoItem);
                 displayChecklistItemLi(newChecklistItem);
                 console.log(currentlySelectedTodoItem);
-                // removeItemContentsfromDisplay(); //
-                // displayTodoItemContents(currentlySelectedTodoItem);
                 addEventListenersToChecklistButtons();
             });
         }
@@ -379,7 +377,7 @@ const DOM = (() => {
     } 
 
     const displayTodoItemContents = (item) => {
-        const container = document.createElement("div");
+        const container = document.querySelector(".ItemContentDisplay");
         const itemTitle = document.createElement("textarea");
         const itemDescription = document.createElement("textarea");
         const itemDueDate = document.createElement("textarea");
@@ -425,9 +423,13 @@ const DOM = (() => {
             createChecklist(item),
         );
 
-        const display = document.querySelector(".ItemContentDisplay");
-        display.append(container);
     }
+
+    //todo: create a function that sets the text content of todo items to its corresponding object
+    const updateTodoItemValues = () => {
+
+    }
+
     
     const getIndexOfElementFromEvent = (event) => {
         const siblings = [...event.target.parentNode.parentNode.children]; 
@@ -436,9 +438,15 @@ const DOM = (() => {
     }
 
     const removeItemContentsfromDisplay = () => {
-        const itemContents = () => document.querySelector(".ItemContentDisplay > *");
+        const itemContents = () => document.querySelectorAll(".ItemContentDisplay > *");
         if(itemContents() == null) {
-        } else itemContents().remove();
+            console.log("items not found");
+        } else {
+            for(const item of itemContents()) {
+                item.remove();
+            }
+            console.log("items removed");
+        }
     }
 
     let currentlySelectedTodoItem = currentlySelectedProject.items[0];
@@ -446,11 +454,11 @@ const DOM = (() => {
     const addEventListenersToTodoItems = () => {
         const todoItems = document.querySelectorAll(".todoItemListItem");
         for(let i = 0; i < todoItems.length; i++) {
-            todoItems[i].addEventListener("click", (e) => {
+            todoItems[i].addEventListener("click", (event) => {
                     removeItemContentsfromDisplay();
-                    currentlySelectedTodoItem = getCurrentItemFromEvent(e);
+                    currentlySelectedTodoItem = getCurrentItemFromEvent(event);
                     console.log(currentlySelectedTodoItem);
-                    displayTodoItemContents(getCurrentItemFromEvent(e));
+                    displayTodoItemContents(getCurrentItemFromEvent(event));
             });
         }
     }
@@ -503,6 +511,8 @@ const DOM = (() => {
         currentlySelectedProject = thisProject; 
         console.log({currentlySelectedProject});
     }
+
+
 
     const addEventListenersToProjects = () => {
         projectsOnDisplay().forEach(project => {

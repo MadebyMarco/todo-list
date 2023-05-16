@@ -151,7 +151,6 @@ const todoItem = (() => {
 const defaultProject = project.create("default");
 const test1 = project.create("test1", [todoItem.create("showering")]);
 const test2 = project.create("test2", [todoItem.create("gaming")]);
-console.log({test1, test2})
 const projectsContainer = [];
 
 const testItem = todoItem.create(
@@ -172,14 +171,11 @@ todoItem.checklist.addItem("test", testItem);
 todoItem.checklist.convertToObjects(testItem);
 todoItem.checklist.checkItem(0, testItem);
 // todoItem.checklist.removeItem("test", testItem);
-console.log(projectsContainer[0]);
-console.log(projectsContainer);
-console.log({defaultProject, projectsContainer});
 todoItem.markCompleted(testItem);
 
 
 let currentlySelectedProject = defaultProject; 
-let currentlySelectedTodoItem;
+let currentlySelectedTodoItem = defaultProject.items[0];
 
 const DOM = (() => {
     const contentDiv = document.querySelector("#content");
@@ -197,6 +193,7 @@ const DOM = (() => {
             const tempProject = project.create(prompt("title"))
             project.addToProjectsContainer(tempProject);
             console.log({projectsContainer});
+            updateTodoItemValues();
             clearProjectsOnDisplay();
             displayProjects();
             addEventListenersToProjects();
@@ -221,6 +218,7 @@ const DOM = (() => {
     const addEventListenerToTodoItemButton = (e) => {
         const button = document.querySelector(".createTodoItem");
         button.addEventListener("click", (e) => {
+            updateTodoItemValues();
             addItemToSelectedProject();
             removeTodoItems()
             displayTodoItems(e);
@@ -357,17 +355,16 @@ const DOM = (() => {
         for(let i = 0; i < checkboxes.length; i++) {
             const currentCheckbox = checkboxes[i]; 
             currentCheckbox.addEventListener("click", (event) => {
-            const index = getIndexOfElementFromEvent(event);
-            
-            if(currentCheckbox.checked == true) {
-                todoItem.checklist.checkItem(index,currentlySelectedTodoItem);
-                console.log(currentlySelectedTodoItem)
-            } else if (currentCheckbox.checked == false) {
-                todoItem.checklist.uncheckItem(index,currentlySelectedTodoItem);
-            } else console.log("could not find checkbox");
+                const index = getIndexOfElementFromEvent(event);
+                
+                if(currentCheckbox.checked == true) {
+                    todoItem.checklist.checkItem(index,currentlySelectedTodoItem);
+                    console.log(currentlySelectedTodoItem)
+                } else if (currentCheckbox.checked == false) {
+                    todoItem.checklist.uncheckItem(index,currentlySelectedTodoItem);
+                } else console.log("could not find checkbox");
             });
         }
-        console.log(checkboxes);
     }
 
     const getCurrentItemFromEvent = (event) => {
@@ -427,6 +424,35 @@ const DOM = (() => {
 
     //todo: create a function that sets the text content of todo items to its corresponding object
     const updateTodoItemValues = () => {
+        const Inputs = document.querySelectorAll(".ItemContentDisplay > *");
+            const title = Inputs[0].value;
+            const description = Inputs[1].value;
+            const dueDate = Inputs[2].value;
+            let priority = Inputs[3].childNodes;
+            const notes = Inputs[4].value;
+            const checklist = Inputs[5].childNodes;
+
+            for(const option of priority) {
+                if(option.selected == true) priority = option.textContent.toLowerCase();
+            }
+
+            currentlySelectedTodoItem.title = title;
+            currentlySelectedTodoItem.description = description;
+            currentlySelectedTodoItem.dueDate = dueDate;
+            currentlySelectedTodoItem.priority = priority;
+            currentlySelectedTodoItem.notes = notes;
+
+            for(let i = 0; i < checklist.length; i++) {
+                const itemName = checklist[i].childNodes[1].value;
+                const itemChecked = checklist[i].childNodes[0].checked;
+                console.log(itemName);
+                currentlySelectedTodoItem.checklist[i].checked = itemChecked; 
+                currentlySelectedTodoItem.checklist[i].checklistItemName = `${itemName}`;
+            }
+
+            
+            console.log({title, description, dueDate, priority, notes, checklist});
+            console.log(currentlySelectedTodoItem);
 
     }
 
@@ -445,7 +471,6 @@ const DOM = (() => {
             for(const item of itemContents()) {
                 item.remove();
             }
-            console.log("items removed");
         }
     }
 
@@ -455,6 +480,7 @@ const DOM = (() => {
         const todoItems = document.querySelectorAll(".todoItemListItem");
         for(let i = 0; i < todoItems.length; i++) {
             todoItems[i].addEventListener("click", (event) => {
+                    updateTodoItemValues();
                     removeItemContentsfromDisplay();
                     currentlySelectedTodoItem = getCurrentItemFromEvent(event);
                     console.log(currentlySelectedTodoItem);
@@ -517,6 +543,7 @@ const DOM = (() => {
     const addEventListenersToProjects = () => {
         projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (event) => {
+                    updateTodoItemValues();
                     setSelectedProject(event);
                     removeItemContentsfromDisplay();
                     displayFirstItemContent(currentlySelectedProject);
@@ -525,7 +552,7 @@ const DOM = (() => {
                     displayTodoItems(event);
                     addEventListenersToTodoItems();
                     addEventListenersToChecklistButtons();
-                    addEventListenersToCheckboxes();
+                    // addEventListenersToCheckboxes();
             })
         })
     }
@@ -553,10 +580,11 @@ const DOM = (() => {
         displayTodoItems();
         displayFirstItemContent(currentlySelectedProject);
         addEventListenersToProjects();
+        addEventListenersToTodoItems();
         addEventListenerToTodoItemButton();
         addEventListenerToProjectButton();
         addEventListenersToChecklistButtons();
-        addEventListenersToCheckboxes();
+        // addEventListenersToCheckboxes();
     }
 
     return {

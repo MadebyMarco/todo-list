@@ -49,6 +49,10 @@ const project = (() => {
 
 const todoItem = (() => {
     const create = (title, description = "description", dueDate = "due date", priority = "priority", notes = "notes", completed, ...checklist) => {
+
+        if(checklist.length == 0) {
+            checklist.push(todoItem.checklist.createItem("Create a checklist item here"));
+        }
     
     
         return  {
@@ -67,7 +71,7 @@ const todoItem = (() => {
 // I need to make every input into checklist an object. I can forEach over and set name to whatever is in checklist.
 
     const checklist = (() => {
-        createItem = (checklistItemName, checked = false) => {
+        const createItem = (checklistItemName, checked = false) => {
             return {
                 checklistItemName,
                 checked
@@ -77,7 +81,8 @@ const todoItem = (() => {
     //need to find a way to check a list item
     //First I will search through a todoItem's checklist using the listItems index
         const checkItem = (listItemIndex, todoItem) => {
-            todoItem.checklist[listItemIndex].checked = true;
+            // todoItem.checklist[listItemIndex].checked = true;
+            //remember to uncheck
         }
         
         const uncheckItem = (listItemIndex, todoItem) => {
@@ -85,21 +90,25 @@ const todoItem = (() => {
         }
 
         const convertToObjects = (todoItem) => {
-            const objectChecklist = [];
-            todoItem.checklist.forEach(item => {
-                if (!(typeof item == "object" && item !==null)) { //wont nest objects
-                    const itemObject = {checklistItemName: `${item}`, checked: false};
-                    objectChecklist.push(itemObject);
-                }
+            // const objectChecklist = [];
+            // todoItem.checklist.forEach(item => {
+            //     if (!(typeof item == "object" && item !==null)) { //wont nest objects
+            //         const itemObject = {checklistItemName: `${item}`, checked: false};
+            //         objectChecklist.push(itemObject);
+            //     }
 
-            });
+            // });
         
-            todoItem.checklist = objectChecklist;
+            // todoItem.checklist = objectChecklist;
+            for(let i = 0; i < todoItem.checklist.length; i++) {
+                todoItem.checklist.reverse(); //index0 = currentItem, is now last
+                const currentChecklistItem = todoItem.checklist.pop(); // currentItem is popped out
+                const newChecklistItem = createItem(currentChecklistItem); //currentItem is created into an object
+                todoItem.checklist.splice(i, 0, newChecklistItem); //currentItem is pushed back in at index of i variable. 
+                todoItem.checklist.reverse(); //current Item is back into normal array
+            }
         }
 
-        // const convertToObject = (item, todoItem) => {
-        //     item = {checklistItemName: `${item}`, checked: false};
-        // }
 
         const addItem = (checklistItem, todoItem) => {
             todoItem.checklist.push(checklistItem);
@@ -110,6 +119,7 @@ const todoItem = (() => {
         }
 
         return {
+            createItem,
             checkItem,
             uncheckItem,
             convertToObjects,

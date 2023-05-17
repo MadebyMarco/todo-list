@@ -204,7 +204,7 @@ const DOM = (() => {
     const addItemToSelectedProject = () => {
             // const index = +e.target.parentNode.dataset.index;
             // const thisProject = projectsContainer[index];
-            const newItem = todoItem.create(prompt("title"));
+            const newItem = todoItem.create("Empty");
             project.addItem(newItem, currentlySelectedProject);
     }
 
@@ -215,14 +215,14 @@ const DOM = (() => {
         return button
     }
 
-    const addEventListenerToTodoItemButton = (e) => {
+    const addEventListenerToTodoItemButton = (event) => {
         const button = document.querySelector(".createTodoItem");
-        button.addEventListener("click", (e) => {
-            updateTodoItemValues();
+        button.addEventListener("click", (event) => {
+            // updateTodoItemValues();
             addItemToSelectedProject();
             removeTodoItems()
-            displayTodoItems(e);
-            addEventListenersToTodoItems(e);
+            displayTodoItems(event);
+            addEventListenersToTodoItems(event);
         });
     }
 
@@ -501,12 +501,13 @@ const DOM = (() => {
         const container = document.querySelector(".projectsContainer");
         projectsContainer.forEach((project) => {
             const div = document.createElement("div");
-            const h2 = document.createElement("h2");
+            const textarea = document.createElement("textarea");
 
-            h2.textContent = `${project.title}`;
+            textarea.textContent = `${project.title}`;
+            textarea.readOnly = true;
             div.classList.add("project");
 
-            div.appendChild(h2);
+            div.appendChild(textarea);
             container.appendChild(div);
         });
     }

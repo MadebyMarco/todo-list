@@ -538,6 +538,13 @@ const DOM = (() => {
                         addEventListenersToChecklistButtons();
                     };
             })
+
+        
+            project.addEventListener("dblclick", () => project.childNodes[0].readOnly = false);
+            project.addEventListener("focusout", () => {
+                project.childNodes[0].readOnly = true;
+                currentlySelectedProject.title = project.childNodes[0].value;
+            });
         })
     }
 

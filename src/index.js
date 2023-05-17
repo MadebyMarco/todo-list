@@ -415,6 +415,7 @@ const DOM = (() => {
             const notes = Inputs[4].value;
             const checklist = Inputs[5].childNodes;
 
+            // sets priority value
             for(const option of priority) {
                 if(option.selected == true) priority = option.textContent.toLowerCase();
             }
@@ -427,16 +428,12 @@ const DOM = (() => {
 
             for(let i = 0; i < checklist.length; i++) {
                 const itemName = checklist[i].childNodes[1].value;
-                const itemChecked = checklist[i].childNodes[0].checked;
-                console.log(itemName);
-                currentlySelectedTodoItem.checklist[i].checked = itemChecked; 
+                const itemCheckedStatus = checklist[i].childNodes[0].checked;
+
+                //sets checklist item names and checked status
+                currentlySelectedTodoItem.checklist[i].checked = itemCheckedStatus; 
                 currentlySelectedTodoItem.checklist[i].checklistItemName = `${itemName}`;
             }
-
-            
-            console.log({title, description, dueDate, priority, notes, checklist});
-            console.log(currentlySelectedTodoItem);
-
     }
 
     
@@ -526,15 +523,19 @@ const DOM = (() => {
     const addEventListenersToProjects = () => {
         projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (event) => {
-                    updateTodoItemValues();
+                    //runs no matter what
                     setSelectedProject(event);
-                    removeItemContentsfromDisplay();
-                    displayFirstItemContent(currentlySelectedProject);
-                    setCurrentTodoItemToFirstItemOfCurrentProject();
                     removeTodoItems();
-                    displayTodoItems(event);
-                    addEventListenersToTodoItems();
-                    addEventListenersToChecklistButtons();
+                    removeItemContentsfromDisplay();
+                    //only runs if the project has items
+                    if(currentlySelectedProject.items.length != 0) {
+                        displayFirstItemContent(currentlySelectedProject);
+                        setCurrentTodoItemToFirstItemOfCurrentProject();
+                        displayTodoItems(event);
+                        updateTodoItemValues(); //has to run after displayTodoItems or else there wont be anywhere for the function to update
+                        addEventListenersToTodoItems();
+                        addEventListenersToChecklistButtons();
+                    };
             })
         })
     }

@@ -226,7 +226,7 @@ const DOM = (() => {
 
     const createTodoItemContentDiv = () => {
         const div = document.createElement("div");
-        div.classList.add("ItemContentDisplay");
+        div.classList.add("itemContentDisplay");
         return div;
     }
 
@@ -313,13 +313,13 @@ const DOM = (() => {
 
 
     const getCurrentItemFromEvent = (event) => {
-        const index = getIndexOfElementFromEvent(event);
+        const index = getIndexOfElementFromEvent(event.currentTarget);
         const currentItem = currentlySelectedProject.items[index];
         return currentItem;
     } 
 
     const displayTodoItemContents = (item) => {
-        const container = document.querySelector(".ItemContentDisplay");
+        const container = document.querySelector(".itemContentDisplay");
         const itemTitle = document.createElement("textarea");
         const itemDescription = document.createElement("textarea");
         const itemDueDate = document.createElement("textarea");
@@ -369,7 +369,7 @@ const DOM = (() => {
 
     //todo: create a function that sets the text content of todo items to its corresponding object
     const updateTodoItemValues = () => {
-        const Inputs = document.querySelectorAll(".ItemContentDisplay > *");
+        const Inputs = document.querySelectorAll(".itemContentDisplay > *");
             const title = Inputs[0].value;
             const description = Inputs[1].value;
             const dueDate = Inputs[2].value;
@@ -412,7 +412,7 @@ const DOM = (() => {
     }
 
     const removeItemContentsfromDisplay = () => {
-        const itemContents = () => document.querySelectorAll(".ItemContentDisplay > *");
+        const itemContents = () => document.querySelectorAll(".itemContentDisplay > *");
         if(itemContents() == null) {
             console.log("items not found");
         } else {
@@ -518,7 +518,6 @@ const DOM = (() => {
     const addEventListenerToTodoItemButton = (event) => {
         const button = document.querySelector(".createTodoItem");
         button.addEventListener("click", (event) => {
-            // updateTodoItemValues();
             addItemToSelectedProject();
             removeTodoItems()
             displayTodoItems(event);
@@ -554,7 +553,7 @@ const DOM = (() => {
                     removeItemContentsfromDisplay();
                     displayTodoItemContents(currentlySelectedTodoItem);
                     addEventListenersToChecklistButtons();
-        }
+                 }
         }
 
         for(let i = 0; i < removeButtons.length; i++) {
@@ -575,6 +574,11 @@ const DOM = (() => {
         for(let i = 0; i < addButtons.length; i++) {
             addButtons[i].addEventListener("click", handleAddButtons);
         }
+    }
+
+    const addEventListenersToItemContent = () => {
+        const inputs = document.querySelectorAll(".itemContentDisplay");
+        
     }
     
 
@@ -624,7 +628,5 @@ DOM.load();
 
 // todo: add focusoff event listener for title input
 // todo: create small icon for priority to change color
-// issue: when removing checklist item, the new values are not stored
-// issue: adding checklist item not working;
 //todo: add onchange event listener for priority
 //idea: use event delegation to handle more event work since the event listeners have really piled on

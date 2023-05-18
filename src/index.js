@@ -201,7 +201,7 @@ const DOM = (() => {
         button.classList.add("createTodoItem");
         return button
     }
-    
+
     const createProjectWithTodoItem = () => {
             const newProject = project.create("New Project Title");
             const newItem = todoItem.create("New Item Title");
@@ -607,5 +607,9 @@ const DOM = (() => {
 })();
 
 DOM.load();
-//todo: After creating a new project, set it to currentlySelectedProject 
-// test: see if event.currentTarget works
+
+//fix: listItem title not changing
+// todo: add focusoff event listener for title input
+// todo: create small icon for priority to change color
+//todo: add onchange event listener for priority
+//idea: use event delegation to handle more event work since the event listeners have really piled on

@@ -483,7 +483,7 @@ const DOM = (() => {
         projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (event) => {
                         setSelectedProject(event);
-                        updateTodoItemValues(); //has to run after displayTodoItems and before removeTodo items 
+                        // updateTodoItemValues(); //has to run after displayTodoItems and before removeTodo items 
                         removeTodoItems();
                         removeItemContentsfromDisplay();
                         displayFirstItemContent(currentlySelectedProject);
@@ -506,7 +506,7 @@ const DOM = (() => {
         const todoItems = document.querySelectorAll(".todoItemListItem");
         for(let i = 0; i < todoItems.length; i++) {
             todoItems[i].addEventListener("click", (event) => {
-                updateTodoItemValues();
+                // updateTodoItemValues();
                 removeItemContentsfromDisplay();
                 currentlySelectedTodoItem = getCurrentItemFromEvent(event);
                 console.log(currentlySelectedTodoItem);
@@ -533,7 +533,7 @@ const DOM = (() => {
                 createProjectWithTodoItem()
             );
             console.log({projectsContainer});
-            updateTodoItemValues();
+            // updateTodoItemValues();
             clearProjectsOnDisplay();
             displayProjects();
             addEventListenersToProjects();
@@ -546,7 +546,7 @@ const DOM = (() => {
         const handleRemoveButtons = (event) => {
                 const checklist = event.currentTarget.parentNode.parentNode;
                 if(checklist.childElementCount != 1) {
-                    updateTodoItemValues();
+                    // updateTodoItemValues();
                     const itemForRemovalIndex = getIndexOfElementFromEvent(event.currentTarget.parentNode);
                     console.log(itemForRemovalIndex);
                     todoItem.checklist.removeItem(itemForRemovalIndex, currentlySelectedTodoItem);
@@ -577,7 +577,16 @@ const DOM = (() => {
     }
 
     const addEventListenersToItemContent = () => {
-        const inputs = document.querySelectorAll(".itemContentDisplay");
+        const itemContent = document.querySelector(".itemContentDisplay");
+            itemContent.addEventListener("focusout", (event) => {
+                updateTodoItemValues();
+                const titleTextarea = 0;
+                if(getIndexOfElementFromEvent(event.target) == titleTextarea){
+                    removeTodoItems();
+                    displayTodoItems();
+                    addEventListenersToTodoItems();
+                } 
+        });
         
     }
     
@@ -616,6 +625,7 @@ const DOM = (() => {
         addEventListenerToTodoItemButton();
         addEventListenerToProjectButton();
         addEventListenersToChecklistButtons();
+        addEventListenersToItemContent();
     }
 
     return {

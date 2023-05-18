@@ -399,11 +399,13 @@ const DOM = (() => {
     }
 
     
-    const getIndexOfElementFromEvent = (event) => {
+    const getIndexOfElementFromEvent = (eventTargetChild) => {
         // const siblings = [...event.target.parentNode.parentNode.children]; 
         // const targetChild = event.target.parentNode;
-        const siblings = [...event.currentTarget.parentNode.children]; 
-        const targetChild = event.currentTarget;
+        // const siblings = [...event.currentTarget.parentNode.children]; 
+        // const targetChild = event.currentTarget;
+        const siblings = [...eventTargetChild.parentNode.children]; 
+        const targetChild = eventTargetChild;
         const index = siblings.indexOf(targetChild);
         console.log({targetChild, siblings, index});
         return index;
@@ -545,7 +547,7 @@ const DOM = (() => {
 
         for(let i = 0; i < removeButtons.length; i++) {
             removeButtons[i].addEventListener("click", (event) => {
-                const itemForRemovalIndex = getIndexOfElementFromEvent(event.parentNode);
+                const itemForRemovalIndex = getIndexOfElementFromEvent(event.currentTarget.parentNode);
                 console.log(itemForRemovalIndex);
                 todoItem.checklist.removeItem(itemForRemovalIndex, currentlySelectedTodoItem);
                 removeItemContentsfromDisplay();

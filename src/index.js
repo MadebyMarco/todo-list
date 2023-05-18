@@ -376,7 +376,6 @@ const DOM = (() => {
             let priority = Inputs[3].childNodes;
             const notes = Inputs[4].value;
             const checklist = Inputs[5].childNodes;
-            console.log(Inputs);
 
             // sets priority value
             for(const option of priority) {
@@ -394,11 +393,8 @@ const DOM = (() => {
                 const itemCheckedStatus = checklist[i].childNodes[0].checked;
 
                 //sets checklist item names and checked status
-                console.log(currentlySelectedTodoItem);
                 currentlySelectedTodoItem.checklist[i].checked = itemCheckedStatus; 
                 currentlySelectedTodoItem.checklist[i].checklistItemName = `${itemName}`;
-                console.log(currentlySelectedTodoItem);
-                console.log("items checked");
             }
     }
 
@@ -408,8 +404,9 @@ const DOM = (() => {
         // const targetChild = event.target.parentNode;
         const siblings = [...event.currentTarget.parentNode.children]; 
         const targetChild = event.currentTarget;
-        console.log(targetChild)
-        return siblings.indexOf(targetChild);
+        const index = siblings.indexOf(targetChild);
+        console.log({targetChild, siblings, index});
+        return index;
     }
 
     const removeItemContentsfromDisplay = () => {
@@ -548,7 +545,8 @@ const DOM = (() => {
 
         for(let i = 0; i < removeButtons.length; i++) {
             removeButtons[i].addEventListener("click", (event) => {
-                const itemForRemovalIndex = getIndexOfElementFromEvent(event);
+                const itemForRemovalIndex = getIndexOfElementFromEvent(event.parentNode);
+                console.log(itemForRemovalIndex);
                 todoItem.checklist.removeItem(itemForRemovalIndex, currentlySelectedTodoItem);
                 removeItemContentsfromDisplay();
                 displayTodoItemContents(currentlySelectedTodoItem);

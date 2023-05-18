@@ -392,6 +392,7 @@ const DOM = (() => {
         // const targetChild = event.target.parentNode;
         const siblings = [...event.currentTarget.parentNode.children]; 
         const targetChild = event.currentTarget;
+        console.log(targetChild)
         return siblings.indexOf(targetChild);
     }
 
@@ -496,7 +497,7 @@ const DOM = (() => {
                 removeItemContentsfromDisplay();
                 currentlySelectedTodoItem = getCurrentItemFromEvent(event);
                 console.log(currentlySelectedTodoItem);
-                displayTodoItemContents(getCurrentItemFromEvent(event));
+                displayTodoItemContents(currentlySelectedTodoItem);
                 updateTodoItemValues();
             });
         }

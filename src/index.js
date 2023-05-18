@@ -608,9 +608,9 @@ const DOM = (() => {
 
 DOM.load();
 
-//fix: listItem title not changing
-// fix: updateItemValuesNotworking;
 // todo: add focusoff event listener for title input
 // todo: create small icon for priority to change color
+// issue: when removing checklist item, the new values are not stored
+// issue: removal of checklist item not working;
 //todo: add onchange event listener for priority
 //idea: use event delegation to handle more event work since the event listeners have really piled on

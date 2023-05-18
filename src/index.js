@@ -201,6 +201,18 @@ const DOM = (() => {
         button.classList.add("createTodoItem");
         return button
     }
+    
+    const createProjectWithTodoItem = () => {
+            const newProject = project.create("New Project Title");
+            const newItem = todoItem.create("New Item Title");
+            project.addToProjectsContainer(newProject);
+            project.addItem(newItem, newProject);
+            return newProject;
+    }
+
+    const setCurrentlySelectedProject = (project) => {
+            currentlySelectedProject = project;
+    }
 
 
     const createTodoItemsDiv = () => {
@@ -456,11 +468,12 @@ const DOM = (() => {
     const setSelectedProject = (e) => {
         // const index = +e.target.parentNode.dataset.index;
         const index = e.currentTarget.dataset.index;
-        console.log(index)
         const thisProject =  projectsContainer[index];
         currentlySelectedProject = thisProject; 
         console.log({currentlySelectedProject});
     }
+
+
 
 
     const addEventListenersToProjects = () => {
@@ -514,11 +527,13 @@ const DOM = (() => {
         });
     }
 
+
     const addEventListenerToProjectButton = () => {
         const button = document.querySelector(".createProject")
         button.addEventListener("click", () => {
-            const tempProject = project.create("Empty");
-            project.addToProjectsContainer(tempProject);
+            setCurrentlySelectedProject(
+                createProjectWithTodoItem()
+            );
             console.log({projectsContainer});
             updateTodoItemValues();
             clearProjectsOnDisplay();
@@ -592,5 +607,5 @@ const DOM = (() => {
 })();
 
 DOM.load();
-//todo: After creating a new project, set it to currentlySleectedProject 
+//todo: After creating a new project, set it to currentlySelectedProject 
 // test: see if event.currentTarget works

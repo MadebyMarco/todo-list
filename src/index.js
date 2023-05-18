@@ -376,6 +376,7 @@ const DOM = (() => {
             let priority = Inputs[3].childNodes;
             const notes = Inputs[4].value;
             const checklist = Inputs[5].childNodes;
+            console.log(Inputs);
 
             // sets priority value
             for(const option of priority) {
@@ -482,20 +483,16 @@ const DOM = (() => {
     const addEventListenersToProjects = () => {
         projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (event) => {
-                    //runs no matter what
-                    setSelectedProject(event);
-                    removeTodoItems();
-                    removeItemContentsfromDisplay();
-                    //only runs if the project has items
-                    if(currentlySelectedProject.items.length != 0) {
+                        setSelectedProject(event);
+                        updateTodoItemValues(); //has to run after displayTodoItems and before removeTodo items 
+                        removeTodoItems();
+                        removeItemContentsfromDisplay();
                         displayFirstItemContent(currentlySelectedProject);
                         setCurrentTodoItemToFirstItemOfCurrentProject();
-                        displayTodoItems(event);
-                        updateTodoItemValues(); //has to run after displayTodoItems or else there wont be anywhere for the function to update
+                        displayTodoItems();
                         addEventListenersToTodoItems();
                         addEventListenersToChecklistButtons();
-                    };
-            })
+            });
 
             const projectTitleTextarea = project.childNodes[0];
             project.addEventListener("dblclick", () => projectTitleTextarea.readOnly = false);
@@ -510,11 +507,11 @@ const DOM = (() => {
         const todoItems = document.querySelectorAll(".todoItemListItem");
         for(let i = 0; i < todoItems.length; i++) {
             todoItems[i].addEventListener("click", (event) => {
+                updateTodoItemValues();
                 removeItemContentsfromDisplay();
                 currentlySelectedTodoItem = getCurrentItemFromEvent(event);
                 console.log(currentlySelectedTodoItem);
                 displayTodoItemContents(currentlySelectedTodoItem);
-                updateTodoItemValues();
             });
         }
     }
@@ -612,6 +609,7 @@ const DOM = (() => {
 DOM.load();
 
 //fix: listItem title not changing
+// fix: updateItemValuesNotworking;
 // todo: add focusoff event listener for title input
 // todo: create small icon for priority to change color
 //todo: add onchange event listener for priority

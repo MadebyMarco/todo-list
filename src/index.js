@@ -187,19 +187,6 @@ const DOM = (() => {
         return button;
     }
 
-    const addEventListenerToProjectButton = () => {
-        const button = document.querySelector(".createProject")
-        button.addEventListener("click", () => {
-            const tempProject = project.create("Empty");
-            project.addToProjectsContainer(tempProject);
-            console.log({projectsContainer});
-            updateTodoItemValues();
-            clearProjectsOnDisplay();
-            displayProjects();
-            addEventListenersToProjects();
-            setProjectIndexes();
-        });
-    }
 
     const addItemToSelectedProject = () => {
             // const index = +e.target.parentNode.dataset.index;
@@ -215,16 +202,6 @@ const DOM = (() => {
         return button
     }
 
-    const addEventListenerToTodoItemButton = (event) => {
-        const button = document.querySelector(".createTodoItem");
-        button.addEventListener("click", (event) => {
-            // updateTodoItemValues();
-            addItemToSelectedProject();
-            removeTodoItems()
-            displayTodoItems(event);
-            addEventListenersToTodoItems(event);
-        });
-    }
 
     const createTodoItemsDiv = () => {
         const div = document.createElement("div");
@@ -321,33 +298,6 @@ const DOM = (() => {
     }
 
 
-    const addEventListenersToChecklistButtons = () => {
-        const removeButtons = document.querySelectorAll(".checklistItem .remove");
-
-        for(let i = 0; i < removeButtons.length; i++) {
-            removeButtons[i].addEventListener("click", (event) => {
-                const itemForRemovalIndex = getIndexOfElementFromEvent(event);
-                todoItem.checklist.removeItem(itemForRemovalIndex, currentlySelectedTodoItem);
-                removeItemContentsfromDisplay();
-                displayTodoItemContents(currentlySelectedTodoItem);
-                addEventListenersToChecklistButtons();
-            });
-        }
-
-        const addButtons = document.querySelectorAll(".checklistItem .add");
-
-        for(let i = 0; i < addButtons.length; i++) {
-            addButtons[i].addEventListener("click", (event) => {
-                const index = getIndexOfElementFromEvent(event);
-                console.log(index);
-                const newChecklistItem = todoItem.checklist.createItem("");
-                todoItem.checklist.addItem(newChecklistItem, currentlySelectedTodoItem);
-                displayChecklistItemLi(newChecklistItem);
-                console.log(currentlySelectedTodoItem);
-                addEventListenersToChecklistButtons();
-            });
-        }
-    }
 
 
     const getCurrentItemFromEvent = (event) => {
@@ -456,18 +406,6 @@ const DOM = (() => {
 
     let currentlySelectedTodoItem = currentlySelectedProject.items[0];
 
-    const addEventListenersToTodoItems = () => {
-        const todoItems = document.querySelectorAll(".todoItemListItem");
-        for(let i = 0; i < todoItems.length; i++) {
-            todoItems[i].addEventListener("click", (event) => {
-                removeItemContentsfromDisplay();
-                currentlySelectedTodoItem = getCurrentItemFromEvent(event);
-                console.log(currentlySelectedTodoItem);
-                displayTodoItemContents(getCurrentItemFromEvent(event));
-                updateTodoItemValues();
-            });
-        }
-    }
     
     const todoItems = () => document.querySelectorAll(".todoItems");
 
@@ -545,6 +483,72 @@ const DOM = (() => {
                 currentlySelectedProject.title = project.childNodes[0].value;
             });
         })
+    }
+
+    const addEventListenersToTodoItems = () => {
+        const todoItems = document.querySelectorAll(".todoItemListItem");
+        for(let i = 0; i < todoItems.length; i++) {
+            todoItems[i].addEventListener("click", (event) => {
+                removeItemContentsfromDisplay();
+                currentlySelectedTodoItem = getCurrentItemFromEvent(event);
+                console.log(currentlySelectedTodoItem);
+                displayTodoItemContents(getCurrentItemFromEvent(event));
+                updateTodoItemValues();
+            });
+        }
+    }
+
+    const addEventListenerToTodoItemButton = (event) => {
+        const button = document.querySelector(".createTodoItem");
+        button.addEventListener("click", (event) => {
+            // updateTodoItemValues();
+            addItemToSelectedProject();
+            removeTodoItems()
+            displayTodoItems(event);
+            addEventListenersToTodoItems(event);
+        });
+    }
+
+    const addEventListenerToProjectButton = () => {
+        const button = document.querySelector(".createProject")
+        button.addEventListener("click", () => {
+            const tempProject = project.create("Empty");
+            project.addToProjectsContainer(tempProject);
+            console.log({projectsContainer});
+            updateTodoItemValues();
+            clearProjectsOnDisplay();
+            displayProjects();
+            addEventListenersToProjects();
+            setProjectIndexes();
+        });
+    }
+
+    const addEventListenersToChecklistButtons = () => {
+        const removeButtons = document.querySelectorAll(".checklistItem .remove");
+
+        for(let i = 0; i < removeButtons.length; i++) {
+            removeButtons[i].addEventListener("click", (event) => {
+                const itemForRemovalIndex = getIndexOfElementFromEvent(event);
+                todoItem.checklist.removeItem(itemForRemovalIndex, currentlySelectedTodoItem);
+                removeItemContentsfromDisplay();
+                displayTodoItemContents(currentlySelectedTodoItem);
+                addEventListenersToChecklistButtons();
+            });
+        }
+
+        const addButtons = document.querySelectorAll(".checklistItem .add");
+
+        for(let i = 0; i < addButtons.length; i++) {
+            addButtons[i].addEventListener("click", (event) => {
+                const index = getIndexOfElementFromEvent(event);
+                console.log(index);
+                const newChecklistItem = todoItem.checklist.createItem("");
+                todoItem.checklist.addItem(newChecklistItem, currentlySelectedTodoItem);
+                displayChecklistItemLi(newChecklistItem);
+                console.log(currentlySelectedTodoItem);
+                addEventListenersToChecklistButtons();
+            });
+        }
     }
 
     const displayFirstItemContent = (project) => {

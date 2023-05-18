@@ -544,34 +544,45 @@ const DOM = (() => {
 
     const addEventListenersToChecklistButtons = () => {
         const removeButtons = document.querySelectorAll(".checklistItem .remove");
-
-        for(let i = 0; i < removeButtons.length; i++) {
-            removeButtons[i].addEventListener("click", (event) => {
+        const handleRemoveButtons = (event) => {
                 const checklist = event.currentTarget.parentNode.parentNode;
                 if(checklist.childElementCount != 1) {
+                    updateTodoItemValues();
                     const itemForRemovalIndex = getIndexOfElementFromEvent(event.currentTarget.parentNode);
                     console.log(itemForRemovalIndex);
                     todoItem.checklist.removeItem(itemForRemovalIndex, currentlySelectedTodoItem);
                     removeItemContentsfromDisplay();
                     displayTodoItemContents(currentlySelectedTodoItem);
                     addEventListenersToChecklistButtons();
-                }
-            });
+        }
+        }
+
+        for(let i = 0; i < removeButtons.length; i++) {
+            removeButtons[i].addEventListener("click", (event) => handleRemoveButtons(event));
         }
 
         const addButtons = document.querySelectorAll(".checklistItem .add");
 
-        for(let i = 0; i < addButtons.length; i++) {
-            addButtons[i].addEventListener("click", (event) => {
-                const index = getIndexOfElementFromEvent(event);
-                console.log(index);
-                const newChecklistItem = todoItem.checklist.createItem("");
+        const handleAddButtons = () => {
+                const newChecklistItem = todoItem.checklist.createItem("Create a checklist item here");
                 todoItem.checklist.addItem(newChecklistItem, currentlySelectedTodoItem);
-                displayChecklistItemLi(newChecklistItem);
                 console.log(currentlySelectedTodoItem);
+                removeItemContentsfromDisplay();
+                displayTodoItemContents(currentlySelectedTodoItem);
                 addEventListenersToChecklistButtons();
-            });
         }
+
+        for(let i = 0; i < addButtons.length; i++) {
+            addButtons[i].addEventListener("click", handleAddButtons);
+        }
+    }
+    
+
+    const removeEventListeners = (elements, type, listener) => {
+        for(let i = 0; i < elements.length; i++) {
+            elements[i].removeEventListener(type, listener);
+        }
+
     }
 
     const displayFirstItemContent = (project) => {
@@ -614,6 +625,6 @@ DOM.load();
 // todo: add focusoff event listener for title input
 // todo: create small icon for priority to change color
 // issue: when removing checklist item, the new values are not stored
-// issue: removal of checklist item not working;
+// issue: adding checklist item not working;
 //todo: add onchange event listener for priority
 //idea: use event delegation to handle more event work since the event listeners have really piled on

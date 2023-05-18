@@ -388,8 +388,10 @@ const DOM = (() => {
 
     
     const getIndexOfElementFromEvent = (event) => {
-        const siblings = [...event.target.parentNode.parentNode.children]; 
-        const targetChild = event.target.parentNode;
+        // const siblings = [...event.target.parentNode.parentNode.children]; 
+        // const targetChild = event.target.parentNode;
+        const siblings = [...event.currentTarget.parentNode.children]; 
+        const targetChild = event.currentTarget;
         return siblings.indexOf(targetChild);
     }
 
@@ -451,7 +453,9 @@ const DOM = (() => {
     }
 
     const setSelectedProject = (e) => {
-        const index = +e.target.parentNode.dataset.index;
+        // const index = +e.target.parentNode.dataset.index;
+        const index = e.currentTarget.dataset.index;
+        console.log(index)
         const thisProject =  projectsContainer[index];
         currentlySelectedProject = thisProject; 
         console.log({currentlySelectedProject});

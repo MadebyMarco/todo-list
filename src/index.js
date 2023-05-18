@@ -547,12 +547,15 @@ const DOM = (() => {
 
         for(let i = 0; i < removeButtons.length; i++) {
             removeButtons[i].addEventListener("click", (event) => {
-                const itemForRemovalIndex = getIndexOfElementFromEvent(event.currentTarget.parentNode);
-                console.log(itemForRemovalIndex);
-                todoItem.checklist.removeItem(itemForRemovalIndex, currentlySelectedTodoItem);
-                removeItemContentsfromDisplay();
-                displayTodoItemContents(currentlySelectedTodoItem);
-                addEventListenersToChecklistButtons();
+                const checklist = event.currentTarget.parentNode.parentNode;
+                if(checklist.childElementCount != 1) {
+                    const itemForRemovalIndex = getIndexOfElementFromEvent(event.currentTarget.parentNode);
+                    console.log(itemForRemovalIndex);
+                    todoItem.checklist.removeItem(itemForRemovalIndex, currentlySelectedTodoItem);
+                    removeItemContentsfromDisplay();
+                    displayTodoItemContents(currentlySelectedTodoItem);
+                    addEventListenersToChecklistButtons();
+                }
             });
         }
 

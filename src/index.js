@@ -393,8 +393,11 @@ const DOM = (() => {
                 const itemCheckedStatus = checklist[i].childNodes[0].checked;
 
                 //sets checklist item names and checked status
+                console.log(currentlySelectedTodoItem);
                 currentlySelectedTodoItem.checklist[i].checked = itemCheckedStatus; 
                 currentlySelectedTodoItem.checklist[i].checklistItemName = `${itemName}`;
+                console.log(currentlySelectedTodoItem);
+                console.log("items checked");
             }
     }
 
@@ -494,11 +497,11 @@ const DOM = (() => {
                     };
             })
 
-        
-            project.addEventListener("dblclick", () => project.childNodes[0].readOnly = false);
+            const projectTitleTextarea = project.childNodes[0];
+            project.addEventListener("dblclick", () => projectTitleTextarea.readOnly = false);
             project.addEventListener("focusout", () => {
-                project.childNodes[0].readOnly = true;
-                currentlySelectedProject.title = project.childNodes[0].value;
+                projectTitleTextarea.readOnly = true;
+                currentlySelectedProject.title = projectTitleTextarea.value;
             });
         })
     }

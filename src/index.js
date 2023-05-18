@@ -190,7 +190,7 @@ const DOM = (() => {
     const addEventListenerToProjectButton = () => {
         const button = document.querySelector(".createProject")
         button.addEventListener("click", () => {
-            const tempProject = project.create(prompt("title"))
+            const tempProject = project.create("Empty");
             project.addToProjectsContainer(tempProject);
             console.log({projectsContainer});
             updateTodoItemValues();
@@ -460,11 +460,11 @@ const DOM = (() => {
         const todoItems = document.querySelectorAll(".todoItemListItem");
         for(let i = 0; i < todoItems.length; i++) {
             todoItems[i].addEventListener("click", (event) => {
-                    updateTodoItemValues();
-                    removeItemContentsfromDisplay();
-                    currentlySelectedTodoItem = getCurrentItemFromEvent(event);
-                    console.log(currentlySelectedTodoItem);
-                    displayTodoItemContents(getCurrentItemFromEvent(event));
+                removeItemContentsfromDisplay();
+                currentlySelectedTodoItem = getCurrentItemFromEvent(event);
+                console.log(currentlySelectedTodoItem);
+                displayTodoItemContents(getCurrentItemFromEvent(event));
+                updateTodoItemValues();
             });
         }
     }
@@ -518,7 +518,6 @@ const DOM = (() => {
         currentlySelectedProject = thisProject; 
         console.log({currentlySelectedProject});
     }
-
 
 
     const addEventListenersToProjects = () => {
@@ -584,3 +583,5 @@ const DOM = (() => {
 })();
 
 DOM.load();
+//todo: After creating a new project, set it to currentlySleectedProject 
+// test: see if event.currentTarget works

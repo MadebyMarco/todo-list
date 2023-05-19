@@ -239,10 +239,14 @@ const DOM = (() => {
         currentlySelectedProject.items.forEach(item => {
             const li = document.createElement("li");
             const h3 = document.createElement("h3");
-
+            const p = document.createElement("p");
+            
+            p.textContent = "●";
+            p.classList.add("priorityIndicator");
             li.classList.add("todoItemListItem");
-            h3.textContent = `Title: ${item.title} Due: ${item.dueDate}`;
-            li.append(h3)
+            h3.textContent = `${item.title}`;
+
+            li.append(h3, p);
             ul.append(li); 
         });
         todoContainer.appendChild(ul);
@@ -367,6 +371,29 @@ const DOM = (() => {
 
     }
 
+    const updatePriorityIndicator = () => {
+        const indicators = document.querySelectorAll(".priorityIndicator");
+        for(let i = 0; i < indicators.length; i++) {
+            const currentIndicator = indicators[i];
+
+            switch(currentlySelectedTodoItem.priority) {
+                case "low":
+                    currentIndicator.classList.add("low");
+                    break;
+                case "medium":
+                    currentIndicator.classList.add("medium");
+                    break;
+                case "high":
+                    currentIndicator.classList.add("high");
+                    break;
+                case "priority":
+                    currentIndicator.classList.add("transparent");
+                    break;
+                default: console.log(currentlySelectedTodoItem);
+            }
+        }
+    }
+
     //todo: create a function that sets the text content of todo items to its corresponding object
     const updateTodoItemValues = () => {
         const Inputs = document.querySelectorAll(".itemContentDisplay > *");
@@ -483,7 +510,6 @@ const DOM = (() => {
         projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (event) => {
                         setSelectedProject(event);
-                        // updateTodoItemValues(); //has to run after displayTodoItems and before removeTodo items 
                         removeTodoItems();
                         removeItemContentsfromDisplay();
                         displayFirstItemContent(currentlySelectedProject);
@@ -491,6 +517,7 @@ const DOM = (() => {
                         displayTodoItems();
                         addEventListenersToTodoItems();
                         addEventListenersToChecklistButtons();
+                        updatePriorityIndicator();
             });
 
             const projectTitleTextarea = project.childNodes[0];
@@ -506,7 +533,6 @@ const DOM = (() => {
         const todoItems = document.querySelectorAll(".todoItemListItem");
         for(let i = 0; i < todoItems.length; i++) {
             todoItems[i].addEventListener("click", (event) => {
-                // updateTodoItemValues();
                 removeItemContentsfromDisplay();
                 currentlySelectedTodoItem = getCurrentItemFromEvent(event);
                 console.log(currentlySelectedTodoItem);
@@ -533,7 +559,6 @@ const DOM = (() => {
                 createProjectWithTodoItem()
             );
             console.log({projectsContainer});
-            // updateTodoItemValues();
             clearProjectsOnDisplay();
             displayProjects();
             addEventListenersToProjects();
@@ -619,6 +644,7 @@ const DOM = (() => {
         displayProjects();
         setProjectIndexes();
         displayTodoItems();
+        updatePriorityIndicator();
         displayFirstItemContent(currentlySelectedProject);
         addEventListenersToProjects();
         addEventListenersToTodoItems();
@@ -635,8 +661,4 @@ const DOM = (() => {
 })();
 
 DOM.load();
-
-// todo: add focusoff event listener for title input
-// todo: create small icon for priority to change color
-//todo: add onchange event listener for priority
-//idea: use event delegation to handle more event work since the event listeners have really piled on
+// todo: implement localStorage to save project container. I think if i only store project container I can get away with storing the whole site in one object ahahaha, if thats how it works not sure

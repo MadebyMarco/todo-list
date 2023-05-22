@@ -212,6 +212,7 @@ const DOM = (() => {
 
     const setCurrentlySelectedProject = (project) => {
             currentlySelectedProject = project;
+            localStorage.setItem("currentlySelectedProject", JSON.stringify(currentlySelectedProject));
     }
 
 
@@ -397,12 +398,14 @@ const DOM = (() => {
     //todo: create a function that sets the text content of todo items to its corresponding object
     const updateTodoItemValues = () => {
         const Inputs = document.querySelectorAll(".itemContentDisplay > *");
+            console.log(Inputs)
             const title = Inputs[0].value;
             const description = Inputs[1].value;
             const dueDate = Inputs[2].value;
             let priority = Inputs[3].childNodes;
             const notes = Inputs[4].value;
             const checklist = Inputs[5].childNodes;
+            console.log(description)
 
             // sets priority value
             for(const option of priority) {
@@ -497,7 +500,7 @@ const DOM = (() => {
 
     const setSelectedProject = (e) => {
         // const index = +e.target.parentNode.dataset.index;
-        const index = e.currentTarget.dataset.index;
+        const index = +e.currentTarget.dataset.index;
         const thisProject =  projectsContainer[index];
         currentlySelectedProject = thisProject; 
         console.log({currentlySelectedProject});
@@ -510,6 +513,8 @@ const DOM = (() => {
         projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (event) => {
                         setSelectedProject(event);
+                        let test = JSON.parse(localStorage.getItem("currentlySelectedProject")); 
+                        console.log(test);
                         removeTodoItems();
                         removeItemContentsfromDisplay();
                         displayFirstItemContent(currentlySelectedProject);
@@ -522,6 +527,7 @@ const DOM = (() => {
 
             const projectTitleTextarea = project.childNodes[0];
             project.addEventListener("dblclick", () => projectTitleTextarea.readOnly = false);
+
             project.addEventListener("focusout", () => {
                 projectTitleTextarea.readOnly = true;
                 currentlySelectedProject.title = projectTitleTextarea.value;
@@ -587,10 +593,11 @@ const DOM = (() => {
 
         const addButtons = document.querySelectorAll(".checklistItem .add");
 
+        
         const handleAddButtons = () => {
+                console.log(document.querySelectorAll(".itemContentDisplay > *"));
                 const newChecklistItem = todoItem.checklist.createItem("Create a checklist item here");
                 todoItem.checklist.addItem(newChecklistItem, currentlySelectedTodoItem);
-                console.log(currentlySelectedTodoItem);
                 removeItemContentsfromDisplay();
                 displayTodoItemContents(currentlySelectedTodoItem);
                 addEventListenersToChecklistButtons();
@@ -603,7 +610,7 @@ const DOM = (() => {
 
     const addEventListenersToItemContent = () => {
         const itemContent = document.querySelector(".itemContentDisplay");
-            itemContent.addEventListener("focusout", (event) => {
+            itemContent.addEventListener("change", (event) => {
                 updateTodoItemValues();
                 const titleTextarea = 0;
                 if(getIndexOfElementFromEvent(event.target) == titleTextarea){

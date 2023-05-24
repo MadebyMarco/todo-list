@@ -146,8 +146,6 @@ const todoItem = (() => {
 
 })();
 
-
-
 const defaultProject = project.create("default");
 const test1 = project.create("test1", [todoItem.create("showering")]);
 const test2 = project.create("test2", [todoItem.create("gaming")]);
@@ -236,8 +234,6 @@ const DOM = (() => {
             return newProject;
     }
 
-
-
     const _createTodoItemsDiv = () => {
         const div = document.createElement("div");
         const h1 = document.createElement("h1");
@@ -252,7 +248,6 @@ const DOM = (() => {
         div.classList.add("itemContentDisplay");
         return div;
     }
-
 
     const _displayTodoItems = () => {
         const todoContainer = document.querySelector(".todoItemsContainer");
@@ -307,36 +302,6 @@ const DOM = (() => {
         }
         return ul;
     }
-
-    const displayChecklistItemLi = (checklistItem) => {
-            const li = document.createElement("li");
-            const textarea = document.createElement("textarea");
-            const input = document.createElement("input");
-            const addChecklistItemButtom = document.createElement("button");
-            const removeChecklistItemButton = document.createElement("button");
-
-            addChecklistItemButtom.textContent = "+";
-            removeChecklistItemButton.textContent = "-";
-            input.type = "checkbox";
-            textarea.textContent = `${checklistItem.checklistItemName}`;
-            addChecklistItemButtom.classList.add("add");
-            removeChecklistItemButton.classList.add("remove");
-            li.classList.add("checklistItem");
-
-            
-            li.append(
-                input,
-                textarea,
-                addChecklistItemButtom,
-                removeChecklistItemButton
-            );
-            
-            const container = document.querySelector("ul.checklist");
-            container.append(li);
-    }
-
-
-
 
     const _getCurrentItemFromEvent = (event) => {
         const index = _getIndexOfElementFromEvent(event.currentTarget);
@@ -448,7 +413,6 @@ const DOM = (() => {
                 currentlySelectedTodoItem.checklist[i].checklistItemName = `${itemName}`;
             }
     }
-
     
     const _getIndexOfElementFromEvent = (eventTargetChild) => {
         // const siblings = [...event.target.parentNode.parentNode.children]; 
@@ -472,15 +436,12 @@ const DOM = (() => {
             }
         }
     }
-
-
     
     const _todoItems = () => document.querySelectorAll(".todoItems");
 
     const _removeTodoItems = () => {
         _todoItems().forEach(item => item.remove());
     }
-
 
     const _setProjectIndexes = () => {
         for(let i = 0; i < _projectsOnDisplay().length; i++) {
@@ -522,7 +483,6 @@ const DOM = (() => {
     const _setCurrentlySelectedProject = (project) => {
             currentlySelectedProject = project;
     }
-
 
     const _addEventListenersToProjects = () => {
         _projectsOnDisplay().forEach(project => {
@@ -574,7 +534,6 @@ const DOM = (() => {
         });
     }
 
-
     const _addEventListenerToProjectButton = () => {
         const button = document.querySelector(".createProject")
         button.addEventListener("click", () => {
@@ -611,7 +570,6 @@ const DOM = (() => {
         }
 
         const addButtons = document.querySelectorAll(".checklistItem .add");
-
         
         const _handleAddButtons = () => {
             const newChecklistItem = todoItem.checklist.createItem("Create a checklist item here");
@@ -641,14 +599,6 @@ const DOM = (() => {
         });
         
     }
-    
-
-    const removeEventListeners = (elements, type, listener) => {
-        for(let i = 0; i < elements.length; i++) {
-            elements[i].removeEventListener(type, listener);
-        }
-
-    }
 
     const _displayFirstItemContent = (project) => {
         const firstItem = project.items[0];
@@ -658,7 +608,6 @@ const DOM = (() => {
     const _setCurrentTodoItemToFirstItemOfCurrentProject = () => {
         currentlySelectedTodoItem = currentlySelectedProject.items[0];
     }
-
 
     const load = () => {
         contentDiv.append(

@@ -460,7 +460,7 @@ const DOM = (() => {
 
     const _projectsOnDisplay = () => document.querySelectorAll(".projectsContainer > .project");
 
-    const clearProjectsOnDisplay = () => {
+    const _clearProjectsOnDisplay = () => {
         _projectsOnDisplay().forEach(project => project.remove());
     }
 
@@ -474,11 +474,16 @@ const DOM = (() => {
             textarea.readOnly = true;
             div.classList.add("project");
 
-            div.appendChild(textarea);
+            div.append(textarea, _createDeleteButton());
             container.appendChild(div);
         });
     }
-
+    const _createDeleteButton = () => {
+        const button = document.createElement("button");
+        button.textContent = "Delete";
+        button.classList.add("deleteButton");
+        return button;
+    }
 
     const _setCurrentlySelectedProject = (project) => {
             currentlySelectedProject = project;
@@ -498,6 +503,7 @@ const DOM = (() => {
                 _addEventListenersToTodoItems();
                 _addEventListenersToChecklistButtons();
                 _updatePriorityIndicator();
+                _handleDeleteButtonsForProjects(event);
             });
 
             const projectTitleTextarea = project.childNodes[0];
@@ -509,6 +515,16 @@ const DOM = (() => {
             });
         });
     }
+    const _handleDeleteButtonsForProjects = (event) => {
+                if(event.target.classList == "deleteButton") {
+                    project.removeFromProjectsContainer(currentlySelectedProject);
+                    setProjectsContainerFromStorage();
+                    _clearProjectsOnDisplay();
+                    _displayProjects();
+                    _setCurrentlySelectedProject(projectsContainer[0]);
+                }
+    } 
+
 
     const _addEventListenersToTodoItems = () => {
         const todoItems = document.querySelectorAll(".todoItemListItem");
@@ -542,7 +558,7 @@ const DOM = (() => {
             );
             setProjectsContainerFromStorage();
             console.log({projectsContainer});
-            clearProjectsOnDisplay();
+            _clearProjectsOnDisplay();
             _displayProjects();
             _addEventListenersToProjects();
             _setProjectIndexes();
@@ -638,4 +654,5 @@ const DOM = (() => {
 })();
 
 DOM.load();
-// todo: implement localStorage to save project container. I think if i only store project container I can get away with storing the whole site in one object ahahaha, if thats how it works not sure
+//todo: add remove button to projects and todo items. 
+//todo: add selected classes to currentItems and CurrentProjects

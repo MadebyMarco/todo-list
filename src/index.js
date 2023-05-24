@@ -151,7 +151,33 @@ const todoItem = (() => {
 const defaultProject = project.create("default");
 const test1 = project.create("test1", [todoItem.create("showering")]);
 const test2 = project.create("test2", [todoItem.create("gaming")]);
-const projectsContainer = [];
+let projectsContainer = [];
+// let loaded = sessionStorage.setItem("IsThisFristTimeLoading", "true");
+
+const setProjectsContainerFromStorage = () => {
+    localStorage.setItem("projectsContainer", JSON.stringify(projectsContainer));
+    console.log({projectsContainer});
+}
+
+const syncProjectContainers = () => {
+    projectsContainer = getProjectsContainerFromStorage();
+}
+
+
+const getProjectsContainerFromStorage = () => JSON.parse(localStorage.getItem("projectsContainer"));
+/** 
+ Structure for implementing local storage into already existing code that runs without it
+ 1. The projectsContainer in and not in localStorage are fighting against eachother. 
+    1.1 Set the startup variable to the localStorage one on startup. 
+        This will prevent the default variable from overwriting the localStorage on start
+    1.2 create a function that will return a boolean on weather or not a localStorage of projectsContainer exists
+
+2. Updating the stored variable 
+    I think I can literally just update the projectsContainer 
+    When I update it is important. For the most part. I think setting the projects container is the important part. IT was.
+ * */ 
+
+
 
 const testItem = todoItem.create(
     "cleaning",
@@ -172,10 +198,11 @@ todoItem.checklist.convertToObjects(testItem);
 todoItem.checklist.checkItem(0, testItem);
 // todoItem.checklist.removeItem("test", testItem);
 todoItem.markCompleted(testItem);
+syncProjectContainers();
 
 
-let currentlySelectedProject = defaultProject; 
-let currentlySelectedTodoItem = defaultProject.items[0];
+let currentlySelectedProject = projectsContainer[0]; 
+let currentlySelectedTodoItem = currentlySelectedProject.items[0];
 
 const DOM = (() => {
     const contentDiv = document.querySelector("#content");
@@ -210,10 +237,6 @@ const DOM = (() => {
             return newProject;
     }
 
-    const setCurrentlySelectedProject = (project) => {
-            currentlySelectedProject = project;
-            localStorage.setItem("currentlySelectedProject", JSON.stringify(currentlySelectedProject));
-    }
 
 
     const createTodoItemsDiv = () => {
@@ -236,7 +259,6 @@ const DOM = (() => {
         const todoContainer = document.querySelector(".todoItemsContainer");
         const ul = document.createElement("ul");
         ul.classList.add("todoItems");
-        
         currentlySelectedProject.items.forEach(item => {
             const li = document.createElement("li");
             const h3 = document.createElement("h3");
@@ -452,7 +474,6 @@ const DOM = (() => {
         }
     }
 
-    let currentlySelectedTodoItem = currentlySelectedProject.items[0];
 
     
     const todoItems = () => document.querySelectorAll(".todoItems");
@@ -485,7 +506,7 @@ const DOM = (() => {
 
     const displayProjects = () => {
         const container = document.querySelector(".projectsContainer");
-        projectsContainer.forEach((project) => {
+        getProjectsContainerFromStorage().forEach((project) => {
             const div = document.createElement("div");
             const textarea = document.createElement("textarea");
 
@@ -501,28 +522,30 @@ const DOM = (() => {
     const setSelectedProject = (e) => {
         // const index = +e.target.parentNode.dataset.index;
         const index = +e.currentTarget.dataset.index;
-        const thisProject =  projectsContainer[index];
+        const thisProject = projectsContainer[index];
         currentlySelectedProject = thisProject; 
         console.log({currentlySelectedProject});
     }
 
-
+    const setCurrentlySelectedProject = (project) => {
+            currentlySelectedProject = project;
+    }
 
 
     const addEventListenersToProjects = () => {
         projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (event) => {
-                        setSelectedProject(event);
-                        let test = JSON.parse(localStorage.getItem("currentlySelectedProject")); 
-                        console.log(test);
-                        removeTodoItems();
-                        removeItemContentsfromDisplay();
-                        displayFirstItemContent(currentlySelectedProject);
-                        setCurrentTodoItemToFirstItemOfCurrentProject();
-                        displayTodoItems();
-                        addEventListenersToTodoItems();
-                        addEventListenersToChecklistButtons();
-                        updatePriorityIndicator();
+                setProjectsContainerFromStorage();
+                setSelectedProject(event);
+                removeTodoItems();
+                removeItemContentsfromDisplay();
+                console.log({currentlySelectedProject});
+                displayFirstItemContent(currentlySelectedProject);
+                setCurrentTodoItemToFirstItemOfCurrentProject();
+                displayTodoItems();
+                addEventListenersToTodoItems();
+                addEventListenersToChecklistButtons();
+                updatePriorityIndicator();
             });
 
             const projectTitleTextarea = project.childNodes[0];
@@ -532,7 +555,7 @@ const DOM = (() => {
                 projectTitleTextarea.readOnly = true;
                 currentlySelectedProject.title = projectTitleTextarea.value;
             });
-        })
+        });
     }
 
     const addEventListenersToTodoItems = () => {
@@ -541,7 +564,7 @@ const DOM = (() => {
             todoItems[i].addEventListener("click", (event) => {
                 removeItemContentsfromDisplay();
                 currentlySelectedTodoItem = getCurrentItemFromEvent(event);
-                console.log(currentlySelectedTodoItem);
+                console.log({currentlySelectedTodoItem});
                 displayTodoItemContents(currentlySelectedTodoItem);
             });
         }
@@ -554,6 +577,7 @@ const DOM = (() => {
             removeTodoItems()
             displayTodoItems(event);
             addEventListenersToTodoItems(event);
+            setProjectsContainerFromStorage();
         });
     }
 
@@ -564,6 +588,7 @@ const DOM = (() => {
             setCurrentlySelectedProject(
                 createProjectWithTodoItem()
             );
+            setProjectsContainerFromStorage();
             console.log({projectsContainer});
             clearProjectsOnDisplay();
             displayProjects();
@@ -584,6 +609,7 @@ const DOM = (() => {
                     removeItemContentsfromDisplay();
                     displayTodoItemContents(currentlySelectedTodoItem);
                     addEventListenersToChecklistButtons();
+                    setProjectsContainerFromStorage();
                  }
         }
 
@@ -601,6 +627,7 @@ const DOM = (() => {
                 removeItemContentsfromDisplay();
                 displayTodoItemContents(currentlySelectedTodoItem);
                 addEventListenersToChecklistButtons();
+                setProjectsContainerFromStorage();
         }
 
         for(let i = 0; i < addButtons.length; i++) {
@@ -612,6 +639,7 @@ const DOM = (() => {
         const itemContent = document.querySelector(".itemContentDisplay");
             itemContent.addEventListener("change", (event) => {
                 updateTodoItemValues();
+                setProjectsContainerFromStorage();
                 const titleTextarea = 0;
                 if(getIndexOfElementFromEvent(event.target) == titleTextarea){
                     removeTodoItems();
@@ -649,6 +677,7 @@ const DOM = (() => {
             createTodoItemContentDiv(),
         );
         displayProjects();
+        setProjectsContainerFromStorage();
         setProjectIndexes();
         displayTodoItems();
         updatePriorityIndicator();

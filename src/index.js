@@ -566,6 +566,7 @@ const DOM = (() => {
                 currentlySelectedTodoItem = getCurrentItemFromEvent(event);
                 console.log({currentlySelectedTodoItem});
                 displayTodoItemContents(currentlySelectedTodoItem);
+                addEventListenersToChecklistButtons();
             });
         }
     }
@@ -621,13 +622,12 @@ const DOM = (() => {
 
         
         const handleAddButtons = () => {
-                console.log(document.querySelectorAll(".itemContentDisplay > *"));
-                const newChecklistItem = todoItem.checklist.createItem("Create a checklist item here");
-                todoItem.checklist.addItem(newChecklistItem, currentlySelectedTodoItem);
-                removeItemContentsfromDisplay();
-                displayTodoItemContents(currentlySelectedTodoItem);
-                addEventListenersToChecklistButtons();
-                setProjectsContainerFromStorage();
+            const newChecklistItem = todoItem.checklist.createItem("Create a checklist item here");
+            todoItem.checklist.addItem(newChecklistItem, currentlySelectedTodoItem);
+            removeItemContentsfromDisplay();
+            displayTodoItemContents(currentlySelectedTodoItem);
+            addEventListenersToChecklistButtons();
+            setProjectsContainerFromStorage();
         }
 
         for(let i = 0; i < addButtons.length; i++) {

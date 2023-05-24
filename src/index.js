@@ -519,13 +519,6 @@ const DOM = (() => {
         });
     }
 
-    const setSelectedProject = (e) => {
-        // const index = +e.target.parentNode.dataset.index;
-        const index = +e.currentTarget.dataset.index;
-        const thisProject = projectsContainer[index];
-        currentlySelectedProject = thisProject; 
-        console.log({currentlySelectedProject});
-    }
 
     const setCurrentlySelectedProject = (project) => {
             currentlySelectedProject = project;
@@ -536,7 +529,8 @@ const DOM = (() => {
         projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (event) => {
                 setProjectsContainerFromStorage();
-                setSelectedProject(event);
+                // setSelectedProject(event);
+                setCurrentlySelectedProject(projectsContainer[+event.currentTarget.dataset.index]);
                 removeTodoItems();
                 removeItemContentsfromDisplay();
                 console.log({currentlySelectedProject});

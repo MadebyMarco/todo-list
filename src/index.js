@@ -152,14 +152,13 @@ const defaultProject = project.create("default");
 const test1 = project.create("test1", [todoItem.create("showering")]);
 const test2 = project.create("test2", [todoItem.create("gaming")]);
 let projectsContainer = [];
-// let loaded = sessionStorage.setItem("IsThisFristTimeLoading", "true");
 
 const setProjectsContainerFromStorage = () => {
     localStorage.setItem("projectsContainer", JSON.stringify(projectsContainer));
     console.log({projectsContainer});
 }
 
-const syncProjectContainers = () => {
+const syncProjectsContainers = () => {
     projectsContainer = getProjectsContainerFromStorage();
 }
 
@@ -198,7 +197,7 @@ todoItem.checklist.convertToObjects(testItem);
 todoItem.checklist.checkItem(0, testItem);
 // todoItem.checklist.removeItem("test", testItem);
 todoItem.markCompleted(testItem);
-syncProjectContainers();
+syncProjectsContainers();
 
 
 let currentlySelectedProject = projectsContainer[0]; 
@@ -207,7 +206,7 @@ let currentlySelectedTodoItem = currentlySelectedProject.items[0];
 const DOM = (() => {
     const contentDiv = document.querySelector("#content");
 
-    const createProjectButton = () => {
+    const _createProjectButton = () => {
         const button = document.createElement("button");
         button.textContent = "Create New Project +";
         button.classList.add("createProject");
@@ -215,21 +214,21 @@ const DOM = (() => {
     }
 
 
-    const addItemToSelectedProject = () => {
+    const _addItemToSelectedProject = () => {
             // const index = +e.target.parentNode.dataset.index;
             // const thisProject = projectsContainer[index];
             const newItem = todoItem.create("Empty");
             project.addItem(newItem, currentlySelectedProject);
     }
 
-    const createTodoItemButton = () => {
+    const _createTodoItemButton = () => {
         const button = document.createElement("button");
         button.textContent = "Add todo item+";
         button.classList.add("createTodoItem");
         return button
     }
 
-    const createProjectWithTodoItem = () => {
+    const _createProjectWithTodoItem = () => {
             const newProject = project.create("New Project Title");
             const newItem = todoItem.create("New Item Title");
             project.addToProjectsContainer(newProject);
@@ -239,7 +238,7 @@ const DOM = (() => {
 
 
 
-    const createTodoItemsDiv = () => {
+    const _createTodoItemsDiv = () => {
         const div = document.createElement("div");
         const h1 = document.createElement("h1");
         h1.textContent = "Todo Items";
@@ -248,14 +247,14 @@ const DOM = (() => {
         return div;
     }
 
-    const createTodoItemContentDiv = () => {
+    const _createTodoItemContentDiv = () => {
         const div = document.createElement("div");
         div.classList.add("itemContentDisplay");
         return div;
     }
 
 
-    const displayTodoItems = () => {
+    const _displayTodoItems = () => {
         const todoContainer = document.querySelector(".todoItemsContainer");
         const ul = document.createElement("ul");
         ul.classList.add("todoItems");
@@ -275,7 +274,7 @@ const DOM = (() => {
         todoContainer.appendChild(ul);
     }
     //add a way to create new checklist items, remove them too
-    const createChecklist = (item) => { 
+    const _createChecklist = (item) => { 
         const ul = document.createElement("ul");
         for(let i = 0; i < item.checklist.length; i++) {
             const li = document.createElement("li");
@@ -339,13 +338,13 @@ const DOM = (() => {
 
 
 
-    const getCurrentItemFromEvent = (event) => {
-        const index = getIndexOfElementFromEvent(event.currentTarget);
+    const _getCurrentItemFromEvent = (event) => {
+        const index = _getIndexOfElementFromEvent(event.currentTarget);
         const currentItem = currentlySelectedProject.items[index];
         return currentItem;
     } 
 
-    const displayTodoItemContents = (item) => {
+    const _displayTodoItemContents = (item) => {
         const container = document.querySelector(".itemContentDisplay");
         const itemTitle = document.createElement("textarea");
         const itemDescription = document.createElement("textarea");
@@ -389,12 +388,12 @@ const DOM = (() => {
             itemDueDate,
             itemPriority,
             itemNotes,
-            createChecklist(item),
+            _createChecklist(item),
         );
 
     }
 
-    const updatePriorityIndicator = () => {
+    const _updatePriorityIndicator = () => {
         const indicators = document.querySelectorAll(".priorityIndicator");
         for(let i = 0; i < indicators.length; i++) {
             const currentIndicator = indicators[i];
@@ -418,7 +417,7 @@ const DOM = (() => {
     }
 
     //todo: create a function that sets the text content of todo items to its corresponding object
-    const updateTodoItemValues = () => {
+    const _updateTodoItemValues = () => {
         const Inputs = document.querySelectorAll(".itemContentDisplay > *");
             console.log(Inputs)
             const title = Inputs[0].value;
@@ -451,7 +450,7 @@ const DOM = (() => {
     }
 
     
-    const getIndexOfElementFromEvent = (eventTargetChild) => {
+    const _getIndexOfElementFromEvent = (eventTargetChild) => {
         // const siblings = [...event.target.parentNode.parentNode.children]; 
         // const targetChild = event.target.parentNode;
         // const siblings = [...event.currentTarget.parentNode.children]; 
@@ -463,7 +462,7 @@ const DOM = (() => {
         return index;
     }
 
-    const removeItemContentsfromDisplay = () => {
+    const _removeItemContentsfromDisplay = () => {
         const itemContents = () => document.querySelectorAll(".itemContentDisplay > *");
         if(itemContents() == null) {
             console.log("items not found");
@@ -476,20 +475,20 @@ const DOM = (() => {
 
 
     
-    const todoItems = () => document.querySelectorAll(".todoItems");
+    const _todoItems = () => document.querySelectorAll(".todoItems");
 
-    const removeTodoItems = () => {
-        todoItems().forEach(item => item.remove());
+    const _removeTodoItems = () => {
+        _todoItems().forEach(item => item.remove());
     }
 
 
-    const setProjectIndexes = () => {
-        for(let i = 0; i < projectsOnDisplay().length; i++) {
-            projectsOnDisplay()[i].dataset.index = `${i}`;
+    const _setProjectIndexes = () => {
+        for(let i = 0; i < _projectsOnDisplay().length; i++) {
+            _projectsOnDisplay()[i].dataset.index = `${i}`;
         }
     }
 
-    const createProjectsDiv = () => {
+    const _createProjectsDiv = () => {
         const div = document.createElement("div");
         div.classList.add("projectsContainer");
         const h1 = document.createElement("h1");
@@ -498,13 +497,13 @@ const DOM = (() => {
         return div;
     }
 
-    const projectsOnDisplay = () => document.querySelectorAll(".projectsContainer > .project");
+    const _projectsOnDisplay = () => document.querySelectorAll(".projectsContainer > .project");
 
     const clearProjectsOnDisplay = () => {
-        projectsOnDisplay().forEach(project => project.remove());
+        _projectsOnDisplay().forEach(project => project.remove());
     }
 
-    const displayProjects = () => {
+    const _displayProjects = () => {
         const container = document.querySelector(".projectsContainer");
         getProjectsContainerFromStorage().forEach((project) => {
             const div = document.createElement("div");
@@ -520,26 +519,25 @@ const DOM = (() => {
     }
 
 
-    const setCurrentlySelectedProject = (project) => {
+    const _setCurrentlySelectedProject = (project) => {
             currentlySelectedProject = project;
     }
 
 
-    const addEventListenersToProjects = () => {
-        projectsOnDisplay().forEach(project => {
+    const _addEventListenersToProjects = () => {
+        _projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (event) => {
                 setProjectsContainerFromStorage();
-                // setSelectedProject(event);
-                setCurrentlySelectedProject(projectsContainer[+event.currentTarget.dataset.index]);
-                removeTodoItems();
-                removeItemContentsfromDisplay();
+                _setCurrentlySelectedProject(projectsContainer[+event.currentTarget.dataset.index]);
+                _removeTodoItems();
+                _removeItemContentsfromDisplay();
                 console.log({currentlySelectedProject});
-                displayFirstItemContent(currentlySelectedProject);
-                setCurrentTodoItemToFirstItemOfCurrentProject();
-                displayTodoItems();
-                addEventListenersToTodoItems();
-                addEventListenersToChecklistButtons();
-                updatePriorityIndicator();
+                _displayFirstItemContent(currentlySelectedProject);
+                _setCurrentTodoItemToFirstItemOfCurrentProject();
+                _displayTodoItems();
+                _addEventListenersToTodoItems();
+                _addEventListenersToChecklistButtons();
+                _updatePriorityIndicator();
             });
 
             const projectTitleTextarea = project.childNodes[0];
@@ -552,58 +550,58 @@ const DOM = (() => {
         });
     }
 
-    const addEventListenersToTodoItems = () => {
+    const _addEventListenersToTodoItems = () => {
         const todoItems = document.querySelectorAll(".todoItemListItem");
         for(let i = 0; i < todoItems.length; i++) {
             todoItems[i].addEventListener("click", (event) => {
-                removeItemContentsfromDisplay();
-                currentlySelectedTodoItem = getCurrentItemFromEvent(event);
+                _removeItemContentsfromDisplay();
+                currentlySelectedTodoItem = _getCurrentItemFromEvent(event);
                 console.log({currentlySelectedTodoItem});
-                displayTodoItemContents(currentlySelectedTodoItem);
-                addEventListenersToChecklistButtons();
+                _displayTodoItemContents(currentlySelectedTodoItem);
+                _addEventListenersToChecklistButtons();
             });
         }
     }
 
-    const addEventListenerToTodoItemButton = (event) => {
+    const _addEventListenerToTodoItemButton = (event) => {
         const button = document.querySelector(".createTodoItem");
         button.addEventListener("click", (event) => {
-            addItemToSelectedProject();
-            removeTodoItems()
-            displayTodoItems(event);
-            addEventListenersToTodoItems(event);
+            _addItemToSelectedProject();
+            _removeTodoItems()
+            _displayTodoItems(event);
+            _addEventListenersToTodoItems(event);
             setProjectsContainerFromStorage();
         });
     }
 
 
-    const addEventListenerToProjectButton = () => {
+    const _addEventListenerToProjectButton = () => {
         const button = document.querySelector(".createProject")
         button.addEventListener("click", () => {
-            setCurrentlySelectedProject(
-                createProjectWithTodoItem()
+            _setCurrentlySelectedProject(
+                _createProjectWithTodoItem()
             );
             setProjectsContainerFromStorage();
             console.log({projectsContainer});
             clearProjectsOnDisplay();
-            displayProjects();
-            addEventListenersToProjects();
-            setProjectIndexes();
+            _displayProjects();
+            _addEventListenersToProjects();
+            _setProjectIndexes();
         });
     }
 
-    const addEventListenersToChecklistButtons = () => {
+    const _addEventListenersToChecklistButtons = () => {
         const removeButtons = document.querySelectorAll(".checklistItem .remove");
         const handleRemoveButtons = (event) => {
                 const checklist = event.currentTarget.parentNode.parentNode;
                 if(checklist.childElementCount != 1) {
-                    // updateTodoItemValues();
-                    const itemForRemovalIndex = getIndexOfElementFromEvent(event.currentTarget.parentNode);
+                    // _updateTodoItemValues();
+                    const itemForRemovalIndex = _getIndexOfElementFromEvent(event.currentTarget.parentNode);
                     console.log(itemForRemovalIndex);
                     todoItem.checklist.removeItem(itemForRemovalIndex, currentlySelectedTodoItem);
-                    removeItemContentsfromDisplay();
-                    displayTodoItemContents(currentlySelectedTodoItem);
-                    addEventListenersToChecklistButtons();
+                    _removeItemContentsfromDisplay();
+                    _displayTodoItemContents(currentlySelectedTodoItem);
+                    _addEventListenersToChecklistButtons();
                     setProjectsContainerFromStorage();
                  }
         }
@@ -615,30 +613,30 @@ const DOM = (() => {
         const addButtons = document.querySelectorAll(".checklistItem .add");
 
         
-        const handleAddButtons = () => {
+        const _handleAddButtons = () => {
             const newChecklistItem = todoItem.checklist.createItem("Create a checklist item here");
             todoItem.checklist.addItem(newChecklistItem, currentlySelectedTodoItem);
-            removeItemContentsfromDisplay();
-            displayTodoItemContents(currentlySelectedTodoItem);
-            addEventListenersToChecklistButtons();
+            _removeItemContentsfromDisplay();
+            _displayTodoItemContents(currentlySelectedTodoItem);
+            _addEventListenersToChecklistButtons();
             setProjectsContainerFromStorage();
         }
 
         for(let i = 0; i < addButtons.length; i++) {
-            addButtons[i].addEventListener("click", handleAddButtons);
+            addButtons[i].addEventListener("click", _handleAddButtons);
         }
     }
 
-    const addEventListenersToItemContent = () => {
+    const _addEventListenersToItemContent = () => {
         const itemContent = document.querySelector(".itemContentDisplay");
             itemContent.addEventListener("change", (event) => {
-                updateTodoItemValues();
+                _updateTodoItemValues();
                 setProjectsContainerFromStorage();
                 const titleTextarea = 0;
-                if(getIndexOfElementFromEvent(event.target) == titleTextarea){
-                    removeTodoItems();
-                    displayTodoItems();
-                    addEventListenersToTodoItems();
+                if(_getIndexOfElementFromEvent(event.target) == titleTextarea){
+                    _removeTodoItems();
+                    _displayTodoItems();
+                    _addEventListenersToTodoItems();
                 } 
         });
         
@@ -652,36 +650,36 @@ const DOM = (() => {
 
     }
 
-    const displayFirstItemContent = (project) => {
+    const _displayFirstItemContent = (project) => {
         const firstItem = project.items[0];
-        displayTodoItemContents(firstItem);
+        _displayTodoItemContents(firstItem);
     }
 
-    const setCurrentTodoItemToFirstItemOfCurrentProject = () => {
+    const _setCurrentTodoItemToFirstItemOfCurrentProject = () => {
         currentlySelectedTodoItem = currentlySelectedProject.items[0];
     }
 
 
     const load = () => {
         contentDiv.append(
-            createProjectButton(),
-            createTodoItemButton(),
-            createProjectsDiv(),
-            createTodoItemsDiv(),
-            createTodoItemContentDiv(),
+            _createProjectButton(),
+            _createTodoItemButton(),
+            _createProjectsDiv(),
+            _createTodoItemsDiv(),
+            _createTodoItemContentDiv(),
         );
-        displayProjects();
+        _displayProjects();
         setProjectsContainerFromStorage();
-        setProjectIndexes();
-        displayTodoItems();
-        updatePriorityIndicator();
-        displayFirstItemContent(currentlySelectedProject);
-        addEventListenersToProjects();
-        addEventListenersToTodoItems();
-        addEventListenerToTodoItemButton();
-        addEventListenerToProjectButton();
-        addEventListenersToChecklistButtons();
-        addEventListenersToItemContent();
+        _setProjectIndexes();
+        _displayTodoItems();
+        _updatePriorityIndicator();
+        _displayFirstItemContent(currentlySelectedProject);
+        _addEventListenersToProjects();
+        _addEventListenersToTodoItems();
+        _addEventListenerToTodoItemButton();
+        _addEventListenerToProjectButton();
+        _addEventListenersToChecklistButtons();
+        _addEventListenersToItemContent();
     }
 
     return {

@@ -225,7 +225,6 @@ const DOM = (() => {
 
 
     const _addItemToSelectedProject = () => {
-            // const index = +e.target.parentNode.dataset.index;
             // const thisProject = projectsContainer[index];
             const newItem = todoItem.create("Empty");
             project.addItem(newItem, currentlySelectedProject);
@@ -455,11 +454,6 @@ const DOM = (() => {
         _todoItems().forEach(item => item.remove());
     }
 
-    const _setProjectIndexes = () => {
-        for(let i = 0; i < _projectsOnDisplay().length; i++) {
-            _projectsOnDisplay()[i].dataset.index = `${i}`;
-        }
-    }
 
     const _createProjectsDiv = () => {
         const div = document.createElement("div");
@@ -505,7 +499,6 @@ const DOM = (() => {
         _projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (event) => {
                 setProjectsContainerFromStorage();
-                // const index = +event.currentTarget.dataset.index;
                 // this solution below is more robust because I wont have to re Index everytime i clear projects. 
                 const index = (_getIndexOfElementFromEvent(event.currentTarget)) - 1;  //-1 because header is included in parent element
                 console.log({index})
@@ -541,7 +534,6 @@ const DOM = (() => {
                 setProjectsContainerFromStorage();
                 _clearProjectsOnDisplay();
                 _displayProjects();
-                _setProjectIndexes();
                 _addEventListenersToProjects();
                 _setCurrentlySelectedProject(projectsContainer[0]);
             }
@@ -598,7 +590,6 @@ const DOM = (() => {
             _clearProjectsOnDisplay();
             _displayProjects();
             _addEventListenersToProjects();
-            _setProjectIndexes();
         });
     }
 
@@ -672,7 +663,6 @@ const DOM = (() => {
         );
         _displayProjects();
         setProjectsContainerFromStorage();
-        _setProjectIndexes();
         _displayTodoItems();
         _updatePriorityIndicator();
         _displayFirstItemContent(currentlySelectedProject);
@@ -691,6 +681,5 @@ const DOM = (() => {
 })();
 
 DOM.load();
-// fix: after deleting a project, currentlySelectedProject equals undefined.
 //todo: add remove button to projects and todo items. 
 //todo: add selected classes to currentItems and CurrentProjects

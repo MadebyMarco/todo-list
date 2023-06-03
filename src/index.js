@@ -207,7 +207,7 @@ todoItem.checklist.convertToObjects(testItem);
 todoItem.checklist.checkItem(0, testItem);
 // todoItem.checklist.removeItem("test", testItem);
 todoItem.markCompleted(testItem);
-// syncProjectsContainers(); uncomment
+syncProjectsContainers(); 
 
 
 let currentlySelectedProject = projectsContainer[0]; 
@@ -505,13 +505,17 @@ const DOM = (() => {
         _projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (event) => {
                 setProjectsContainerFromStorage();
-                _setCurrentlySelectedProject(projectsContainer[+event.currentTarget.dataset.index]);
+                // const index = +event.currentTarget.dataset.index;
+                // this solution below is more robust because I wont have to re Index everytime i clear projects. 
+                const index = (_getIndexOfElementFromEvent(event.currentTarget)) - 1;  //-1 because header is included in parent element
+                console.log({index})
+                _setCurrentlySelectedProject(projectsContainer[index]);
                 _removeTodoItems();
                 _removeItemContentsfromDisplay();
                 console.log({currentlySelectedProject});
-                _displayFirstItemContent(currentlySelectedProject);
                 _setCurrentTodoItemToFirstItemOfCurrentProject();
                 _displayTodoItems();
+                _displayFirstItemContent(currentlySelectedProject);
                 _addEventListenersToTodoItems();
                 _addEventListenersToChecklistButtons();
                 _updatePriorityIndicator();
@@ -534,11 +538,12 @@ const DOM = (() => {
                 const index = (_getIndexOfElementFromEvent(event.currentTarget)) - 1;  //-1 because header is included in parent element
                 console.log(index)
                 project.removeFromProjectsContainer(projectsContainer[index]);
-                _setCurrentlySelectedProject(projectsContainer[0]);
                 setProjectsContainerFromStorage();
                 _clearProjectsOnDisplay();
                 _displayProjects();
+                _setProjectIndexes();
                 _addEventListenersToProjects();
+                _setCurrentlySelectedProject(projectsContainer[0]);
             }
         } else throw Error("Cant delete last project");
     } 
@@ -686,5 +691,6 @@ const DOM = (() => {
 })();
 
 DOM.load();
+// fix: after deleting a project, currentlySelectedProject equals undefined.
 //todo: add remove button to projects and todo items. 
 //todo: add selected classes to currentItems and CurrentProjects

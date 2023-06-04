@@ -82,7 +82,6 @@ const todoItem = (() => {
     //First I will search through a todoItem's checklist using the listItems index
         const checkItem = (listItemIndex, todoItem) => {
             todoItem.checklist[listItemIndex].checked = true;
-            //remember to uncheck
         }
         
         const uncheckItem = (listItemIndex, todoItem) => {
@@ -188,25 +187,18 @@ const getProjectsContainerFromStorage = () => JSON.parse(localStorage.getItem("p
 
 
 
-const testItem = todoItem.create(
-    "cleaning",
-    "bathrooms",
-    "today",
+const defaultItem = todoItem.create(
+    "Title your first todo item",
+    "You can write descriptions here",
+    "due dates go here",
     "low",
-    "make sure to get the white wood thing",
+    "area for quick notes",
     false,
-    "oo figure out how to make checklist, maybe array", "does it work", "but now how do i know someone has checked off a todolist item"
+    "create check list items here", "Click on the + to create", "and the - to remove",
     );
 
-project.addItem(testItem, defaultProject);
+project.addItem(defaultItem, defaultProject);
 project.addToProjectsContainer(defaultProject);
-project.addToProjectsContainer(test1);
-project.addToProjectsContainer(test2);
-todoItem.checklist.addItem("test", testItem);
-todoItem.checklist.convertToObjects(testItem);
-todoItem.checklist.checkItem(0, testItem);
-// todoItem.checklist.removeItem("test", testItem);
-todoItem.markCompleted(testItem);
 syncProjectsContainers(); 
 
 

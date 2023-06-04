@@ -495,6 +495,22 @@ const DOM = (() => {
             currentlySelectedProject = project;
     }
 
+    const _addCurrentlySelectedClass = (classReceiver) => {
+        classReceiver.classList.add("currentlySelected");
+    }
+
+    const _removeCurrentlySelectedClass = (classHolder) => {
+        classHolder.classList.remove("currentlySelected");
+    }
+
+    const _getCurrentlySelectedClassHolder = () => document.querySelector(".currentlySelected");
+
+    const _removeCurrentlySelectedClassFromHolder = () => {
+        if(_getCurrentlySelectedClassHolder()) {
+            _removeCurrentlySelectedClass(_getCurrentlySelectedClassHolder());
+        } else new Error("No currently selected class holder found");
+    }
+
     const _addEventListenersToProjects = () => {
         _projectsOnDisplay().forEach(project => {
             project.addEventListener("click", (event) => {

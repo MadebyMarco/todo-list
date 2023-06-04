@@ -448,11 +448,13 @@ const DOM = (() => {
         }
     }
     
-    const _todoItems = () => document.querySelectorAll(".todoItems");
+    const _getTodoItemsContainer = () => document.querySelector(".todoItems");
 
-    const _removeTodoItems = () => {
-        _todoItems().forEach(item => item.remove());
+    const _removeTodoItemsContainer = () => {
+        _getTodoItemsContainer().remove();
     }
+
+    const _getTodoItemsOnDisplay = () => document.querySelectorAll("li.todoItemListItem");
 
 
     const _createProjectsDiv = () => {
@@ -464,10 +466,10 @@ const DOM = (() => {
         return div;
     }
 
-    const _projectsOnDisplay = () => document.querySelectorAll(".projectsContainer > .project");
+    const _getProjectsOnDisplay = () => document.querySelectorAll(".projectsContainer > .project");
 
     const _clearProjectsOnDisplay = () => {
-        _projectsOnDisplay().forEach(project => project.remove());
+        _getProjectsOnDisplay().forEach(project => project.remove());
     }
 
     const _displayProjects = () => {
@@ -512,14 +514,14 @@ const DOM = (() => {
     }
 
     const _addEventListenersToProjects = () => {
-        _projectsOnDisplay().forEach(project => {
+        _getProjectsOnDisplay().forEach(project => {
             project.addEventListener("click", (event) => {
                 setProjectsContainerFromStorage();
                 // this solution below is more robust because I wont have to re Index everytime i clear projects. 
                 const index = (_getIndexOfElementFromEvent(event.currentTarget)) - 1;  //-1 because header is included in parent element
                 console.log({index})
                 _setCurrentlySelectedProject(projectsContainer[index]);
-                _removeTodoItems();
+                _removeTodoItemsContainer();
                 _removeItemContentsfromDisplay();
                 console.log({currentlySelectedProject});
                 _setCurrentTodoItemToFirstItemOfCurrentProject();
@@ -544,7 +546,7 @@ const DOM = (() => {
         });
     }
     const _handleDeleteButtonsForProjects = (event) => {
-        if(isLast(_projectsOnDisplay()) == false) {
+        if(isLast(_getProjectsOnDisplay()) == false) {
             
             if(event.target.classList == "deleteButton") {
                 const index = (_getIndexOfElementFromEvent(event.currentTarget)) - 1;  //-1 because header is included in parent element
@@ -570,18 +572,19 @@ const DOM = (() => {
                 _displayTodoItemContents(currentlySelectedTodoItem);
                 _addEventListenersToChecklistButtons();
                 _handleDeleteButtonsForTodoItems(event);
+                _removeCurrentlySelectedClassFromHolder(".currentlySelected.todoItemListItem");
+                _addCurrentlySelectedClass(event.currentTarget);
             });
         }
     }
     
     const _handleDeleteButtonsForTodoItems = (event) => {
-        const _getListItems = () => document.querySelectorAll("li.todoItemListItem");
-        if(isLast(_getListItems()) == false) {
+        if(isLast(_getTodoItemsOnDisplay()) == false) {
 
             if(event.target.classList == "deleteButton") {
                 const index = _getIndexOfElementFromEvent(event.currentTarget);
                 project.removeItem(currentlySelectedProject.items[index], currentlySelectedProject);
-                _getListItems()[index].remove();
+                _getTodoItemsOnDisplay()[index].remove();
                 setProjectsContainerFromStorage();
                 
             }
@@ -591,7 +594,7 @@ const DOM = (() => {
         const button = document.querySelector(".createTodoItem");
         button.addEventListener("click", (event) => {
             _addItemToSelectedProject();
-            _removeTodoItems()
+            _removeTodoItemsContainer()
             _displayTodoItems(event);
             _addEventListenersToTodoItems(event);
             setProjectsContainerFromStorage();
@@ -655,7 +658,7 @@ const DOM = (() => {
                 setProjectsContainerFromStorage();
                 const titleTextarea = 0;
                 if(_getIndexOfElementFromEvent(event.target) == titleTextarea){
-                    _removeTodoItems();
+                    _removeTodoItemsContainer();
                     _displayTodoItems();
                     _addEventListenersToTodoItems();
                 } 
@@ -685,7 +688,8 @@ const DOM = (() => {
         _displayTodoItems();
         _displayFirstItemContent(currentlySelectedProject);
         _updatePriorityIndicator();
-        _addCurrentlySelectedClass(_projectsOnDisplay()[0]);
+        _addCurrentlySelectedClass(_getProjectsOnDisplay()[0]);
+        _addCurrentlySelectedClass(_getTodoItemsOnDisplay()[0]);
         _addEventListenersToProjects();
         _addEventListenersToTodoItems();
         _addEventListenerToTodoItemButton();
@@ -701,5 +705,4 @@ const DOM = (() => {
 })();
 
 DOM.load();
-//todo: add remove button to projects and todo items. 
 //todo: add selected classes to currentItems and CurrentProjects

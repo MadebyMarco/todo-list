@@ -213,6 +213,12 @@ syncProjectsContainers();
 let currentlySelectedProject = projectsContainer[0]; 
 let currentlySelectedTodoItem = currentlySelectedProject.items[0];
 
+const addItemToCurrentlySelectedProject = () => {
+            // const thisProject = projectsContainer[index];
+            const newItem = todoItem.create("Empty");
+            project.addItem(newItem, currentlySelectedProject);
+}
+
 const DOM = (() => {
     const contentDiv = document.querySelector("#content");
 
@@ -221,13 +227,6 @@ const DOM = (() => {
         button.textContent = "Create New Project +";
         button.classList.add("createProject");
         return button;
-    }
-
-
-    const _addItemToSelectedProject = () => {
-            // const thisProject = projectsContainer[index];
-            const newItem = todoItem.create("Empty");
-            project.addItem(newItem, currentlySelectedProject);
     }
 
     const _createTodoItemButton = () => {
@@ -593,7 +592,7 @@ const DOM = (() => {
     const _addEventListenerToTodoItemButton = (event) => {
         const button = document.querySelector(".createTodoItem");
         button.addEventListener("click", (event) => {
-            _addItemToSelectedProject();
+            addItemToCurrentlySelectedProject();
             _removeTodoItemsContainer()
             _displayTodoItems(event);
             _addEventListenersToTodoItems(event);

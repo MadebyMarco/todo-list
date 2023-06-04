@@ -503,11 +503,11 @@ const DOM = (() => {
         classHolder.classList.remove("currentlySelected");
     }
 
-    const _getCurrentlySelectedClassHolder = () => document.querySelector(".currentlySelected");
+    const _getCurrentlySelectedClassHolder = (querySelector) => document.querySelector(querySelector);
 
-    const _removeCurrentlySelectedClassFromHolder = () => {
-        if(_getCurrentlySelectedClassHolder()) {
-            _removeCurrentlySelectedClass(_getCurrentlySelectedClassHolder());
+    const _removeCurrentlySelectedClassFromHolder = (querySelector) => {
+        if(_getCurrentlySelectedClassHolder(querySelector)) {
+            _removeCurrentlySelectedClass(_getCurrentlySelectedClassHolder(querySelector));
         } else new Error("No currently selected class holder found");
     }
 
@@ -529,6 +529,9 @@ const DOM = (() => {
                 _addEventListenersToChecklistButtons();
                 _updatePriorityIndicator();
                 _handleDeleteButtonsForProjects(event);
+                _removeCurrentlySelectedClassFromHolder(".currentlySelected.project");
+                _addCurrentlySelectedClass(event.currentTarget);
+                
             });
 
             const projectTitleTextarea = project.childNodes[0];
@@ -677,11 +680,12 @@ const DOM = (() => {
             _createTodoItemsDiv(),
             _createTodoItemContentDiv(),
         );
-        _displayProjects();
         setProjectsContainerFromStorage();
+        _displayProjects();
         _displayTodoItems();
-        _updatePriorityIndicator();
         _displayFirstItemContent(currentlySelectedProject);
+        _updatePriorityIndicator();
+        _addCurrentlySelectedClass(_projectsOnDisplay()[0]);
         _addEventListenersToProjects();
         _addEventListenersToTodoItems();
         _addEventListenerToTodoItemButton();

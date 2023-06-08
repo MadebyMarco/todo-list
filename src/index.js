@@ -7,3 +7,4 @@ import { DOM } from "./dom";
 
 DOM.load();
 // todo: separate dom and logic even further
+// todo: use date-fns for a date created :)

@@ -6,6 +6,7 @@ import {project,
     currentlySelectedTodoItem, 
     projectsContainer, 
     setCurrentlySelectedProject, 
+    setCurrentlySelectedTodoItem,
     setCurrentTodoItemToFirstItemOfCurrentProject, 
     addItemToCurrentlySelectedProject, 
     isLast
@@ -355,7 +356,7 @@ const DOM = (() => {
         for(let i = 0; i < todoItems.length; i++) {
             todoItems[i].addEventListener("click", (event) => {
                 _removeItemContentsfromDisplay();
-                currentlySelectedTodoItem = _getCurrentItemFromEvent(event);
+                setCurrentlySelectedTodoItem(_getCurrentItemFromEvent(event));
                 console.log({currentlySelectedTodoItem});
                 _displayTodoItemContents(currentlySelectedTodoItem);
                 _addEventListenersToChecklistButtons();

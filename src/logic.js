@@ -213,6 +213,10 @@ const addItemToCurrentlySelectedProject = () => {
         currentlySelectedTodoItem = currentlySelectedProject.items[0];
     }
 
+    function setCurrentlySelectedTodoItem(todoItem) {
+        currentlySelectedTodoItem = todoItem;
+    }
+
 export {
     project,
     todoItem,
@@ -223,6 +227,7 @@ export {
     setCurrentlySelectedProject,
     addItemToCurrentlySelectedProject,
     setCurrentTodoItemToFirstItemOfCurrentProject,
+    setCurrentlySelectedTodoItem,
     currentlySelectedProject, 
     currentlySelectedTodoItem,
     isLast

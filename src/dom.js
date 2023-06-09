@@ -165,8 +165,10 @@ const DOM = (() => {
         const indicators = document.querySelectorAll(".priorityIndicator");
         for(let i = 0; i < indicators.length; i++) {
             const currentIndicator = indicators[i];
-
-            switch(currentlySelectedTodoItem.priority) {
+            const currentItem = currentlySelectedProject.items[i];
+            currentIndicator.classList.remove("low", "medium", "high", "transparent");
+            
+            switch(currentItem.priority) {
                 case "low":
                     currentIndicator.classList.add("low");
                     break;
@@ -179,7 +181,7 @@ const DOM = (() => {
                 case "priority":
                     currentIndicator.classList.add("transparent");
                     break;
-                default: console.log(currentlySelectedTodoItem);
+                default: console.error("current item priority does not match");
             }
         }
     }
@@ -444,6 +446,7 @@ const DOM = (() => {
         const itemContent = document.querySelector(".itemContentDisplay");
             itemContent.addEventListener("change", (event) => {
                 _updateTodoItemValues();
+                _updatePriorityIndicator();
                 setProjectsContainerFromStorage();
                 const titleTextarea = 0;
                 if(_getIndexOfElementFromEvent(event.target) == titleTextarea){

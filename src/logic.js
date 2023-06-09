@@ -217,6 +217,24 @@ const addItemToCurrentlySelectedProject = () => {
         currentlySelectedTodoItem = todoItem;
     }
 
+    const getIndexOfElementFromEvent = (eventTargetChild) => {
+        // const siblings = [...event.target.parentNode.parentNode.children]; 
+        // const targetChild = event.target.parentNode;
+        // const siblings = [...event.currentTarget.parentNode.children]; 
+        // const targetChild = event.currentTarget;
+        const siblings = [...eventTargetChild.parentNode.children]; 
+        const targetChild = eventTargetChild;
+        const index = siblings.indexOf(targetChild);
+        console.log({targetChild, siblings, index});
+        return index;
+    }
+
+    const getCurrentItemFromEvent = (event) => {
+        const index = getIndexOfElementFromEvent(event.currentTarget);
+        const currentItem = currentlySelectedProject.items[index];
+        return currentItem;
+    } 
+
 export {
     project,
     todoItem,
@@ -230,5 +248,7 @@ export {
     setCurrentlySelectedTodoItem,
     currentlySelectedProject, 
     currentlySelectedTodoItem,
-    isLast
+    isLast,
+    getIndexOfElementFromEvent,
+    getCurrentItemFromEvent
 };

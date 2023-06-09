@@ -6,7 +6,7 @@ module.exports = {
     index: './src/index.js',
     dom: './src/dom.js',
     logic: './src/logic.js',
-    middleMan: './src/middleMan.js',
+    ui: './src/ui.js',
   },
   output: {
     filename: '[name].bundle.js',

@@ -47,6 +47,7 @@ const todoItem = (() => {
         if(checklist.length == 0) {
             checklist.push(todoItem.checklist.createItem("Create a checklist item here"));
         }
+
     
     
         return  {
@@ -144,11 +145,6 @@ const test1 = project.create("test1", [todoItem.create("showering")]);
 const test2 = project.create("test2", [todoItem.create("gaming")]);
 let projectsContainer = [];
 
-const isEmpty = (array) => {
-    if(array.length == 0) {
-        return true;
-    } else return false;
-}
 
 const isLast = (array) => {
     if(array.length == 1) {
@@ -167,6 +163,8 @@ const syncProjectsContainers = () => {
 
 
 const getProjectsContainerFromStorage = () => JSON.parse(localStorage.getItem("projectsContainer"));
+
+
 /** 
  Structure for implementing local storage into already existing code that runs without it
  1. The projectsContainer in and not in localStorage are fighting against eachother. 
@@ -188,19 +186,17 @@ const defaultItem = todoItem.create(
     "low",
     "area for quick notes",
     false,
-    "create check list items here", "Click on the + to create", "and the - to remove",
+    todoItem.checklist.createItem("create check list items here"),todoItem.checklist.createItem("Click on the + to create"),todoItem.checklist.createItem("and the - to remove"),
     );
 
 project.addItem(defaultItem, defaultProject);
 project.addToProjectsContainer(defaultProject);
-syncProjectsContainers(); 
 
 
-let currentlySelectedProject = projectsContainer[0]; 
+let currentlySelectedProject = getProjectsContainerFromStorage()[0]; 
 let currentlySelectedTodoItem = currentlySelectedProject.items[0];
 
 const addItemToCurrentlySelectedProject = () => {
-            // const thisProject = projectsContainer[index];
             const newItem = todoItem.create("Empty");
             project.addItem(newItem, currentlySelectedProject);
 }
@@ -225,7 +221,6 @@ const addItemToCurrentlySelectedProject = () => {
         const siblings = [...eventTargetChild.parentNode.children]; 
         const targetChild = eventTargetChild;
         const index = siblings.indexOf(targetChild);
-        console.log({targetChild, siblings, index});
         return index;
     }
 

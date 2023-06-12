@@ -27,7 +27,7 @@ const DOM = (() => {
         return button
     }
 
-    const _createProjectWithTodoItem = () => {
+    const createProjectWithTodoItem = () => {
             const newProject = project.create("New Project Title");
             const newItem = todoItem.create("New Item Title");
             project.addToProjectsContainer(newProject);
@@ -105,7 +105,7 @@ const DOM = (() => {
     }
 
 
-    const _displayTodoItemContents = (item) => {
+    const displayTodoItemContents = (item) => {
         const container = document.querySelector(".itemContentDisplay");
         const itemTitle = document.createElement("textarea");
         const itemDescription = document.createElement("textarea");
@@ -154,7 +154,7 @@ const DOM = (() => {
 
     }
 
-    const _updatePriorityIndicator = () => {
+    const updatePriorityIndicator = () => {
         const indicators = document.querySelectorAll(".priorityIndicator");
         for(let i = 0; i < indicators.length; i++) {
             const currentIndicator = indicators[i];
@@ -180,7 +180,7 @@ const DOM = (() => {
     }
 
     //todo: create a function that sets the text content of todo items to its corresponding object
-    const _updateTodoItemValues = () => {
+    const updateTodoItemValues = () => {
         const Inputs = document.querySelectorAll(".itemContentDisplay > *");
             console.log(Inputs)
             const title = Inputs[0].value;
@@ -230,7 +230,7 @@ const DOM = (() => {
         _getTodoItemsContainer().remove();
     }
 
-    const _getTodoItemsOnDisplay = () => document.querySelectorAll("li.todoItemListItem");
+    const getTodoItemsOnDisplay = () => document.querySelectorAll("li.todoItemListItem");
 
 
     const _createProjectsDiv = () => {
@@ -244,7 +244,7 @@ const DOM = (() => {
 
     const getProjectsOnDisplay = () => document.querySelectorAll(".projectsContainer > .project");
 
-    const _clearProjectsOnDisplay = () => {
+    const clearProjectsOnDisplay = () => {
         getProjectsOnDisplay().forEach(project => project.remove());
     }
 
@@ -270,26 +270,26 @@ const DOM = (() => {
     }
 
 
-    const _addCurrentlySelectedClass = (classReceiver) => {
+    const addCurrentlySelectedClass = (classReceiver) => {
         classReceiver.classList.add("currentlySelected");
     }
 
-    const _removeCurrentlySelectedClass = (classHolder) => {
+    const removeCurrentlySelectedClass = (classHolder) => {
         classHolder.classList.remove("currentlySelected");
     }
 
-    const _getCurrentlySelectedClassHolder = (querySelector) => document.querySelector(querySelector);
+    const getCurrentlySelectedClassHolder = (querySelector) => document.querySelector(querySelector);
 
-    const _removeCurrentlySelectedClassFromHolder = (querySelector) => {
-        if(_getCurrentlySelectedClassHolder(querySelector)) {
-            _removeCurrentlySelectedClass(_getCurrentlySelectedClassHolder(querySelector));
+    const removeCurrentlySelectedClassFromHolder = (querySelector) => {
+        if(getCurrentlySelectedClassHolder(querySelector)) {
+            removeCurrentlySelectedClass(getCurrentlySelectedClassHolder(querySelector));
         } else new Error("No currently selected class holder found");
     }
 
 
     const displayFirstItemContent = (project) => {
         const firstItem = project.items[0];
-        _displayTodoItemContents(firstItem);
+        displayTodoItemContents(firstItem);
     }
 
 
@@ -304,10 +304,11 @@ const DOM = (() => {
         setProjectsContainerFromStorage();
         displayProjects();
         displayTodoItems();
+        console.log(currentlySelectedProject)
         displayFirstItemContent(currentlySelectedProject);
-        _updatePriorityIndicator();
-        _addCurrentlySelectedClass(getProjectsOnDisplay()[0]);
-        _addCurrentlySelectedClass(_getTodoItemsOnDisplay()[0]);
+        updatePriorityIndicator();
+        addCurrentlySelectedClass(getProjectsOnDisplay()[0]);
+        addCurrentlySelectedClass(getTodoItemsOnDisplay()[0]);
     }
 
     return {
@@ -316,8 +317,18 @@ const DOM = (() => {
         getProjectsOnDisplay,
         removeItemContentsfromDisplay,
         displayTodoItems,
+        displayTodoItemContents,
+        getTodoItemsOnDisplay,
         removeTodoItemsContainer,
-        displayFirstItemContent
+        displayFirstItemContent,
+        updatePriorityIndicator,
+        addCurrentlySelectedClass,
+        removeCurrentlySelectedClass,
+        getCurrentlySelectedClassHolder,
+        removeCurrentlySelectedClassFromHolder,
+        createProjectWithTodoItem,
+        clearProjectsOnDisplay,
+        updateTodoItemValues,
     }
 
 })();

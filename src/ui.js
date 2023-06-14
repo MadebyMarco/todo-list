@@ -26,31 +26,36 @@ function handleClickOnBody(event) {
   //     break;
   // }
 
-  executeHandler([checklistRemoveButton, checklistAddButton], event);
+  executeHandler(
+    [checklistRemoveButton, checklistAddButton, projectDiv],
+    event
+  );
 }
 
 function clickEvent(selector, handler) {
   return { selector, handler };
 }
 
+function executeHandler(handlers, event) {
+  handlers.forEach((element) => {
+    if (event.target.closest(element.selector)) {
+      element.handler(event);
+    }
+  });
+}
+//create a way that we can add new event listeners that have their own handler built in so I dont create a huge switch statement
+//everytime I want to add a new event listener and its handler
 const checklistRemoveButton = clickEvent(
   "li.checklistItem > button.remove",
   handleChecklistRemoveButtons
 );
 
-const checklistAddButton = clickEvent("li.checklistItem > button.add", () =>
-  console.log("add")
+const checklistAddButton = clickEvent(
+  "li.checklistItem > button.add",
+  _handleAddButtons
 );
 
-function executeHandler(handlers, event) {
-  handlers.forEach((element) => {
-    if (event.target.closest(element.selector)) {
-      element.handler(event);
-    } else console.log("handler not found");
-  });
-}
-//create a way that we can add new event listeners that have their own handler built in so I dont create a huge switch statement
-//everytime I want to add a new event listener and its handler
+const projectDiv = clickEvent("div.project > textarea", handleProjectDiv);
 
 function handleChecklistRemoveButtons(event) {
   const checklist = document.querySelector(".checklist");
@@ -73,50 +78,63 @@ function handleChecklistRemoveButtons(event) {
   } else console.error("Cant delete last checklist item");
 }
 
+function _handleAddButtons() {
+  const newChecklistItem = todoItem.checklist.createItem(
+    "Create a checklist item here"
+  );
+  todoItem.checklist.addItem(newChecklistItem, currentlySelectedTodoItem);
+  DOM.removeItemContentsfromDisplay();
+  DOM.displayTodoItemContents(currentlySelectedTodoItem);
+  setProjectsContainerFromStorage();
+}
 const addEventListenersToChecklistButtons = () => {
   // const removeButtons = document.querySelectorAll(".checklistItem .remove");
-
   // for(let i = 0; i < removeButtons.length; i++) {
   //     removeButtons[i].addEventListener("click", (event) => handleChecklistRemoveButtons(event));
   // }
-
-  const addButtons = document.querySelectorAll(".checklistItem .add");
-
-  const _handleAddButtons = () => {
-    const newChecklistItem = todoItem.checklist.createItem(
-      "Create a checklist item here"
-    );
-    todoItem.checklist.addItem(newChecklistItem, currentlySelectedTodoItem);
-    DOM.removeItemContentsfromDisplay();
-    DOM.displayTodoItemContents(currentlySelectedTodoItem);
-    addEventListenersToChecklistButtons();
-    setProjectsContainerFromStorage();
-  };
-
-  for (let i = 0; i < addButtons.length; i++) {
-    addButtons[i].addEventListener("click", _handleAddButtons);
-  }
+  // const addButtons = document.querySelectorAll(".checklistItem .add");
+  // for (let i = 0; i < addButtons.length; i++) {
+  //   addButtons[i].addEventListener("click", _handleAddButtons);
+  // }
 };
+
+function handleProjectDiv(event) {
+  setProjectsContainerFromStorage();
+  const projectDiv = event.target.parentNode;
+  // this solution below is more robust because I wont have to re Index everytime i clear projects.
+  const index = getIndexOfElementFromEvent(projectDiv) - 1; //-1 because header is included in parent element
+  setCurrentlySelectedProject(projectsContainer[index]);
+  DOM.removeTodoItemsContainer();
+  DOM.removeItemContentsfromDisplay();
+  setCurrentTodoItemToFirstItemOfCurrentProject();
+  DOM.displayTodoItems();
+  DOM.displayFirstItemContent(currentlySelectedProject);
+  _addEventListenersToTodoItems();
+  DOM.updatePriorityIndicator();
+  _handleDeleteButtonsForProjects(event);
+  DOM.removeCurrentlySelectedClassFromHolder(".currentlySelected.project");
+  DOM.addCurrentlySelectedClass(event.target.closest("div.project"));
+}
 
 const _addEventListenersToProjects = () => {
   DOM.getProjectsOnDisplay().forEach((project) => {
-    project.addEventListener("click", (event) => {
-      setProjectsContainerFromStorage();
-      // this solution below is more robust because I wont have to re Index everytime i clear projects.
-      const index = getIndexOfElementFromEvent(event.currentTarget) - 1; //-1 because header is included in parent element
-      setCurrentlySelectedProject(projectsContainer[index]);
-      DOM.removeTodoItemsContainer();
-      DOM.removeItemContentsfromDisplay();
-      setCurrentTodoItemToFirstItemOfCurrentProject();
-      DOM.displayTodoItems();
-      DOM.displayFirstItemContent(currentlySelectedProject);
-      _addEventListenersToTodoItems();
-      addEventListenersToChecklistButtons();
-      DOM.updatePriorityIndicator();
-      _handleDeleteButtonsForProjects(event);
-      DOM.removeCurrentlySelectedClassFromHolder(".currentlySelected.project");
-      DOM.addCurrentlySelectedClass(event.currentTarget);
-    });
+    // project.addEventListener("click", (event) => {
+    //   setProjectsContainerFromStorage();
+    //   // this solution below is more robust because I wont have to re Index everytime i clear projects.
+    //   const index = getIndexOfElementFromEvent(event.currentTarget) - 1; //-1 because header is included in parent element
+    //   setCurrentlySelectedProject(projectsContainer[index]);
+    //   DOM.removeTodoItemsContainer();
+    //   DOM.removeItemContentsfromDisplay();
+    //   setCurrentTodoItemToFirstItemOfCurrentProject();
+    //   DOM.displayTodoItems();
+    //   DOM.displayFirstItemContent(currentlySelectedProject);
+    //   _addEventListenersToTodoItems();
+    //   addEventListenersToChecklistButtons();
+    //   DOM.updatePriorityIndicator();
+    //   _handleDeleteButtonsForProjects(event);
+    //   DOM.removeCurrentlySelectedClassFromHolder(".currentlySelected.project");
+    //   DOM.addCurrentlySelectedClass(event.currentTarget);
+    // });
 
     const projectTitleTextarea = project.childNodes[0];
     project.addEventListener(

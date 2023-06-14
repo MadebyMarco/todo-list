@@ -178,7 +178,7 @@ const DOM = (() => {
           currentIndicator.classList.add("transparent");
           break;
         default:
-          console.error("current item priority does not match");
+          currentIndicator.classList.add("transparent");
       }
     }
   };

@@ -5,11 +5,7 @@ import {
   getProjectsContainerFromStorage,
   currentlySelectedProject,
   currentlySelectedTodoItem,
-  getCurrentItemFromEvent,
-  getIndexOfElementFromEvent,
 } from "./logic.js";
-
-import { addEventListenersToChecklistButtons } from "./ui.js";
 
 const DOM = (() => {
   const contentDiv = document.querySelector("#content");

@@ -36,6 +36,7 @@ function handleClickOnBody(event) {
       todoItemLi,
       todoItemDeleteButton,
       createTodoItemButton,
+      createProjectButton,
     ],
     event
   );
@@ -89,21 +90,21 @@ const createTodoItemButton = clickEvent(
   handleCreateTodoItemButtonOnClick
 );
 
+const createProjectButton = clickEvent(
+  "button.createProject",
+  handleCreateProjectButtonOnClick
+);
+
 function handleChecklistRemoveButtons(event) {
   const checklist = document.querySelector(".checklist");
   if (checklist.childElementCount != 1) {
     const checklistItem = event.target.parentNode;
-    console.log(checklistItem);
-    console.log(checklistItem.parentNode);
-    // checklistItem used to be event.current.target.parentNode
     const itemForRemovalIndex = getIndexOfElementFromEvent(checklistItem);
     todoItem.checklist.removeItem(
       itemForRemovalIndex,
       currentlySelectedTodoItem
     );
-    console.log(currentlySelectedProject);
     checklistItem.remove();
-    setProjectsContainerFromStorage();
   } else console.error("Cant delete last checklist item");
 }
 
@@ -118,7 +119,6 @@ function handleAddButtons() {
 }
 
 function handleProjectDivOnClick(event) {
-  console.log({ projectsContainer });
   setProjectsContainerFromStorage();
   const projectDiv = event.target.parentNode;
   // this solution below is more robust because I wont have to re Index everytime i clear projects.
@@ -146,6 +146,7 @@ const _addEventListenersToProjects = () => {
     project.addEventListener("focusout", () => {
       projectTitleTextarea.readOnly = true;
       currentlySelectedProject.title = projectTitleTextarea.value;
+      setProjectsContainerFromStorage();
     });
   });
 };
@@ -199,16 +200,13 @@ function handleCreateTodoItemButtonOnClick() {
   setProjectsContainerFromStorage();
 }
 
-const _addEventListenerToProjectButton = () => {
-  const button = document.querySelector(".createProject");
-  button.addEventListener("click", () => {
-    setCurrentlySelectedProject(DOM.createProjectWithTodoItem());
-    setProjectsContainerFromStorage();
-    DOM.clearProjectsOnDisplay();
-    DOM.displayProjects();
-    _addEventListenersToProjects();
-  });
-};
+function handleCreateProjectButtonOnClick() {
+  setCurrentlySelectedProject(DOM.createProjectWithTodoItem());
+  setProjectsContainerFromStorage();
+  DOM.clearProjectsOnDisplay();
+  DOM.displayProjects();
+  _addEventListenersToProjects();
+}
 
 const _addEventListenersToItemContent = () => {
   const itemContent = document.querySelector(".itemContentDisplay");
@@ -217,6 +215,7 @@ const _addEventListenersToItemContent = () => {
     DOM.updatePriorityIndicator();
     setProjectsContainerFromStorage();
     const titleTextarea = 0;
+    //will redisplay todoItems if the title text area is changed
     if (getIndexOfElementFromEvent(event.target) == titleTextarea) {
       DOM.removeTodoItemsContainer();
       DOM.displayTodoItems();
@@ -226,8 +225,8 @@ const _addEventListenersToItemContent = () => {
 
 function addEventListeners() {
   _addEventListenersToProjects();
-  _addEventListenerToProjectButton();
   _addEventListenersToItemContent();
+  addEventListenerToBody();
 }
 
-export { addEventListeners, addEventListenerToBody };
+export { addEventListeners };

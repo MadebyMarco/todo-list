@@ -12,6 +12,7 @@ import {
   setCurrentTodoItemToFirstItemOfCurrentProject,
   addItemToCurrentlySelectedProject,
   isLast,
+  getProjectsContainerFromStorage,
 } from "./logic";
 import { DOM } from "./dom";
 
@@ -27,7 +28,12 @@ function handleClickOnBody(event) {
   // }
 
   executeHandler(
-    [checklistRemoveButton, checklistAddButton, projectDiv],
+    [
+      checklistRemoveButton,
+      checklistAddButton,
+      projectDiv,
+      projectDivDeleteButton,
+    ],
     event
   );
 }
@@ -55,7 +61,15 @@ const checklistAddButton = clickEvent(
   _handleAddButtons
 );
 
-const projectDiv = clickEvent("div.project > textarea", handleProjectDiv);
+const projectDiv = clickEvent(
+  "div.project > textarea",
+  handleProjectDivOnClick
+);
+
+const projectDivDeleteButton = clickEvent(
+  "div.project > button.deleteButton",
+  _handleDeleteButtonsForProjects
+);
 
 function handleChecklistRemoveButtons(event) {
   const checklist = document.querySelector(".checklist");
@@ -98,7 +112,8 @@ const addEventListenersToChecklistButtons = () => {
   // }
 };
 
-function handleProjectDiv(event) {
+function handleProjectDivOnClick(event) {
+  console.log(projectsContainer);
   setProjectsContainerFromStorage();
   const projectDiv = event.target.parentNode;
   // this solution below is more robust because I wont have to re Index everytime i clear projects.
@@ -149,19 +164,19 @@ const _addEventListenersToProjects = () => {
   });
 };
 
-const _handleDeleteButtonsForProjects = (event) => {
+function _handleDeleteButtonsForProjects(event) {
   if (event.target.classList.contains("deleteButton")) {
-    if (isLast(DOM.getProjectsOnDisplay()) == false) {
-      const index = getIndexOfElementFromEvent(event.currentTarget) - 1; //-1 because header is included in parent element
-      project.removeFromProjectsContainer(projectsContainer[index]);
-      setProjectsContainerFromStorage();
-      DOM.clearProjectsOnDisplay();
-      DOM.displayProjects();
-      _addEventListenersToProjects();
-      setCurrentlySelectedProject(projectsContainer[0]);
-    } else throw Error("Cant delete last project");
+    if (isLast(DOM.getProjectsOnDisplay()) == true) {
+      throw Error("Cant delete last project");
+    }
+    const projectDiv = event.target.closest("div.project");
+    const index = getIndexOfElementFromEvent(event.target.parentNode) - 1; //-1 because header is included in parent element
+    project.removeFromProjectsContainer(projectsContainer[index]);
+    setProjectsContainerFromStorage();
+    setCurrentlySelectedProject(getProjectsContainerFromStorage()[0]);
+    projectDiv.remove();
   }
-};
+}
 
 const _addEventListenersToTodoItems = () => {
   const todoItems = document.querySelectorAll(".todoItemListItem");

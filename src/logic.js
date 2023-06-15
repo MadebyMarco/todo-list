@@ -228,13 +228,12 @@ const getIndexOfElementFromEvent = (eventTargetChild) => {
   }
   const siblings = [...eventTargetChild.parentNode.children];
   const targetChild = eventTargetChild;
-  console.log({ siblings, targetChild });
   const index = siblings.indexOf(targetChild);
   return index;
 };
 
-const getCurrentItemFromEvent = (event) => {
-  const index = getIndexOfElementFromEvent(event.currentTarget);
+const getCurrentItemFromEvent = (target) => {
+  const index = getIndexOfElementFromEvent(target);
   const currentItem = currentlySelectedProject.items[index];
   return currentItem;
 };

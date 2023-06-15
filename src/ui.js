@@ -35,6 +35,7 @@ function handleClickOnBody(event) {
       projectDivDeleteButton,
       todoItemLi,
       todoItemDeleteButton,
+      createTodoItemButton,
     ],
     event
   );
@@ -83,6 +84,11 @@ const todoItemDeleteButton = clickEvent(
   handleDeleteButtonsForTodoItems
 );
 
+const createTodoItemButton = clickEvent(
+  "button.createTodoItem",
+  handleCreateTodoItemButtonOnClick
+);
+
 function handleChecklistRemoveButtons(event) {
   const checklist = document.querySelector(".checklist");
   if (checklist.childElementCount != 1) {
@@ -112,7 +118,7 @@ function handleAddButtons() {
 }
 
 function handleProjectDivOnClick(event) {
-  console.log(projectsContainer);
+  console.log({ projectsContainer });
   setProjectsContainerFromStorage();
   const projectDiv = event.target.parentNode;
   // this solution below is more robust because I wont have to re Index everytime i clear projects.
@@ -146,9 +152,9 @@ const _addEventListenersToProjects = () => {
 
 function handleDeleteButtonsForProjects(event) {
   if (event.target.classList.contains("deleteButton")) {
-    if (isLast(DOM.getProjectsOnDisplay()) == true) {
+    if (isLast(DOM.getProjectsOnDisplay()) == true)
       throw Error("Cant delete last project");
-    }
+
     const projectDiv = event.target.closest("div.project");
     const index = getIndexOfElementFromEvent(event.target.parentNode) - 1; //-1 because header is included in parent element
     project.removeFromProjectsContainer(projectsContainer[index]);
@@ -175,25 +181,23 @@ function handleDeleteButtonsForTodoItems(event) {
   if (isLast(DOM.getTodoItemsOnDisplay())) throw Error("Cant delete last item");
 
   const index = getIndexOfElementFromEvent(todoItem);
+  console.log(index);
   project.removeItem(
     currentlySelectedProject.items[index],
     currentlySelectedProject
   );
   todoItem.remove();
-  DOM.removeItemContentsfromDisplay();
-  DOM.displayTodoItemContents(currentlySelectedProject.items[0]);
   setProjectsContainerFromStorage();
+  DOM.removeItemContentsfromDisplay();
+  DOM.displayTodoItemContents(getProjectsContainerFromStorage()[0].items[0]);
 }
 
-const _addEventListenerToTodoItemButton = (event) => {
-  const button = document.querySelector(".createTodoItem");
-  button.addEventListener("click", (event) => {
-    addItemToCurrentlySelectedProject();
-    DOM.removeTodoItemsContainer();
-    DOM.displayTodoItems(event);
-    setProjectsContainerFromStorage();
-  });
-};
+function handleCreateTodoItemButtonOnClick() {
+  addItemToCurrentlySelectedProject();
+  DOM.removeTodoItemsContainer();
+  DOM.displayTodoItems();
+  setProjectsContainerFromStorage();
+}
 
 const _addEventListenerToProjectButton = () => {
   const button = document.querySelector(".createProject");
@@ -222,10 +226,8 @@ const _addEventListenersToItemContent = () => {
 
 function addEventListeners() {
   _addEventListenersToProjects();
-  _addEventListenerToTodoItemButton();
   _addEventListenerToProjectButton();
   _addEventListenersToItemContent();
 }
 
 export { addEventListeners, addEventListenerToBody };
-// fix: handleChecklistRemoveButtons fires on every click. Find a way to only run when its right

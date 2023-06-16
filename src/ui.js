@@ -189,7 +189,7 @@ function handleDeleteButtonsForTodoItems(event) {
 }
 
 function handleCreateTodoItemButtonOnClick() {
-  addItemToCurrentlySelectedProject();
+  project.addItem(todoItem.create("Untitled Item"), project.selected);
   DOM.removeTodoItemsContainer();
   DOM.displayTodoItems();
   setProjectsContainerFromStorage();

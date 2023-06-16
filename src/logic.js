@@ -198,11 +198,6 @@ project.addToProjectsContainer(defaultProject);
 
 let currentlySelectedTodoItem = project.selected.items[0];
 
-const addItemToCurrentlySelectedProject = () => {
-  const newItem = todoItem.create("Empty");
-  project.addItem(newItem, project.selected);
-};
-
 const setCurrentTodoItemToFirstItemOfCurrentProject = () => {
   currentlySelectedTodoItem = project.selected.items[0];
 };
@@ -237,7 +232,6 @@ export {
   syncProjectsContainers,
   setProjectsContainerFromStorage,
   getProjectsContainerFromStorage,
-  addItemToCurrentlySelectedProject,
   setCurrentTodoItemToFirstItemOfCurrentProject,
   setCurrentlySelectedTodoItem,
   currentlySelectedTodoItem,

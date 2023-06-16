@@ -1,9 +1,8 @@
 import {
   project,
-  todoItem,
   setProjectsContainerFromStorage,
   getProjectsContainerFromStorage,
-  currentlySelectedTodoItem,
+  todoItem,
 } from "./logic.js";
 
 const DOM = (() => {
@@ -187,19 +186,19 @@ const DOM = (() => {
       if (option.selected == true) priority = option.textContent.toLowerCase();
     }
 
-    currentlySelectedTodoItem.title = title;
-    currentlySelectedTodoItem.description = description;
-    currentlySelectedTodoItem.dueDate = dueDate;
-    currentlySelectedTodoItem.priority = priority;
-    currentlySelectedTodoItem.notes = notes;
+    todoItem.selected.title = title;
+    todoItem.selected.description = description;
+    todoItem.selected.dueDate = dueDate;
+    todoItem.selected.priority = priority;
+    todoItem.selected.notes = notes;
 
     for (let i = 0; i < checklist.length; i++) {
       const itemName = checklist[i].childNodes[1].value;
       const itemCheckedStatus = checklist[i].childNodes[0].checked;
 
       //sets checklist item names and checked status
-      currentlySelectedTodoItem.checklist[i].checked = itemCheckedStatus;
-      currentlySelectedTodoItem.checklist[i].checklistItemName = `${itemName}`;
+      todoItem.selected.checklist[i].checked = itemCheckedStatus;
+      todoItem.selected.checklist[i].checklistItemName = `${itemName}`;
     }
   };
 

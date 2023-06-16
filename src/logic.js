@@ -18,17 +18,18 @@ const project = (() => {
 
   const setSelected = (thisProject) => {
     project.selected = thisProject;
+    console.log(project.selected);
   };
 
-  const addToProjectsContainer = (project) => {
-    container.push(project);
+  const addToProjectsContainer = (thisProject) => {
+    project.container.push(thisProject);
   };
 
   const removeFromProjectsContainer = (projectForRemoval) => {
     const index = container.findIndex(
       (project) => project.title == projectForRemoval.title
     );
-    container.splice(index, 1);
+    project.container.splice(index, 1);
   };
 
   // separated adding items to project to follow single responsibility principle
@@ -71,7 +72,9 @@ const todoItem = (() => {
       );
     }
 
+    let selected = project.selected.items[0];
     return {
+      selected,
       title, //input text
       description, //input text
       dueDate, //input
@@ -196,14 +199,12 @@ const defaultItem = todoItem.create(
 project.addItem(defaultItem, defaultProject);
 project.addToProjectsContainer(defaultProject);
 
-let currentlySelectedTodoItem = project.selected.items[0];
-
 const setCurrentTodoItemToFirstItemOfCurrentProject = () => {
-  currentlySelectedTodoItem = project.selected.items[0];
+  todoItem.selected = project.selected.items[0];
 };
 
-function setCurrentlySelectedTodoItem(todoItem) {
-  currentlySelectedTodoItem = todoItem;
+function setCurrentlySelectedTodoItem(thisTodoItem) {
+  todoItem.selected = thisTodoItem;
 }
 
 const getIndexOfElementFromEvent = (eventTargetChild) => {
@@ -234,7 +235,6 @@ export {
   getProjectsContainerFromStorage,
   setCurrentTodoItemToFirstItemOfCurrentProject,
   setCurrentlySelectedTodoItem,
-  currentlySelectedTodoItem,
   isLast,
   getIndexOfElementFromEvent,
   getCurrentItemFromEvent,

@@ -16,6 +16,10 @@ const project = (() => {
 
   let selected = getProjectsContainerFromStorage()[0];
 
+  const setSelected = (thisProject) => {
+    project.selected = thisProject;
+  };
+
   const addToProjectsContainer = (project) => {
     container.push(project);
   };
@@ -43,6 +47,7 @@ const project = (() => {
     container,
     create,
     selected,
+    setSelected,
     addToProjectsContainer,
     removeFromProjectsContainer,
     addItem,
@@ -198,10 +203,6 @@ const addItemToCurrentlySelectedProject = () => {
   project.addItem(newItem, project.selected);
 };
 
-const setCurrentlySelectedProject = (thisProject) => {
-  project.selected = thisProject;
-};
-
 const setCurrentTodoItemToFirstItemOfCurrentProject = () => {
   currentlySelectedTodoItem = project.selected.items[0];
 };
@@ -236,7 +237,6 @@ export {
   syncProjectsContainers,
   setProjectsContainerFromStorage,
   getProjectsContainerFromStorage,
-  setCurrentlySelectedProject,
   addItemToCurrentlySelectedProject,
   setCurrentTodoItemToFirstItemOfCurrentProject,
   setCurrentlySelectedTodoItem,

@@ -14,6 +14,8 @@ const project = (() => {
     return { title, items };
   };
 
+  let selected = getProjectsContainerFromStorage()[0];
+
   const addToProjectsContainer = (project) => {
     container.push(project);
   };
@@ -40,6 +42,7 @@ const project = (() => {
   return {
     container,
     create,
+    selected,
     addToProjectsContainer,
     removeFromProjectsContainer,
     addItem,
@@ -96,26 +99,6 @@ const todoItem = (() => {
       todoItem.checklist[listItemIndex].checked = false;
     };
 
-    const convertToObjects = (todoItem) => {
-      // const objectChecklist = [];
-      // todoItem.checklist.forEach(item => {
-      //     if (!(typeof item == "object" && item !==null)) { //wont nest objects
-      //         const itemObject = {checklistItemName: `${item}`, checked: false};
-      //         objectChecklist.push(itemObject);
-      //     }
-
-      // });
-
-      // todoItem.checklist = objectChecklist;
-      for (let i = 0; i < todoItem.checklist.length; i++) {
-        todoItem.checklist.reverse(); //index0 = currentItem, is now last
-        const currentChecklistItem = todoItem.checklist.pop(); // currentItem is popped out
-        const newChecklistItem = createItem(currentChecklistItem); //currentItem is created into an object
-        todoItem.checklist.splice(i, 0, newChecklistItem); //currentItem is pushed back in at index of i variable.
-        todoItem.checklist.reverse(); //current Item is back into normal array
-      }
-    };
-
     const addItem = (checklistItem, todoItem) => {
       todoItem.checklist.push(checklistItem);
     };
@@ -128,7 +111,6 @@ const todoItem = (() => {
       createItem,
       checkItem,
       uncheckItem,
-      convertToObjects,
       addItem,
       removeItem,
     };
@@ -178,8 +160,9 @@ const syncProjectsContainers = () => {
   project.container = getProjectsContainerFromStorage();
 };
 
-const getProjectsContainerFromStorage = () =>
-  JSON.parse(localStorage.getItem("projectsContainer"));
+function getProjectsContainerFromStorage() {
+  return JSON.parse(localStorage.getItem("projectsContainer"));
+}
 
 /** 
  Structure for implementing local storage into already existing code that runs without it
@@ -208,20 +191,19 @@ const defaultItem = todoItem.create(
 project.addItem(defaultItem, defaultProject);
 project.addToProjectsContainer(defaultProject);
 
-let currentlySelectedProject = getProjectsContainerFromStorage()[0];
-let currentlySelectedTodoItem = currentlySelectedProject.items[0];
+let currentlySelectedTodoItem = project.selected.items[0];
 
 const addItemToCurrentlySelectedProject = () => {
   const newItem = todoItem.create("Empty");
-  project.addItem(newItem, currentlySelectedProject);
+  project.addItem(newItem, project.selected);
 };
 
-const setCurrentlySelectedProject = (project) => {
-  currentlySelectedProject = project;
+const setCurrentlySelectedProject = (thisProject) => {
+  project.selected = thisProject;
 };
 
 const setCurrentTodoItemToFirstItemOfCurrentProject = () => {
-  currentlySelectedTodoItem = currentlySelectedProject.items[0];
+  currentlySelectedTodoItem = project.selected.items[0];
 };
 
 function setCurrentlySelectedTodoItem(todoItem) {
@@ -244,7 +226,7 @@ const getIndexOfElementFromEvent = (eventTargetChild) => {
 
 const getCurrentItemFromEvent = (target) => {
   const index = getIndexOfElementFromEvent(target);
-  const currentItem = currentlySelectedProject.items[index];
+  const currentItem = project.selected.items[index];
   return currentItem;
 };
 
@@ -258,7 +240,6 @@ export {
   addItemToCurrentlySelectedProject,
   setCurrentTodoItemToFirstItemOfCurrentProject,
   setCurrentlySelectedTodoItem,
-  currentlySelectedProject,
   currentlySelectedTodoItem,
   isLast,
   getIndexOfElementFromEvent,

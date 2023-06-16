@@ -152,6 +152,14 @@ const test1 = project.create("test1", [todoItem.create("showering")]);
 const test2 = project.create("test2", [todoItem.create("gaming")]);
 let projectsContainer = [];
 
+const createProjectWithTodoItem = () => {
+  const newProject = project.create("New Project Title");
+  const newItem = todoItem.create("New Item Title");
+  project.addToProjectsContainer(newProject);
+  project.addItem(newItem, newProject);
+  return newProject;
+};
+
 const isLast = (array) => {
   if (array.length == 1) {
     return true;
@@ -254,4 +262,5 @@ export {
   isLast,
   getIndexOfElementFromEvent,
   getCurrentItemFromEvent,
+  createProjectWithTodoItem,
 };

@@ -24,14 +24,6 @@ const DOM = (() => {
     return button;
   };
 
-  const createProjectWithTodoItem = () => {
-    const newProject = project.create("New Project Title");
-    const newItem = todoItem.create("New Item Title");
-    project.addToProjectsContainer(newProject);
-    project.addItem(newItem, newProject);
-    return newProject;
-  };
-
   const _createTodoItemsDiv = () => {
     const div = document.createElement("div");
     const h1 = document.createElement("h1");
@@ -326,7 +318,6 @@ const DOM = (() => {
     removeCurrentlySelectedClass,
     getCurrentlySelectedClassHolder,
     removeCurrentlySelectedClassFromHolder,
-    createProjectWithTodoItem,
     clearProjectsOnDisplay,
     updateTodoItemValues,
   };

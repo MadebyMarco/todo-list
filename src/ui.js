@@ -13,6 +13,7 @@ import {
   addItemToCurrentlySelectedProject,
   isLast,
   getProjectsContainerFromStorage,
+  createProjectWithTodoItem,
 } from "./logic";
 import { DOM } from "./dom";
 
@@ -201,7 +202,7 @@ function handleCreateTodoItemButtonOnClick() {
 }
 
 function handleCreateProjectButtonOnClick() {
-  setCurrentlySelectedProject(DOM.createProjectWithTodoItem());
+  setCurrentlySelectedProject(createProjectWithTodoItem());
   setProjectsContainerFromStorage();
   DOM.clearProjectsOnDisplay();
   DOM.displayProjects();

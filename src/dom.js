@@ -3,7 +3,6 @@ import {
   todoItem,
   setProjectsContainerFromStorage,
   getProjectsContainerFromStorage,
-  currentlySelectedProject,
   currentlySelectedTodoItem,
 } from "./logic.js";
 
@@ -43,7 +42,7 @@ const DOM = (() => {
     const todoContainer = document.querySelector(".todoItemsContainer");
     const ul = document.createElement("ul");
     ul.classList.add("todoItems");
-    currentlySelectedProject.items.forEach((item) => {
+    project.selected.items.forEach((item) => {
       const li = document.createElement("li");
       const h3 = document.createElement("h3");
       const p = document.createElement("p");
@@ -149,7 +148,7 @@ const DOM = (() => {
     const indicators = document.querySelectorAll(".priorityIndicator");
     for (let i = 0; i < indicators.length; i++) {
       const currentIndicator = indicators[i];
-      const currentItem = currentlySelectedProject.items[i];
+      const currentItem = project.selected.items[i];
       currentIndicator.classList.remove("low", "medium", "high", "transparent");
 
       switch (currentItem.priority) {
@@ -296,7 +295,7 @@ const DOM = (() => {
     );
     displayProjects();
     displayTodoItems();
-    displayFirstItemContent(currentlySelectedProject);
+    displayFirstItemContent(project.selected);
     updatePriorityIndicator();
     addCurrentlySelectedClass(getProjectsOnDisplay()[0]);
     addCurrentlySelectedClass(getTodoItemsOnDisplay()[0]);

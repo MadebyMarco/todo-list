@@ -4,8 +4,6 @@ import {
   setProjectsContainerFromStorage,
   getIndexOfElementFromEvent,
   getCurrentItemFromEvent,
-  setCurrentlySelectedTodoItem,
-  setCurrentTodoItemToFirstItemOfCurrentProject,
   isLast,
   getProjectsContainerFromStorage,
   createProjectWithTodoItem,
@@ -119,7 +117,7 @@ function handleProjectDivOnClick(event) {
   project.setSelected(project.container[index]);
   DOM.removeTodoItemsContainer();
   DOM.removeItemContentsfromDisplay();
-  setCurrentTodoItemToFirstItemOfCurrentProject();
+  todoItem.setSelected(project.selected.items[0]);
   DOM.displayTodoItems();
   DOM.displayFirstItemContent(project.selected);
   DOM.updatePriorityIndicator();
@@ -164,7 +162,7 @@ function handleDeleteButtonsForProjects(event) {
 
 function handleTodoItemOnClick(event) {
   const thisTodoItemLi = event.target.closest(todoItemLi.selector);
-  setCurrentlySelectedTodoItem(getCurrentItemFromEvent(thisTodoItemLi));
+  todoItem.setSelected(getCurrentItemFromEvent(thisTodoItemLi));
   DOM.removeItemContentsfromDisplay();
   DOM.displayTodoItemContents(todoItem.selected);
   DOM.removeCurrentlySelectedClassFromHolder(
@@ -193,7 +191,7 @@ function handleDeleteButtonsForTodoItems(event) {
 function handleCreateTodoItemButtonOnClick() {
   const newItem = todoItem.create("Untitled Item");
   project.addItem(newItem, project.selected);
-  setCurrentlySelectedTodoItem(newItem);
+  todoItem.setSelected(newItem);
   DOM.removeTodoItemsContainer();
   DOM.displayTodoItems();
   DOM.removeItemContentsfromDisplay();

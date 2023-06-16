@@ -72,9 +72,8 @@ const todoItem = (() => {
       );
     }
 
-    let selected = project.selected.items[0];
     return {
-      selected,
+      //createTodoItem return
       title, //input text
       description, //input text
       dueDate, //input
@@ -85,6 +84,11 @@ const todoItem = (() => {
     };
   };
 
+  let selected = project.selected.items[0];
+
+  function setSelected(thisTodoItem) {
+    todoItem.selected = thisTodoItem;
+  }
   // Making the checklist conversion into a separate function instead of a todoItem property/interal job
   // by making items on my check list objects with two keys, name & checked, I can store store and render the info easily.
   // I need to make every input into checklist an object. I can forEach over and set name to whatever is in checklist.
@@ -116,6 +120,7 @@ const todoItem = (() => {
     };
 
     return {
+      //checklist return
       createItem,
       checkItem,
       uncheckItem,
@@ -133,6 +138,9 @@ const todoItem = (() => {
   };
 
   return {
+    // todoItem return
+    selected,
+    setSelected,
     create,
     markCompleted,
     markNotCompleted,
@@ -199,14 +207,6 @@ const defaultItem = todoItem.create(
 project.addItem(defaultItem, defaultProject);
 project.addToProjectsContainer(defaultProject);
 
-const setCurrentTodoItemToFirstItemOfCurrentProject = () => {
-  todoItem.selected = project.selected.items[0];
-};
-
-function setCurrentlySelectedTodoItem(thisTodoItem) {
-  todoItem.selected = thisTodoItem;
-}
-
 const getIndexOfElementFromEvent = (eventTargetChild) => {
   // const siblings = [...event.target.parentNode.parentNode.children];
   // const targetChild = event.target.parentNode;
@@ -233,8 +233,6 @@ export {
   syncProjectsContainers,
   setProjectsContainerFromStorage,
   getProjectsContainerFromStorage,
-  setCurrentTodoItemToFirstItemOfCurrentProject,
-  setCurrentlySelectedTodoItem,
   isLast,
   getIndexOfElementFromEvent,
   getCurrentItemFromEvent,

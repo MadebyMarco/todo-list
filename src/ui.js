@@ -4,7 +4,6 @@ import {
   setProjectsContainerFromStorage,
   getIndexOfElementFromEvent,
   getCurrentItemFromEvent,
-  currentlySelectedProject,
   currentlySelectedTodoItem,
   setCurrentlySelectedProject,
   setCurrentlySelectedTodoItem,
@@ -128,7 +127,7 @@ function handleProjectDivOnClick(event) {
   DOM.removeItemContentsfromDisplay();
   setCurrentTodoItemToFirstItemOfCurrentProject();
   DOM.displayTodoItems();
-  DOM.displayFirstItemContent(currentlySelectedProject);
+  DOM.displayFirstItemContent(project.selected);
   DOM.updatePriorityIndicator();
   handleDeleteButtonsForProjects(event);
   DOM.removeCurrentlySelectedClassFromHolder(".currentlySelected.project");
@@ -136,16 +135,16 @@ function handleProjectDivOnClick(event) {
 }
 
 const _addEventListenersToProjects = () => {
-  DOM.getProjectsOnDisplay().forEach((project) => {
-    const projectTitleTextarea = project.childNodes[0];
-    project.addEventListener(
+  DOM.getProjectsOnDisplay().forEach((projectOnDisplay) => {
+    const projectTitleTextarea = projectOnDisplay.childNodes[0];
+    projectOnDisplay.addEventListener(
       "dblclick",
       () => (projectTitleTextarea.readOnly = false)
     );
 
-    project.addEventListener("focusout", () => {
+    projectOnDisplay.addEventListener("focusout", () => {
       projectTitleTextarea.readOnly = true;
-      currentlySelectedProject.title = projectTitleTextarea.value;
+      project.selected.title = projectTitleTextarea.value;
       setProjectsContainerFromStorage();
     });
   });
@@ -183,10 +182,7 @@ function handleDeleteButtonsForTodoItems(event) {
 
   const index = getIndexOfElementFromEvent(todoItem);
   console.log(index);
-  project.removeItem(
-    currentlySelectedProject.items[index],
-    currentlySelectedProject
-  );
+  project.removeItem(project.selected.items[index], project.selected);
   todoItem.remove();
   setProjectsContainerFromStorage();
   DOM.removeItemContentsfromDisplay();

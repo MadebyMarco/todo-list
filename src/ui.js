@@ -4,7 +4,6 @@ import {
   setProjectsContainerFromStorage,
   getIndexOfElementFromEvent,
   getCurrentItemFromEvent,
-  projectsContainer,
   currentlySelectedProject,
   currentlySelectedTodoItem,
   setCurrentlySelectedProject,
@@ -124,7 +123,7 @@ function handleProjectDivOnClick(event) {
   const projectDiv = event.target.parentNode;
   // this solution below is more robust because I wont have to re Index everytime i clear projects.
   const index = getIndexOfElementFromEvent(projectDiv) - 1; //-1 because header is included in parent element
-  setCurrentlySelectedProject(projectsContainer[index]);
+  setCurrentlySelectedProject(project.container[index]);
   DOM.removeTodoItemsContainer();
   DOM.removeItemContentsfromDisplay();
   setCurrentTodoItemToFirstItemOfCurrentProject();
@@ -159,7 +158,7 @@ function handleDeleteButtonsForProjects(event) {
 
     const projectDiv = event.target.closest("div.project");
     const index = getIndexOfElementFromEvent(event.target.parentNode) - 1; //-1 because header is included in parent element
-    project.removeFromProjectsContainer(projectsContainer[index]);
+    project.removeFromProjectsContainer(project.container[index]);
     setProjectsContainerFromStorage();
     setCurrentlySelectedProject(getProjectsContainerFromStorage()[0]);
     projectDiv.remove();

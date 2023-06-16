@@ -8,19 +8,21 @@
 //todo list logic will be kept in one module while todo list DOM manipulation will be in another module
 // todoItem for logic, todoItemDOM for dom manipulation
 const project = (() => {
+  let container = [];
+
   const create = (title, items = []) => {
     return { title, items };
   };
 
   const addToProjectsContainer = (project) => {
-    projectsContainer.push(project);
+    container.push(project);
   };
 
   const removeFromProjectsContainer = (projectForRemoval) => {
-    const index = projectsContainer.findIndex(
+    const index = container.findIndex(
       (project) => project.title == projectForRemoval.title
     );
-    projectsContainer.splice(index, 1);
+    container.splice(index, 1);
   };
 
   // separated adding items to project to follow single responsibility principle
@@ -36,6 +38,7 @@ const project = (() => {
   };
 
   return {
+    container,
     create,
     addToProjectsContainer,
     removeFromProjectsContainer,
@@ -150,7 +153,6 @@ const todoItem = (() => {
 const defaultProject = project.create("default");
 const test1 = project.create("test1", [todoItem.create("showering")]);
 const test2 = project.create("test2", [todoItem.create("gaming")]);
-let projectsContainer = [];
 
 const createProjectWithTodoItem = () => {
   const newProject = project.create("New Project Title");
@@ -167,13 +169,13 @@ const isLast = (array) => {
 };
 
 const setProjectsContainerFromStorage = () => {
-  localStorage.setItem("projectsContainer", JSON.stringify(projectsContainer));
+  localStorage.setItem("projectsContainer", JSON.stringify(project.container));
   console.log("projects container has been updated");
 };
 
 const syncProjectsContainers = () => {
   console.log("syncing containers");
-  projectsContainer = getProjectsContainerFromStorage();
+  project.container = getProjectsContainerFromStorage();
 };
 
 const getProjectsContainerFromStorage = () =>
@@ -249,7 +251,6 @@ const getCurrentItemFromEvent = (target) => {
 export {
   project,
   todoItem,
-  projectsContainer,
   syncProjectsContainers,
   setProjectsContainerFromStorage,
   getProjectsContainerFromStorage,

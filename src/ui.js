@@ -4,10 +4,8 @@ import {
   setProjectsContainerFromStorage,
   getIndexOfElementFromEvent,
   getCurrentItemFromEvent,
-  currentlySelectedTodoItem,
   setCurrentlySelectedTodoItem,
   setCurrentTodoItemToFirstItemOfCurrentProject,
-  addItemToCurrentlySelectedProject,
   isLast,
   getProjectsContainerFromStorage,
   createProjectWithTodoItem,
@@ -98,10 +96,7 @@ function handleChecklistRemoveButtons(event) {
   if (checklist.childElementCount != 1) {
     const checklistItem = event.target.parentNode;
     const itemForRemovalIndex = getIndexOfElementFromEvent(checklistItem);
-    todoItem.checklist.removeItem(
-      itemForRemovalIndex,
-      currentlySelectedTodoItem
-    );
+    todoItem.checklist.removeItem(itemForRemovalIndex, todoItem.selected);
     checklistItem.remove();
   } else console.error("Cant delete last checklist item");
 }
@@ -110,9 +105,9 @@ function handleAddButtons() {
   const newChecklistItem = todoItem.checklist.createItem(
     "Create a checklist item here"
   );
-  todoItem.checklist.addItem(newChecklistItem, currentlySelectedTodoItem);
+  todoItem.checklist.addItem(newChecklistItem, todoItem.selected);
   DOM.removeItemContentsfromDisplay();
-  DOM.displayTodoItemContents(currentlySelectedTodoItem);
+  DOM.displayTodoItemContents(todoItem.selected);
   setProjectsContainerFromStorage();
 }
 
@@ -128,7 +123,6 @@ function handleProjectDivOnClick(event) {
   DOM.displayTodoItems();
   DOM.displayFirstItemContent(project.selected);
   DOM.updatePriorityIndicator();
-  handleDeleteButtonsForProjects(event);
   DOM.removeCurrentlySelectedClassFromHolder(".currentlySelected.project");
   DOM.addCurrentlySelectedClass(event.target.closest("div.project"));
 }
@@ -150,28 +144,30 @@ const _addEventListenersToProjects = () => {
 };
 
 function handleDeleteButtonsForProjects(event) {
-  if (event.target.classList.contains("deleteButton")) {
-    if (isLast(DOM.getProjectsOnDisplay()) == true)
-      throw Error("Cant delete last project");
+  if (isLast(DOM.getProjectsOnDisplay()) == true)
+    throw Error("Cant delete last project");
 
-    const projectDiv = event.target.closest("div.project");
-    const index = getIndexOfElementFromEvent(event.target.parentNode) - 1; //-1 because header is included in parent element
-    project.removeFromProjectsContainer(project.container[index]);
-    setProjectsContainerFromStorage();
-    project.setSelected(getProjectsContainerFromStorage()[0]);
-    projectDiv.remove();
-  }
+  const projectDiv = event.target.closest("div.project");
+  const index = getIndexOfElementFromEvent(event.target.parentNode) - 1; //-1 because header is included in parent element
+  project.removeFromProjectsContainer(project.container[index]);
+  setProjectsContainerFromStorage();
+  project.setSelected(getProjectsContainerFromStorage()[0]);
+  projectDiv.remove();
+  DOM.removeTodoItemsContainer();
+  DOM.displayTodoItems();
+  DOM.removeItemContentsfromDisplay();
+  DOM.displayFirstItemContent(project.selected);
 }
 
 function handleTodoItemOnClick(event) {
-  const todoItem = event.target.closest(todoItemLi.selector);
+  const thisTodoItemLi = event.target.closest(todoItemLi.selector);
+  setCurrentlySelectedTodoItem(getCurrentItemFromEvent(thisTodoItemLi));
   DOM.removeItemContentsfromDisplay();
-  setCurrentlySelectedTodoItem(getCurrentItemFromEvent(todoItem));
-  DOM.displayTodoItemContents(currentlySelectedTodoItem);
+  DOM.displayTodoItemContents(todoItem.selected);
   DOM.removeCurrentlySelectedClassFromHolder(
     ".currentlySelected.todoItemListItem"
   );
-  DOM.addCurrentlySelectedClass(todoItem);
+  DOM.addCurrentlySelectedClass(thisTodoItemLi);
 }
 
 function handleDeleteButtonsForTodoItems(event) {
@@ -180,12 +176,15 @@ function handleDeleteButtonsForTodoItems(event) {
   if (isLast(DOM.getTodoItemsOnDisplay())) throw Error("Cant delete last item");
 
   const index = getIndexOfElementFromEvent(todoItem);
-  console.log(index);
   project.removeItem(project.selected.items[index], project.selected);
   todoItem.remove();
   setProjectsContainerFromStorage();
   DOM.removeItemContentsfromDisplay();
-  DOM.displayTodoItemContents(getProjectsContainerFromStorage()[0].items[0]);
+  DOM.removeCurrentlySelectedClassFromHolder(
+    ".currentlySelected.todoItemListItem"
+  );
+  DOM.addCurrentlySelectedClass(DOM.getTodoItemsOnDisplay()[0]);
+  DOM.displayTodoItemContents(project.selected.items[0]);
 }
 
 function handleCreateTodoItemButtonOnClick() {

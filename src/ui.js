@@ -157,6 +157,9 @@ function handleDeleteButtonsForProjects(event) {
   DOM.displayTodoItems();
   DOM.removeItemContentsfromDisplay();
   DOM.displayFirstItemContent(project.selected);
+  DOM.removeCurrentlySelectedClassFromHolder(".currentlySelected.project");
+  DOM.addCurrentlySelectedClass(DOM.getProjectsOnDisplay()[0]);
+  DOM.addCurrentlySelectedClass(DOM.getTodoItemsOnDisplay()[0]);
 }
 
 function handleTodoItemOnClick(event) {
@@ -188,9 +191,16 @@ function handleDeleteButtonsForTodoItems(event) {
 }
 
 function handleCreateTodoItemButtonOnClick() {
-  project.addItem(todoItem.create("Untitled Item"), project.selected);
+  const newItem = todoItem.create("Untitled Item");
+  project.addItem(newItem, project.selected);
+  setCurrentlySelectedTodoItem(newItem);
   DOM.removeTodoItemsContainer();
   DOM.displayTodoItems();
+  DOM.removeItemContentsfromDisplay();
+  DOM.displayTodoItemContents(newItem);
+  DOM.addCurrentlySelectedClass(
+    DOM.getTodoItemsOnDisplay()[DOM.getTodoItemsOnDisplay().length - 1]
+  );
   setProjectsContainerFromStorage();
 }
 

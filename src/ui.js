@@ -13,19 +13,26 @@ import { DOM } from "./dom";
 function addEventListenerToBody() {
   document.body.addEventListener("click", handleClickOnBody);
   document.body.addEventListener("change", handleChangeOnBody);
+  document.body.addEventListener("focusout", handleFocusOutOnBody);
+  document.body.addEventListener("dblclick", handleDblClickOnBody);
 }
 
 function handleChangeOnBody(event) {
   executeHandler([todoItemContent], event);
+  setProjectsContainerFromStorage();
+}
+
+function handleFocusOutOnBody(event) {
+  executeHandler([projectDivOnFocusOut], event);
+  setProjectsContainerFromStorage();
+}
+
+function handleDblClickOnBody(event) {
+  executeHandler([projectDivOnDblClick], event);
+  setProjectsContainerFromStorage();
 }
 
 function handleClickOnBody(event) {
-  // switch (event.target) {
-  //   case event.target.closest(checklistRemoveButton.selector):
-  //     checklistRemoveButton.handler(event);
-  //     break;
-  // }
-
   executeHandler(
     [
       checklistRemoveButton,
@@ -39,6 +46,7 @@ function handleClickOnBody(event) {
     ],
     event
   );
+  setProjectsContainerFromStorage();
 }
 
 function selectorAndHandler(selector, handler) {
@@ -99,6 +107,16 @@ const todoItemContent = selectorAndHandler(
   handleItemContentOnChange
 );
 
+const projectDivOnDblClick = selectorAndHandler(
+  ".project > textarea",
+  handleProjectDivOnDblClick
+);
+
+const projectDivOnFocusOut = selectorAndHandler(
+  ".project > textarea",
+  handleProjectDivOnFocusOut
+);
+
 function handleChecklistRemoveButtons(event) {
   const checklist = document.querySelector(".checklist");
   if (checklist.childElementCount != 1) {
@@ -136,29 +154,13 @@ function handleProjectDivOnClick(event) {
 }
 
 function handleProjectDivOnDblClick(event) {
-  event.target.readOnly = false;
+  event.target.closest(projectDivOnDblClick.selector).readOnly = false;
 }
 
 function handleProjectDivOnFocusOut(event) {
-  event.target.readOnly = true;
+  event.target.closest(projectDivOnFocusOut.selector).readOnly = true;
   project.selected.title = event.target.value;
 }
-
-const _addEventListenersToProjects = () => {
-  DOM.getProjectsOnDisplay().forEach((projectOnDisplay) => {
-    const projectTitleTextarea = projectOnDisplay.childNodes[0];
-    projectOnDisplay.addEventListener(
-      "dblclick",
-      () => (projectTitleTextarea.readOnly = false)
-    );
-
-    projectOnDisplay.addEventListener("focusout", () => {
-      projectTitleTextarea.readOnly = true;
-      project.selected.title = projectTitleTextarea.value;
-      setProjectsContainerFromStorage();
-    });
-  });
-};
 
 function handleDeleteButtonsForProjects(event) {
   if (isLast(DOM.getProjectsOnDisplay()) == true)
@@ -241,9 +243,4 @@ function handleItemContentOnChange(event) {
   }
 }
 
-function addEventListeners() {
-  _addEventListenersToProjects();
-  addEventListenerToBody();
-}
-
-export { addEventListeners };
+export { addEventListenerToBody };

@@ -12,6 +12,11 @@ import { DOM } from "./dom";
 
 function addEventListenerToBody() {
   document.body.addEventListener("click", handleClickOnBody);
+  document.body.addEventListener("change", handleChangeOnBody);
+}
+
+function handleChangeOnBody(event) {
+  executeHandler([todoItemContent], event);
 }
 
 function handleClickOnBody(event) {
@@ -37,6 +42,10 @@ function handleClickOnBody(event) {
 }
 
 function clickEvent(selector, handler) {
+  return { selector, handler };
+}
+
+function changeEvent(selector, handler) {
   return { selector, handler };
 }
 
@@ -87,6 +96,11 @@ const createTodoItemButton = clickEvent(
 const createProjectButton = clickEvent(
   "button.createProject",
   handleCreateProjectButtonOnClick
+);
+
+const todoItemContent = changeEvent(
+  ".itemContentDisplay",
+  handleItemContentOnChange
 );
 
 function handleChecklistRemoveButtons(event) {
@@ -210,24 +224,20 @@ function handleCreateProjectButtonOnClick() {
   _addEventListenersToProjects();
 }
 
-const _addEventListenersToItemContent = () => {
-  const itemContent = document.querySelector(".itemContentDisplay");
-  itemContent.addEventListener("change", (event) => {
-    DOM.updateTodoItemValues();
-    DOM.updatePriorityIndicator();
-    setProjectsContainerFromStorage();
-    const titleTextarea = 0;
-    //will redisplay todoItems if the title text area is changed
-    if (getIndexOfElementFromEvent(event.target) == titleTextarea) {
-      DOM.removeTodoItemsContainer();
-      DOM.displayTodoItems();
-    }
-  });
-};
+function handleItemContentOnChange(event) {
+  DOM.updateTodoItemValues();
+  DOM.updatePriorityIndicator();
+  setProjectsContainerFromStorage();
+  const titleTextarea = 0;
+  //will redisplay todoItems if the title text area is changed
+  if (getIndexOfElementFromEvent(event.target) == titleTextarea) {
+    DOM.removeTodoItemsContainer();
+    DOM.displayTodoItems();
+  }
+}
 
 function addEventListeners() {
   _addEventListenersToProjects();
-  _addEventListenersToItemContent();
   addEventListenerToBody();
 }
 

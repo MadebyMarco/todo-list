@@ -56,7 +56,7 @@ const checklistRemoveButton = clickEvent(
 
 const checklistAddButton = clickEvent(
   "li.checklistItem > button.add",
-  handleAddButtons
+  handleChecklistAddButtons
 );
 
 const projectDiv = clickEvent(
@@ -99,7 +99,7 @@ function handleChecklistRemoveButtons(event) {
   } else console.error("Cant delete last checklist item");
 }
 
-function handleAddButtons() {
+function handleChecklistAddButtons() {
   const newChecklistItem = todoItem.checklist.createItem(
     "Create a checklist item here"
   );

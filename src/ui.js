@@ -235,9 +235,8 @@ function handleItemContentOnChange(event) {
   DOM.updateTodoItemValues();
   DOM.updatePriorityIndicator();
   setProjectsContainerFromStorage();
-  const titleTextarea = 0;
   //will redisplay todoItems if the title text area is changed
-  if (getIndexOfElementFromEvent(event.target) == titleTextarea) {
+  if (event.target.previousSibling === null) {
     DOM.removeTodoItemsContainer();
     DOM.displayTodoItems();
   }

@@ -1,6 +1,6 @@
 import { formatDistance, formatDistanceToNow, subDays } from "date-fns";
 import { DOM } from "./dom";
-import { addEventListeners } from "./ui";
+import { addEventListenerToBody } from "./ui";
 import {
   getProjectsContainerFromStorage,
   setProjectsContainerFromStorage,
@@ -10,4 +10,4 @@ if (getProjectsContainerFromStorage() == null)
   setProjectsContainerFromStorage();
 syncProjectsContainers();
 DOM.load();
-addEventListeners();
+addEventListenerToBody();

@@ -41,11 +41,7 @@ function handleClickOnBody(event) {
   );
 }
 
-function clickEvent(selector, handler) {
-  return { selector, handler };
-}
-
-function changeEvent(selector, handler) {
+function selectorAndHandler(selector, handler) {
   return { selector, handler };
 }
 
@@ -58,47 +54,47 @@ function executeHandler(handlers = [], event) {
 }
 //create a way that we can add new event listeners that have their own handler built in so I dont create a huge switch statement
 //everytime I want to add a new event listener and its handler
-const checklistRemoveButton = clickEvent(
+const checklistRemoveButton = selectorAndHandler(
   "li.checklistItem > button.remove",
   handleChecklistRemoveButtons
 );
 
-const checklistAddButton = clickEvent(
+const checklistAddButton = selectorAndHandler(
   "li.checklistItem > button.add",
   handleChecklistAddButtons
 );
 
-const projectDiv = clickEvent(
+const projectDiv = selectorAndHandler(
   "div.project > textarea",
   handleProjectDivOnClick
 );
 
-const projectDivDeleteButton = clickEvent(
+const projectDivDeleteButton = selectorAndHandler(
   "div.project > button.deleteButton",
   handleDeleteButtonsForProjects
 );
 
-const todoItemLi = clickEvent(
+const todoItemLi = selectorAndHandler(
   "ul.todoItems > li.todoItemListItem",
   handleTodoItemOnClick
 );
 
-const todoItemDeleteButton = clickEvent(
+const todoItemDeleteButton = selectorAndHandler(
   "li.todoItemListItem > button.deleteButton",
   handleDeleteButtonsForTodoItems
 );
 
-const createTodoItemButton = clickEvent(
+const createTodoItemButton = selectorAndHandler(
   "button.createTodoItem",
   handleCreateTodoItemButtonOnClick
 );
 
-const createProjectButton = clickEvent(
+const createProjectButton = selectorAndHandler(
   "button.createProject",
   handleCreateProjectButtonOnClick
 );
 
-const todoItemContent = changeEvent(
+const todoItemContent = selectorAndHandler(
   ".itemContentDisplay",
   handleItemContentOnChange
 );
@@ -137,6 +133,15 @@ function handleProjectDivOnClick(event) {
   DOM.updatePriorityIndicator();
   DOM.removeCurrentlySelectedClassFromHolder(".currentlySelected.project");
   DOM.addCurrentlySelectedClass(event.target.closest("div.project"));
+}
+
+function handleProjectDivOnDblClick(event) {
+  event.target.readOnly = false;
+}
+
+function handleProjectDivOnFocusOut(event) {
+  event.target.readOnly = true;
+  project.selected.title = event.target.value;
 }
 
 const _addEventListenersToProjects = () => {

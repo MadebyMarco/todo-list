@@ -151,6 +151,7 @@ function handleProjectDivOnClick(event) {
   DOM.updatePriorityIndicator();
   DOM.removeCurrentlySelectedClassFromHolder(".currentlySelected.project");
   DOM.addCurrentlySelectedClass(event.target.closest("div.project"));
+  DOM.addCurrentlySelectedClass(DOM.getTodoItemsOnDisplay()[0]);
 }
 
 function handleProjectDivOnDblClick(event) {
@@ -228,7 +229,6 @@ function handleCreateProjectButtonOnClick() {
   setProjectsContainerFromStorage();
   DOM.clearProjectsOnDisplay();
   DOM.displayProjects();
-  _addEventListenersToProjects();
 }
 
 function handleItemContentOnChange(event) {

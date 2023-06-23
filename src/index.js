@@ -6,6 +6,9 @@ import {
   setProjectsContainerFromStorage,
   syncProjectsContainers,
 } from "./logic";
+
+import "./style.css";
+
 if (getProjectsContainerFromStorage() == null)
   setProjectsContainerFromStorage();
 syncProjectsContainers();

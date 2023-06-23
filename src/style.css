@@ -11,6 +11,7 @@ div#content {
 
 div.projectsContainer {
   grid-row: 2/3;
+  grid-column: 1/3;
 }
 
 div.todoItemsContainer {
@@ -18,7 +19,27 @@ div.todoItemsContainer {
   grid-column: 3/4;
 }
 
-div.itemContentDispaly {
+div.itemContentDisplay {
   grid-row: 2/3;
   grid-column: 4/5;
+}
+
+.currentlySelected {
+  background-color: rgba(204, 14, 14, 0.096);
+}
+
+.priorityIndicator.transparent {
+  color: transparent;
+}
+
+.priorityIndicator.low {
+  color: green;
+}
+
+.priorityIndicator.medium {
+  color: orange;
+}
+
+.priorityIndicator.high {
+  color: red;
 }

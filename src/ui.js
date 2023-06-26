@@ -72,10 +72,7 @@ const checklistAddButton = selectorAndHandler(
   handleChecklistAddButtons
 );
 
-const projectDiv = selectorAndHandler(
-  "div.project > textarea",
-  handleProjectDivOnClick
-);
+const projectDiv = selectorAndHandler("div.project", handleProjectDivOnClick);
 
 const projectDivDeleteButton = selectorAndHandler(
   "div.project > button.deleteButton",
@@ -139,7 +136,7 @@ function handleChecklistAddButtons() {
 
 function handleProjectDivOnClick(event) {
   setProjectsContainerFromStorage();
-  const projectDiv = event.target.parentNode;
+  const projectDiv = event.target.closest("div.project");
   // this solution below is more robust because I wont have to re Index everytime i clear projects.
   const index = getIndexOfElementFromEvent(projectDiv) - 1; //-1 because header is included in parent element
   project.setSelected(project.container[index]);
@@ -150,7 +147,7 @@ function handleProjectDivOnClick(event) {
   DOM.displayFirstItemContent(project.selected);
   DOM.updatePriorityIndicator();
   DOM.removeCurrentlySelectedClassFromHolder(".currentlySelected.project");
-  DOM.addCurrentlySelectedClass(event.target.closest("div.project"));
+  DOM.addCurrentlySelectedClass(projectDiv);
   DOM.addCurrentlySelectedClass(DOM.getTodoItemsOnDisplay()[0]);
 }
 

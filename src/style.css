@@ -1,6 +1,7 @@
 :root {
   --bg-color: #081c15;
   --main-color: #40916c;
+  --secondary-color: #2d6a4f;
   --accent-color: #52b788;
   --light-color: #74c69d;
   --delete-button-hover: #d8f3dc;
@@ -33,7 +34,7 @@ option {
 
 div#content {
   display: grid;
-  grid-template-columns: repeat(2, 100px) repeat(3, 1fr);
+  grid-template-columns: repeat(2, 120px) 380px 1fr;
   grid-template-rows: 50px;
 }
 
@@ -92,11 +93,44 @@ textarea {
 div.todoItemsContainer {
   grid-row: 2/3;
   grid-column: 3/4;
+  background-color: var(--secondary-color);
+}
+
+div.todoItemsContainer > h1 {
+  padding: 10px 25px;
+}
+
+ul.todoItems > li.todoItemListItem {
+  padding: 20px 40px;
+}
+
+ul.todoItems > li.todoItemListItem:hover {
+  background-color: var(--light-color);
 }
 
 div.itemContentDisplay {
   grid-row: 2/3;
   grid-column: 4/5;
+  display: grid;
+  grid-template-rows: repeat(3, 50px) 25px 1fr 1fr;
+  padding: 57px 40px;
+}
+
+div.itemContentDisplay > select {
+  justify-self: start;
+  color: var(--bg-color);
+}
+
+div.itemContentDisplay > select > option {
+  color: var(--bg-color);
+}
+
+div.itemContentDisplay > select:hover {
+  background-color: var(--light-color);
+}
+
+div.itemContentDisplay > textarea {
+  border-bottom: 1px solid var(--light-color);
 }
 
 div.currentlySelected,

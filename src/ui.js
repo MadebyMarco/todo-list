@@ -218,6 +218,7 @@ function handleCreateTodoItemButtonOnClick() {
   DOM.addCurrentlySelectedClass(
     DOM.getTodoItemsOnDisplay()[DOM.getTodoItemsOnDisplay().length - 1]
   );
+  DOM.updatePriorityIndicator();
   setProjectsContainerFromStorage();
 }
 

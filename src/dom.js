@@ -260,6 +260,26 @@ const DOM = (() => {
     return button;
   };
 
+  function refreshDisplay(ofThis, toThis) {
+    switch (ofThis) {
+      case "projects":
+        clearProjectsOnDisplay();
+        displayProjects();
+        break;
+
+      case "todoItems":
+        removeTodoItemsContainer();
+        displayTodoItems();
+        updatePriorityIndicator();
+        break;
+
+      case "todoItemContents":
+        removeItemContentsfromDisplay();
+        displayTodoItemContents(toThis);
+        break;
+    }
+  }
+
   const addCurrentlySelectedClass = (classReceiver) => {
     classReceiver.classList.add("currentlySelected");
   };
@@ -278,6 +298,15 @@ const DOM = (() => {
       );
     } else new Error("No currently selected class holder found");
   };
+
+  function toggleCurrentlySelectedClass(
+    classReceiverElement,
+    previousHolderSelector
+  ) {
+    if (previousHolderSelector)
+      removeCurrentlySelectedClassFromHolder(previousHolderSelector);
+    if (classReceiverElement) addCurrentlySelectedClass(classReceiverElement);
+  }
 
   const displayFirstItemContent = (project) => {
     const firstItem = project.items[0];
@@ -303,20 +332,10 @@ const DOM = (() => {
 
   return {
     load,
-    displayProjects,
+    refreshDisplay,
     getProjectsOnDisplay,
-    removeItemContentsfromDisplay,
-    displayTodoItems,
-    displayTodoItemContents,
     getTodoItemsOnDisplay,
-    removeTodoItemsContainer,
-    displayFirstItemContent,
-    updatePriorityIndicator,
-    addCurrentlySelectedClass,
-    removeCurrentlySelectedClass,
-    getCurrentlySelectedClassHolder,
-    removeCurrentlySelectedClassFromHolder,
-    clearProjectsOnDisplay,
+    toggleCurrentlySelectedClass,
     updateTodoItemValues,
   };
 })();

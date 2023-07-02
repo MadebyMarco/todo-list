@@ -137,8 +137,7 @@ function handleChecklistAddButtons() {
     "Create a checklist item here"
   );
   todoItem.checklist.addItem(newChecklistItem, todoItem.selected);
-  DOM.removeItemContentsfromDisplay();
-  DOM.displayTodoItemContents(todoItem.selected);
+  DOM.refreshDisplay("todoItemContents", todoItem.selected);
   setProjectsContainerFromStorage();
 }
 
@@ -148,15 +147,11 @@ function handleProjectDivOnClick(event) {
   // this solution below is more robust because I wont have to re Index everytime i clear projects.
   const index = getIndexOfElementFromEvent(projectDiv) - 1; //-1 because header is included in parent element
   project.setSelected(project.container[index]);
-  DOM.removeTodoItemsContainer();
-  DOM.removeItemContentsfromDisplay();
   todoItem.setSelected(project.selected.items[0]);
-  DOM.displayTodoItems();
-  DOM.displayFirstItemContent(project.selected);
-  DOM.updatePriorityIndicator();
-  DOM.removeCurrentlySelectedClassFromHolder(".currentlySelected.project");
-  DOM.addCurrentlySelectedClass(projectDiv);
-  DOM.addCurrentlySelectedClass(DOM.getTodoItemsOnDisplay()[0]);
+  DOM.refreshDisplay("todoItems");
+  DOM.refreshDisplay("todoItemContents", project.selected.items[0]);
+  DOM.toggleCurrentlySelectedClass(projectDiv, ".currentlySelected.project");
+  DOM.toggleCurrentlySelectedClass(DOM.getTodoItemsOnDisplay()[0]);
 }
 
 function handleProjectDivOnDblClick(event) {
@@ -178,24 +173,23 @@ function handleDeleteButtonsForProjects(event) {
   setProjectsContainerFromStorage();
   project.setSelected(getProjectsContainerFromStorage()[0]);
   projectDiv.remove();
-  DOM.removeTodoItemsContainer();
-  DOM.displayTodoItems();
-  DOM.removeItemContentsfromDisplay();
-  DOM.displayFirstItemContent(project.selected);
-  DOM.removeCurrentlySelectedClassFromHolder(".currentlySelected.project");
-  DOM.addCurrentlySelectedClass(DOM.getProjectsOnDisplay()[0]);
-  DOM.addCurrentlySelectedClass(DOM.getTodoItemsOnDisplay()[0]);
+  DOM.refreshDisplay("todoItems");
+  DOM.refreshDisplay("todoItemContents", project.selected.items[0]);
+  DOM.toggleCurrentlySelectedClass(
+    DOM.getProjectsOnDisplay()[0],
+    ".currentlySelected.project"
+  );
+  DOM.toggleCurrentlySelectedClass(DOM.getTodoItemsOnDisplay()[0]);
 }
 
 function handleTodoItemOnClick(event) {
   const thisTodoItemLi = event.target.closest(todoItemLi.selector);
   todoItem.setSelected(getCurrentItemFromEvent(thisTodoItemLi));
-  DOM.removeItemContentsfromDisplay();
-  DOM.displayTodoItemContents(todoItem.selected);
-  DOM.removeCurrentlySelectedClassFromHolder(
+  DOM.refreshDisplay("todoItemContents", todoItem.selected);
+  DOM.toggleCurrentlySelectedClass(
+    thisTodoItemLi,
     ".currentlySelected.todoItemListItem"
   );
-  DOM.addCurrentlySelectedClass(thisTodoItemLi);
 }
 
 function handleDeleteButtonsForTodoItems(event) {
@@ -207,34 +201,36 @@ function handleDeleteButtonsForTodoItems(event) {
   project.removeItem(project.selected.items[index], project.selected);
   todoItem.remove();
   setProjectsContainerFromStorage();
-  DOM.removeItemContentsfromDisplay();
-  DOM.removeCurrentlySelectedClassFromHolder(
+  DOM.refreshDisplay("todoItemContents", project.selected.items[0]);
+  DOM.toggleCurrentlySelectedClass(
+    DOM.getTodoItemsOnDisplay()[0],
     ".currentlySelected.todoItemListItem"
   );
-  DOM.addCurrentlySelectedClass(DOM.getTodoItemsOnDisplay()[0]);
-  DOM.displayTodoItemContents(project.selected.items[0]);
 }
 
 function handleCreateTodoItemButtonOnClick() {
   const newItem = todoItem.create("Untitled Item");
   project.addItem(newItem, project.selected);
   todoItem.setSelected(newItem);
-  DOM.removeTodoItemsContainer();
-  DOM.displayTodoItems();
-  DOM.removeItemContentsfromDisplay();
-  DOM.displayTodoItemContents(newItem);
-  DOM.addCurrentlySelectedClass(
+  DOM.refreshDisplay("todoItems");
+  DOM.refreshDisplay("todoItemContents", newItem);
+  DOM.toggleCurrentlySelectedClass(
     DOM.getTodoItemsOnDisplay()[DOM.getTodoItemsOnDisplay().length - 1]
   );
-  DOM.updatePriorityIndicator();
   setProjectsContainerFromStorage();
 }
 
 function handleCreateProjectButtonOnClick() {
   project.setSelected(createProjectWithTodoItem());
   setProjectsContainerFromStorage();
-  DOM.clearProjectsOnDisplay();
-  DOM.displayProjects();
+  DOM.refreshDisplay("projects");
+  DOM.refreshDisplay("todoItems");
+  DOM.refreshDisplay("todoItemContents", project.selected.items[0]);
+  DOM.updatePriorityIndicator();
+  DOM.toggleCurrentlySelectedClass(
+    DOM.getProjectsOnDisplay()[DOM.getProjectsOnDisplay().length - 1],
+    ".currentlySelected.project"
+  );
 }
 
 function handleItemContentOnChange(event) {

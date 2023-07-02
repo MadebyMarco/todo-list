@@ -246,8 +246,9 @@ function handleItemContentOnChange(event) {
     event.target.previousSibling === null &&
     event.target.nodeName === "TEXTAREA"
   ) {
-    DOM.removeTodoItemsContainer();
-    DOM.displayTodoItems();
+    document.querySelector(
+      "li.todoItemListItem.currentlySelected > h3"
+    ).textContent = todoItem.selected.title;
   }
 }
 

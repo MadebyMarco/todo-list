@@ -35,6 +35,7 @@ function handleDblClickOnBody(event) {
 function handleClickOnBody(event) {
   executeHandler(
     [
+      checklistCheckbox,
       checklistRemoveButton,
       checklistAddButton,
       projectDiv,
@@ -70,6 +71,13 @@ const checklistRemoveButton = selectorAndHandler(
 const checklistAddButton = selectorAndHandler(
   "li.checklistItem > button.add",
   handleChecklistAddButtons
+);
+
+const checklistCheckbox = selectorAndHandler(
+  "li.checklistItem > input[type='checkbox']",
+  () => {
+    DOM.updatePriorityIndicator();
+  }
 );
 
 const projectDiv = selectorAndHandler("div.project", handleProjectDivOnClick);
@@ -234,7 +242,10 @@ function handleItemContentOnChange(event) {
   DOM.updatePriorityIndicator();
   setProjectsContainerFromStorage();
   //will redisplay todoItems if the title text area is changed
-  if (event.target.previousSibling === null) {
+  if (
+    event.target.previousSibling === null &&
+    event.target.nodeName === "TEXTAREA"
+  ) {
     DOM.removeTodoItemsContainer();
     DOM.displayTodoItems();
   }

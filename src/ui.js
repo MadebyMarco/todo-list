@@ -231,6 +231,7 @@ function handleCreateProjectButtonOnClick() {
     DOM.getProjectsOnDisplay()[DOM.getProjectsOnDisplay().length - 1],
     ".currentlySelected.project"
   );
+  DOM.toggleCurrentlySelectedClass(DOM.getTodoItemsOnDisplay()[0]);
 }
 
 function handleItemContentOnChange(event) {

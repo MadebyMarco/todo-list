@@ -337,6 +337,7 @@ const DOM = (() => {
     getTodoItemsOnDisplay,
     toggleCurrentlySelectedClass,
     updateTodoItemValues,
+    updatePriorityIndicator,
   };
 })();
 
